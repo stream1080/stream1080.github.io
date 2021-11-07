@@ -426,20 +426,22 @@
             <article class="cd-timeline-content" data-aos="fade-up">
                 <div class="article col s12 m6">
                     <div class="card">
-                        <a href="/2021/11/07/test1-fu-ben/">
+                        <a href="/2021/11/07/test3-fu-ben/">
                             <div class="card-image">
                                 
                                 
-                                <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                                <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="分布式事务之三阶段提交">
                                 
-                                <span class="card-title">select、poll和epoll的区别</span>
+                                <span class="card-title">分布式事务之三阶段提交</span>
                             </div>
                         </a>
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    进程所能打开的最大连接数select单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是3232，同理64位机器上FD_ SETSIZE为3264) 
-tips：我们可以对进行修
+                                    三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。
+流程询问阶段协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。
+准备阶段
+如果
                                 
                             </div>
                             <div class="publish-info">
@@ -476,20 +478,22 @@ tips：我们可以对进行修
             <article class="cd-timeline-content" data-aos="fade-up">
                 <div class="article col s12 m6">
                     <div class="card">
-                        <a href="/2021/11/07/test1/">
+                        <a href="/2021/11/07/test3/">
                             <div class="card-image">
                                 
                                 
-                                <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                                <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="分布式事务之三阶段提交">
                                 
-                                <span class="card-title">select、poll和epoll的区别</span>
+                                <span class="card-title">分布式事务之三阶段提交</span>
                             </div>
                         </a>
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    进程所能打开的最大连接数select单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是3232，同理64位机器上FD_ SETSIZE为3264) 
-tips：我们可以对进行修
+                                    三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。
+流程询问阶段协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。
+准备阶段
+如果
                                 
                             </div>
                             <div class="publish-info">
@@ -526,19 +530,185 @@ tips：我们可以对进行修
             <article class="cd-timeline-content" data-aos="fade-up">
                 <div class="article col s12 m6">
                     <div class="card">
-                        <a href="/2021/11/07/hello-world/">
+                        <a href="/2021/11/07/test2-fu-ben-fu-ben/">
                             <div class="card-image">
                                 
                                 
-                                <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                                <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="IO多路复用">
                                 
-                                <span class="card-title">Hello World</span>
+                                <span class="card-title">IO多路复用</span>
                             </div>
                         </a>
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                                    概述IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄
+
+一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；
+没有文件句柄就绪时会阻塞应用程序，交出cpu；
+多路是指网络连接，复用指的是同一个线程。
+
+三种实现方式s
+                                
+                            </div>
+                            <div class="publish-info">
+                                <span class="publish-date">
+                                    <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
+                                </span>
+                                <span class="publish-author">
+                                    
+                                    <i class="fas fa-user fa-fw"></i>
+                                    stream
+                                    
+                                </span>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </article>
+        </div>
+        
+        <div class="cd-timeline-block">
+
+            
+            
+
+            
+            
+
+            
+            <div class="cd-timeline-img day" data-aos="zoom-in-up">
+                <span>07</span>
+            </div>
+            <article class="cd-timeline-content" data-aos="fade-up">
+                <div class="article col s12 m6">
+                    <div class="card">
+                        <a href="/2021/11/07/test2/">
+                            <div class="card-image">
+                                
+                                
+                                <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="IO多路复用">
+                                
+                                <span class="card-title">IO多路复用</span>
+                            </div>
+                        </a>
+                        <div class="card-content article-content">
+                            <div class="summary block-with-text">
+                                
+                                    概述IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄
+
+一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；
+没有文件句柄就绪时会阻塞应用程序，交出cpu；
+多路是指网络连接，复用指的是同一个线程。
+
+三种实现方式s
+                                
+                            </div>
+                            <div class="publish-info">
+                                <span class="publish-date">
+                                    <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
+                                </span>
+                                <span class="publish-author">
+                                    
+                                    <i class="fas fa-user fa-fw"></i>
+                                    stream
+                                    
+                                </span>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </article>
+        </div>
+        
+        <div class="cd-timeline-block">
+
+            
+            
+
+            
+            
+
+            
+            <div class="cd-timeline-img day" data-aos="zoom-in-up">
+                <span>07</span>
+            </div>
+            <article class="cd-timeline-content" data-aos="fade-up">
+                <div class="article col s12 m6">
+                    <div class="card">
+                        <a href="/2021/11/07/test2-fu-ben/">
+                            <div class="card-image">
+                                
+                                
+                                <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="IO多路复用">
+                                
+                                <span class="card-title">IO多路复用</span>
+                            </div>
+                        </a>
+                        <div class="card-content article-content">
+                            <div class="summary block-with-text">
+                                
+                                    概述IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄
+
+一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；
+没有文件句柄就绪时会阻塞应用程序，交出cpu；
+多路是指网络连接，复用指的是同一个线程。
+
+三种实现方式s
+                                
+                            </div>
+                            <div class="publish-info">
+                                <span class="publish-date">
+                                    <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
+                                </span>
+                                <span class="publish-author">
+                                    
+                                    <i class="fas fa-user fa-fw"></i>
+                                    stream
+                                    
+                                </span>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </article>
+        </div>
+        
+        <div class="cd-timeline-block">
+
+            
+            
+
+            
+            
+
+            
+            <div class="cd-timeline-img day" data-aos="zoom-in-up">
+                <span>07</span>
+            </div>
+            <article class="cd-timeline-content" data-aos="fade-up">
+                <div class="article col s12 m6">
+                    <div class="card">
+                        <a href="/2021/11/07/test1-fu-ben-fu-ben/">
+                            <div class="card-image">
+                                
+                                
+                                <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                                
+                                <span class="card-title">select、poll和epoll的区别</span>
+                            </div>
+                        </a>
+                        <div class="card-content article-content">
+                            <div class="summary block-with-text">
+                                
+                                    进程所能打开的最大连接数select单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是3232，同理64位机器上FD_ SETSIZE为3264) 
+tips：我们可以对进行修
                                 
                             </div>
                             <div class="publish-info">
@@ -576,11 +746,12 @@ tips：我们可以对进行修
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">2 / 2</div>
+            <div class="center-align b-text-gray">2 / 3</div>
         </div>
         <div class="col s6 m4 l4">
             
-            <a class="right btn-floating btn-large disabled">
+            <a href="/archives/2021/11/page/3/"
+               class="right btn-floating btn-large waves-effect waves-light bg-color">
                 <i class="fas fa-angle-right"></i>
             </a>
             
@@ -888,15 +1059,6 @@ $(function () {
 
     
 
-    
-        
-        <script type="text/javascript">
-            // 只在桌面版网页启用特效
-            var windowWidth = $(window).width();
-            if (windowWidth > 768) {
-                document.write('<script type="text/javascript" src="/libs/others/sakura.js"><\/script>');
-            }
-        </script>
     
 
     <!-- 雪花特效 -->
