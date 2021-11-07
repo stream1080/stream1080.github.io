@@ -4,9 +4,14 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="select、poll和epoll的区别, stream的个人主页">
-    <meta name="description" content="进程所能打开的最大连接数select单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是3232，同理64位机器上FD_ SETSIZE为3264) 
-tips：我们可以对进行修">
+    <meta name="keywords" content="IO多路复用, stream的个人主页">
+    <meta name="description" content="概述IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄
+
+一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；
+没有文件句柄就绪时会阻塞应用程序，交出cpu；
+多路是指网络连接，复用指的是同一个线程。
+
+三种实现方式s">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +23,7 @@ tips：我们可以对进行修">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>select、poll和epoll的区别 | stream的个人主页</title>
+    <title>IO多路复用 | stream的个人主页</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -310,12 +315,12 @@ tips：我们可以对进行修">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">select、poll和epoll的区别</h1>
+                    <h1 class="description center-align post-title">IO多路复用</h1>
                 </div>
             </div>
         </div>
@@ -452,7 +457,7 @@ tips：我们可以对进行修">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.3k
+                    1.1k
                 </div>
                 
 
@@ -477,39 +482,85 @@ tips：我们可以对进行修">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="进程所能打开的最大连接数"><a href="#进程所能打开的最大连接数" class="headerlink" title="进程所能打开的最大连接数"></a>进程所能打开的最大连接数</h2><h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><p>单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是32<em>32，同理64位机器上FD_ SETSIZE为32</em>64) </p>
-<p>tips：我们可以对进行修改，然后重新编译内核，但是性能可能会受到影响，这需要进一步的测试。</p>
-<h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p>poll本质上和select没有区别，但是它没有最大连接数的限制，原因是它是基于链表来存储的</p>
-<h4 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h4><p>虽然连接数有上限，但是很大，1G内存的机器上可以打开10万左右的连接，2G内存的机器可以打开20万左右的连接</p>
-<h2 id="FD剧增后带来的IO效率问题"><a href="#FD剧增后带来的IO效率问题" class="headerlink" title="FD剧增后带来的IO效率问题"></a>FD剧增后带来的IO效率问题</h2><h4 id="select-1"><a href="#select-1" class="headerlink" title="select"></a>select</h4><p>因为每次调用时都会对连接进行线性遍历，所以随着FD的增加会造成遍历<br>速度慢的“线性下降性能问题”。</p>
-<h4 id="poll-1"><a href="#poll-1" class="headerlink" title="poll"></a>poll</h4><p>由于poll与select的本质是一样的，所有poll有着和select一样的问题</p>
-<h4 id="epoll-1"><a href="#epoll-1" class="headerlink" title="epoll"></a>epoll</h4><p>因为epoll内核中实现是根据每个fd上的callback函数来实现的，只有活跃的socket才会主动调用calback,所以在活跃socket较少的情况下，使用epoll没有前面两者的线性下降的性能问题，但是所有socket都很活跃的情况下，可能会有性能问题。</p>
-<h2 id="消息传递方式"><a href="#消息传递方式" class="headerlink" title="消息传递方式"></a>消息传递方式</h2><h4 id="select-2"><a href="#select-2" class="headerlink" title="select"></a>select</h4><p>内核需要将消息传递到用户空间，都需要内核拷贝动作</p>
-<h4 id="poll-2"><a href="#poll-2" class="headerlink" title="poll"></a>poll</h4><p>与select一样</p>
-<h4 id="epoll-2"><a href="#epoll-2" class="headerlink" title="epoll"></a>epoll</h4><p>epoll通过内核和用户空间共享一块内存来 实现的</p>
-<h2 id="select和epoll的区别。"><a href="#select和epoll的区别。" class="headerlink" title="select和epoll的区别。"></a>select和epoll的区别。</h2><p>select 函数监视的文件描述符分3类，分别是writefds、readfds、和exceptfds。调用后select函数会阻塞，直到有描述符就绪（有数据 可读、可写、或者有except），或者超时（timeout指定等待时间，如果立即返回设为null即可），函数返回。当select函数返回后，可以通过遍历fdset，来找到就绪的描述符。</p>
-<p>select目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select的一个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但是这样也会造成效率的降低。</p>
-<p>内核需要传递消息到用户空间，需要内存拷贝</p>
-<p>相对于select和poll来说，epoll更加灵活，没有描述符限制。epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p>
-<p>epoll能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）。</p>
-<p>效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。</p>
-<h2 id="epoll的两种模式"><a href="#epoll的两种模式" class="headerlink" title="epoll的两种模式"></a>epoll的两种模式</h2><p>epoll对文件描述符的操作有两种模式：</p>
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄</p>
 <ul>
-<li>LT（level trigger）默认模式</li>
-<li>ET（edge trigger）</li>
+<li>一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；</li>
+<li>没有文件句柄就绪时会阻塞应用程序，交出cpu；</li>
+<li>多路是指网络连接，复用指的是同一个线程。</li>
 </ul>
-<h3 id="LT模式"><a href="#LT模式" class="headerlink" title="LT模式"></a>LT模式</h3><p>当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序可以不立即处理该事件。下次调用epoll_wait时，会再次响应应用程序并通知此事件。</p>
-<p>LT(level triggered)是缺省的工作方式，并且同时支持block和no-block socket。<br>在这种做法中，内核告诉你一个文件描述符是否就绪了，然后你可以对这个就绪的fd进行IO操作。如果你不作任何操作，内核还是会继续通知你的。</p>
-<h3 id="ET模式"><a href="#ET模式" class="headerlink" title="ET模式"></a>ET模式</h3><p>当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序必须立即处理该事件。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</p>
-<p>ET(edge-triggered)是高速工作方式，只支持no-block socket。</p>
-<p>在这种模式下，当描述符从未就绪变为就绪时，内核通过epoll告诉你然后它会假设你知道文件描述符已经就绪，并且不会再为那个文件描述符发送更多的就绪通知，直到你做了某些操作导致那个文件描述符不再为就绪状态了</p>
-<ul>
-<li>比如，你在发送，接收或者接收请求，或者发送接收的数据少于一定量时导致了一个EWOULDBLOCK 错误</li>
+<h2 id="三种实现方式"><a href="#三种实现方式" class="headerlink" title="三种实现方式"></a>三种实现方式</h2><h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><ul>
+<li>时间复杂度O(n)，它仅仅知道了，有I/O事件发生了，却并不知道是哪那几个流（可能有一个，多个，甚至全部），</li>
+<li>只能无差别轮询所有流，找出能读出数据，或者写入数据的流，对他们进行操作。</li>
+<li>所以select具有O(n)的无差别轮询复杂度，同时处理的流越多，无差别轮询时间就越长。<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> select <span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">,</span> fd_set <span class="token operator">*</span>readfds<span class="token punctuation">,</span> fd_set <span class="token operator">*</span>writefds<span class="token punctuation">,</span> 
+            fd_set <span class="token operator">*</span>exceptfds<span class="token punctuation">,</span> struct timeval <span class="token operator">*</span>timeout<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
 </ul>
-<p>如果一直不对这个fd作IO操作(从而导致它再次变成未就绪)，内核不会发送更多的通知(only once)。</p>
+<p>select 函数监视的文件描述符分3类，分别是writefds、readfds、和exceptfds。<br>调用后select函数会阻塞，直到有：</p>
 <ul>
-<li>ET模式在很大程度上减少了epoll事件被重复触发的次数，因此效率要比LT模式高。</li>
-<li>epoll工作在ET模式的时候，必须使用非阻塞套接口，以避免由于一个文件句柄的阻塞读/阻塞写操作把处理多个文件描述符的任务饿死。</li>
+<li>描述符就绪（有数据可读、可写、或者有except）</li>
+<li>超时（timeout指定等待时间，如果立即返回设为null即可）</li>
+<li>函数返回。</li>
+</ul>
+<p>当select函数返回后，可以通过遍历fdset，来找到就绪的描述符。</p>
+<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><ul>
+<li>良好的跨平台支持，select目前几乎在所有的平台上支持。</li>
+<li>单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024可以修改限制，但是这样也会造成效率的降低。</li>
+</ul>
+<h3 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h3><p>时间复杂度O(n)，poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态， </p>
+<ul>
+<li>没有最大连接数的限制，原因是它是基于链表来存储的。</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> poll <span class="token punctuation">(</span>struct pollfd <span class="token operator">*</span>fds<span class="token punctuation">,</span> unsigned <span class="token keyword">int</span> nfds<span class="token punctuation">,</span> <span class="token keyword">int</span> timeout<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h4><p>poll使用一个 pollfd的指针实现。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">struct pollfd <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> fd<span class="token punctuation">;</span>            <span class="token comment">/* file descriptor */</span>
+    <span class="token keyword">short</span> events<span class="token punctuation">;</span>      <span class="token comment">/* requested events to watch */</span>
+    <span class="token keyword">short</span> revents<span class="token punctuation">;</span>     <span class="token comment">/* returned events witnessed */</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h4><p>pollfd结构包含了要监视的event和发生的event，不再使用select“参数-值”传递的方式。</p>
+<ul>
+<li>pollfd并没有最大数量限制（但是数量过大后性能也是会下降）</li>
+<li>和select函数一样，poll返回后，需要轮询pollfd来获取就绪的描述符。</li>
+</ul>
+<h3 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h3><p>时间复杂度O(1)，epoll可以理解为event poll，不同于忙轮询和无差别轮询，epoll会把哪个流发生了怎样的I/O事件通知我们。</p>
+<ul>
+<li>epoll实际上是事件驱动（每个事件关联上fd）的，此时对这些流的操作都是有意义的。</li>
+</ul>
+<h4 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h4><p>epoll操作过程需要三个接口，分别如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">epoll_create</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">epoll_ctl</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> <span class="token keyword">int</span> op<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">epoll_wait</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span> events<span class="token punctuation">,</span> 
+               <span class="token keyword">int</span> maxevents<span class="token punctuation">,</span> <span class="token keyword">int</span> timeout<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">epoll_create</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大，这个参数不同于select()中的第一个参数，给出最大监听的fd+1的值</li>
+<li>参数size并不是限制了epoll所能监听的描述符最大个数，只是对内核初始分配内部数据结构的一个建议。</li>
+<li>当创建好epoll句柄后，它就会占用一个fd值，在使用完epoll后，必须调用close()关闭，否则可能导致fd被耗尽。</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">epoll_ctl</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> <span class="token keyword">int</span> op<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span>event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>函数是对指定描述符fd执行op操作。</p>
+<ul>
+<li>epfd：是epoll_create()的返回值。</li>
+<li>op：表示op操作，用三个宏来表示，分别添加、删除和修改对fd的监听事件。<ul>
+<li>添加EPOLL_CTL_ADD，</li>
+<li>删除EPOLL_CTL_DEL，</li>
+<li>修改EPOLL_CTL_MOD。</li>
+</ul>
+</li>
+<li>fd：是需要监听的fd（文件描述符）</li>
+<li>epoll_event：是告诉内核需要监听什么事，</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">epoll_wait</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span> events<span class="token punctuation">,</span> 
+               <span class="token keyword">int</span> maxevents<span class="token punctuation">,</span> <span class="token keyword">int</span> timeout<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>等待epfd上的io事件，最多返回maxevents个事件。</p>
+<ul>
+<li>参数events用来从内核得到事件的集合</li>
+<li>maxevents告之内核这个events有多大，这个maxevents的值不能大于创建epoll_create()时的size，</li>
+<li>参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。</li>
 </ul>
 
                 
@@ -537,7 +588,7 @@ tips：我们可以对进行修">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/11/07/test1/">https://stream1080.github.io/2021/11/07/test1/</a>
+                    <a href="https://stream1080.github.io/2021/11/07/test2-fu-ben/">https://stream1080.github.io/2021/11/07/test2-fu-ben/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -622,13 +673,13 @@ tips：我们可以对进行修">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/11/07/test1-fu-ben/">
+                <a href="/2021/11/07/test3/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="分布式事务之三阶段提交">
                         
-                        <span class="card-title">select、poll和epoll的区别</span>
+                        <span class="card-title">分布式事务之三阶段提交</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -659,13 +710,13 @@ tips：我们可以对进行修">
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/07/hello-world/">
+                <a href="/2021/11/07/test2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="IO多路复用">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">IO多路复用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
