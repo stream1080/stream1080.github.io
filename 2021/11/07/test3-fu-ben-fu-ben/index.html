@@ -4,13 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="分布式事务之两阶段提交, stream的个人主页">
-    <meta name="description" content="两阶段提交协议
-两阶段提交协议把分布式事务分为两个阶段，一个是准备阶段，另一个是提交阶段；
-准备阶段和提交阶段都是由事务管理器发起的；
-我们可以将事务管理器称为协调者，将资源管理器称为参与者。
-
-流程准备阶段：协调者向参与者发起指令，参与者">
+    <meta name="keywords" content="分布式事务之三阶段提交, stream的个人主页">
+    <meta name="description" content="三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。
+流程询问阶段协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。
+准备阶段
+如果">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +20,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>分布式事务之两阶段提交 | stream的个人主页</title>
+    <title>分布式事务之三阶段提交 | stream的个人主页</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -270,12 +268,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">分布式事务之两阶段提交</h1>
+                    <h1 class="description center-align post-title">分布式事务之三阶段提交</h1>
                 </div>
             </div>
         </div>
@@ -412,14 +410,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    774
+                    587
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    2 Min
+                    1 Min
                 </div>
                 
 
@@ -437,22 +435,24 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="两阶段提交协议"><a href="#两阶段提交协议" class="headerlink" title="两阶段提交协议"></a>两阶段提交协议</h2><ul>
-<li>两阶段提交协议把分布式事务分为两个阶段，一个是准备阶段，另一个是提交阶段；</li>
-<li>准备阶段和提交阶段都是由事务管理器发起的；</li>
-<li>我们可以将事务管理器称为协调者，将资源管理器称为参与者。</li>
+                <p>三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。</p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h4 id="询问阶段"><a href="#询问阶段" class="headerlink" title="询问阶段"></a>询问阶段</h4><p>协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。<br><img src="https://img-blog.csdnimg.cn/94897bae453343b6ac1c56b83a55d314.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h4 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h4><ul>
+<li>如果在询问阶段所有参与者都返回可以执行操作，则协调者向参与者发送预执行请求，然后参与者写redo和undo日志，执行操作但是不提交操作；</li>
+<li>如果在询问阶段任意参与者返回不能执行操作的结果，则协调者向参与者发送中止请求，这里的逻辑与两阶段提交协议的准备阶段是相似的。<br><img src="https://img-blog.csdnimg.cn/b04e26303c904cb9b78826d5b597b186.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
 </ul>
-<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h4 id="准备阶段："><a href="#准备阶段：" class="headerlink" title="准备阶段："></a>准备阶段：</h4><p>协调者向参与者发起指令，参与者评估自己的状态，如果参与者评估指令可以完成，则会写redo或者undo日志（Write-Ahead Log的一种），然后锁定资源，执行操作，但是并不提交。<br><img src="https://img-blog.csdnimg.cn/7f5ba60ae0344ac6af22a614986d0f71.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h4 id="提交阶段："><a href="#提交阶段：" class="headerlink" title="提交阶段："></a>提交阶段：</h4><ul>
-<li>如果每个参与者明确返回准备成功，也就是预留资源和执行操作成功，则协调者向参与者发起提交指令，参与者提交资源变更的事务，释放锁定的资源；</li>
-<li>如果任何一个参与者明确返回准备失败，也就是预留资源或者执行操作失败，则协调者向参与者发起中止指令，参与者取消已经变更的事务，执行undo日志，释放锁定的资源。<img src="https://img-blog.csdnimg.cn/c4705696bb2f461aa55698bbd4fc8b19.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+<h4 id="提交阶段"><a href="#提交阶段" class="headerlink" title="提交阶段"></a>提交阶段</h4><ul>
+<li><p>如果每个参与者在准备阶段返回准备成功，也就是说预留资源和执行操作成功，则协调者向参与者发起提交指令，参与者提交资源变更的事务，释放锁定的资源；</p>
+</li>
+<li><p>如果任何参与者返回准备失败，也就是说预留资源或者执行操作失败，则协调者向参与者发起中止指令，参与者取消已经变更的事务，执行 undo 日志，释放锁定的资源，这里的逻辑与两阶段提交协议的提交阶段一致。<br><img src="https://img-blog.csdnimg.cn/1cdb4a63102844b5aa07b1aec7ca680d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="三阶段提交协议的成功场景示意图如下图所示："></p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2></li>
+<li><p>增加了一个询问阶段，询问阶段可以确保尽可能早地发现无法执行操作而需要中止的行为，但是它并不能发现所有这种行为，只会减少这种情况的发生。</p>
+</li>
+<li><p>在准备阶段以后，协调者和参与者执行的任务中都增加了超时，一旦超时，则协调者和参与者都会继续提交事务，默认为成功，这也是根据概率统计超时后默认为成功的正确性最大。</p>
+</li>
+<li><p>三阶段提交协议与两阶段提交协议相比，具有如上优点，但是一旦发生超时，系统仍然会发生不一致，只不过这种情况很少见，好处是至少不会阻塞和永远锁定资源。</p>
+</li>
 </ul>
-<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><p>两阶段提交协议在准备阶段锁定资源，这是一个非常损耗资源的操作，能保证强一致性，但是实现起来复杂、成本较高、不够灵活，更重要的是它有一些致命的问题</p>
-<h4 id="阻塞："><a href="#阻塞：" class="headerlink" title="阻塞："></a>阻塞：</h4><p>从上面的描述来看，对于任何一次指令都必须收到明确的响应，才会继续进行下一步，否则处于阻塞状态，占用的资源被一直锁定，不会被释放。</p>
-<h4 id="单点故障："><a href="#单点故障：" class="headerlink" title="单点故障："></a>单点故障：</h4><p>如果协调者宕机，参与者没有协调者指挥，则会一直阻塞，尽管可以通过选举新的协调者替代原有协调者，但是如果协调者在发送一个提交指令后宕机，而提交指令仅仅被一个参与者接收，并且参与者接收后也宕机，则新上任的协调者无法处理这种情况。</p>
-<h4 id="脑裂："><a href="#脑裂：" class="headerlink" title="脑裂："></a>脑裂：</h4><p>协调者发送提交指令，有的参与者接收到并执行了事务，有的参与者没有接收到事务就没有执行事务，多个参与者之间是不一致的。</p>
-<h4 id="数据状态不确定"><a href="#数据状态不确定" class="headerlink" title="数据状态不确定"></a>数据状态不确定</h4><p>协调者再发出commit消息之后宕机，而唯一接收到这条消息的参与者同时也宕机了。那么即使协调者通过选举协议产生了新的协调者，这条事务的状态也是不确定的，没人知道事务是否被已经提交。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>上面的问题发生的概论比较小，但都需要人工干预处理，没有自动化的解决方案，因此两阶段提交协议在正常情况下能保证系统的强一致性，但是在出现异常的情况下，当前处理的操作处于错误状态，需要人工干预解决，因此可用性不够好。</p>
 
                 
             </div>
@@ -479,7 +479,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/11/07/test4-fu-ben/">https://stream1080.github.io/2021/11/07/test4-fu-ben/</a>
+                    <a href="https://stream1080.github.io/2021/11/07/test3-fu-ben-fu-ben/">https://stream1080.github.io/2021/11/07/test3-fu-ben-fu-ben/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -564,7 +564,7 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/11/07/test4-fu-ben-fu-ben/">
+                <a href="/2021/11/07/test4/">
                     <div class="card-image">
                         
                         
@@ -601,13 +601,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/07/test4/">
+                <a href="/2021/11/07/test3-fu-ben/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="分布式事务之两阶段提交">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="分布式事务之三阶段提交">
                         
-                        <span class="card-title">分布式事务之两阶段提交</span>
+                        <span class="card-title">分布式事务之三阶段提交</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
