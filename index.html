@@ -561,14 +561,21 @@
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="test4">
+                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="分布式事务之两阶段提交">
                             
-                            <span class="card-title">test4</span>
+                            <span class="card-title">分布式事务之两阶段提交</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
+                            
+                                两阶段提交协议
+两阶段提交协议把分布式事务分为两个阶段，一个是准备阶段，另一个是提交阶段；
+准备阶段和提交阶段都是由事务管理器发起的；
+我们可以将事务管理器称为协调者，将资源管理器称为参与者。
+
+流程准备阶段：协调者向参与者发起指令，参与者
                             
                         </div>
                         <div class="publish-info">
@@ -596,14 +603,19 @@
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="test3">
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="分布式事务之三阶段提交">
                             
-                            <span class="card-title">test3</span>
+                            <span class="card-title">分布式事务之三阶段提交</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
+                            
+                                三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。
+流程询问阶段协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。
+准备阶段
+如果
                             
                         </div>
                         <div class="publish-info">
@@ -631,14 +643,22 @@
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="test2">
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="IO多路复用">
                             
-                            <span class="card-title">test2</span>
+                            <span class="card-title">IO多路复用</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
+                            
+                                概述IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄
+
+一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；
+没有文件句柄就绪时会阻塞应用程序，交出cpu；
+多路是指网络连接，复用指的是同一个线程。
+
+三种实现方式s
                             
                         </div>
                         <div class="publish-info">
@@ -666,14 +686,17 @@
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="test1">
+                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
                             
-                            <span class="card-title">test1</span>
+                            <span class="card-title">select、poll和epoll的区别</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
+                            
+                                进程所能打开的最大连接数select单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是3232，同理64位机器上FD_ SETSIZE为3264) 
+tips：我们可以对进行修
                             
                         </div>
                         <div class="publish-info">
