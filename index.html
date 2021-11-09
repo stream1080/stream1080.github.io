@@ -405,6 +405,34 @@
         
             
             <div class="carousel-item amber white-text carousel-post bg-cover"
+                 style="background-image: url('/medias/featureimages/23.jpg');">
+                <div class="container">
+                    <div class="row">
+                        <div class="col s10 offset-s1">
+                            <div class="title center-align">RabbitMQ 如何保证消息不会被重复消费</div>
+                            <div class="description center-align">
+                                
+                                    所有的消息队列都要保证同一条消息不会被重复消费
+
+举个例子：假设有个系统，消费一条往数据库里插入一条，要是你一个消息重复两次，你不就插入了两条，这数据就错了
+所以消费到第二次的时候，自己判断一下已经消费过了，直接扔了，就保留了一条数据
+
+一
+                                
+                            </div>
+                            <div class="cover-btns">
+                                <a href="/2021/10/30/rabbitmq-ru-he-bao-zheng-xiao-xi-bu-hui-bei-chong-fu-xiao-fei/" class="waves-effect waves-light btn"
+                                   target="_blank">
+                                    <i class="icon fa fa-eye fa-fw"></i>Read more
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            
+            <div class="carousel-item amber white-text carousel-post bg-cover"
                  style="background-image: url('/medias/featureimages/10.jpg');">
                 <div class="container">
                     <div class="row">
@@ -423,34 +451,6 @@
                             </div>
                             <div class="cover-btns">
                                 <a href="/2021/11/06/io-duo-lu-fu-yong/" class="waves-effect waves-light btn"
-                                   target="_blank">
-                                    <i class="icon fa fa-eye fa-fw"></i>Read more
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
-            
-            <div class="carousel-item amber white-text carousel-post bg-cover"
-                 style="background-image: url('/medias/featureimages/23.jpg');">
-                <div class="container">
-                    <div class="row">
-                        <div class="col s10 offset-s1">
-                            <div class="title center-align">RabbitMQ 如何保证消息不会被重复消费</div>
-                            <div class="description center-align">
-                                
-                                    所有的消息队列都要保证同一条消息不会被重复消费
-
-举个例子：假设有个系统，消费一条往数据库里插入一条，要是你一个消息重复两次，你不就插入了两条，这数据就错了
-所以消费到第二次的时候，自己判断一下已经消费过了，直接扔了，就保留了一条数据
-
-一
-                                
-                            </div>
-                            <div class="cover-btns">
-                                <a href="/2021/10/30/rabbitmq-ru-he-bao-zheng-xiao-xi-bu-hui-bei-chong-fu-xiao-fei/" class="waves-effect waves-light btn"
                                    target="_blank">
                                     <i class="icon fa fa-eye fa-fw"></i>Read more
                                 </a>
@@ -641,6 +641,62 @@ tips：我们可以对进行修
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2021/11/09/tcp-de-nian-bao-he-chai-bao/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="TCP的粘包和拆包">
+                            
+                            <span class="card-title">TCP的粘包和拆包</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                什么是粘包和拆包一个完整的业务数据包可能会被TCP拆分成多个包进行发送，也有可能把多个小的包封装成一个大的数据包发送，这个就是TCP的拆包和粘包问题。
+第一种情况(正常)接收端正常收到两个数据包，即没有发生拆包和粘包的现象；
+
+第二种情况接
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-09
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    计算机网络
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/TCP/">
+                            <span class="chip bg-color">TCP</span>
+                        </a>
+                        
+                        <a href="/tags/%E7%B2%98%E5%8C%85%E6%8B%86%E5%8C%85/">
+                            <span class="chip bg-color">粘包拆包</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2021/11/07/select-poll-he-epoll-de-qu-bie/">
                         <div class="card-image">
                             
@@ -664,8 +720,12 @@ tips：我们可以对进行修
                             </span>
                             <span class="publish-author">
                                 
-                                <i class="fas fa-user fa-fw"></i>
-                                stream
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                    操作系统
+                                </a>
+                                
                                 
                             </span>
                         </div>
@@ -717,12 +777,8 @@ tips：我们可以对进行修
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/%E5%BA%95%E5%B1%82/" class="post-category">
-                                    底层
-                                </a>
-                                
-                                <a href="/categories/%E5%BA%95%E5%B1%82/%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/" class="post-category">
-                                    实现方式
+                                <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                    操作系统
                                 </a>
                                 
                                 
@@ -735,10 +791,6 @@ tips：我们可以对进行修
                         
                         <a href="/tags/IO%E6%B5%81/">
                             <span class="chip bg-color">IO流</span>
-                        </a>
-                        
-                        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
-                            <span class="chip bg-color">操作系统</span>
                         </a>
                         
                     </div>
@@ -795,6 +847,10 @@ tips：我们可以对进行修
                             <span class="chip bg-color">分布式事务</span>
                         </a>
                         
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/">
+                            <span class="chip bg-color">数据一致性</span>
+                        </a>
+                        
                     </div>
                     
                 </div>
@@ -845,6 +901,10 @@ tips：我们可以对进行修
                         
                         <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
                             <span class="chip bg-color">分布式事务</span>
+                        </a>
+                        
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/">
+                            <span class="chip bg-color">数据一致性</span>
                         </a>
                         
                     </div>

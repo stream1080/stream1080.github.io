@@ -4,12 +4,45 @@
   
     
     <entry>
+      <title>TCP的粘包和拆包</title>
+      <link href="/2021/11/09/tcp-de-nian-bao-he-chai-bao/"/>
+      <url>/2021/11/09/tcp-de-nian-bao-he-chai-bao/</url>
+      
+        <content type="html"><![CDATA[<h2 id="什么是粘包和拆包"><a href="#什么是粘包和拆包" class="headerlink" title="什么是粘包和拆包"></a>什么是粘包和拆包</h2><p>一个完整的业务数据包可能会被TCP拆分成多个包进行发送，也有可能把多个小的包封装成一个大的数据包发送，这个就是TCP的拆包和粘包问题。</p><h4 id="第一种情况-正常"><a href="#第一种情况-正常" class="headerlink" title="第一种情况(正常)"></a>第一种情况(正常)</h4><p>接收端正常收到两个数据包，即没有发生拆包和粘包的现象；</p><p><img src="https://img-blog.csdnimg.cn/0dd185d80ed7419c99f241e13d97b33c.png" alt="在这里插入图片描述"></p><h4 id="第二种情况"><a href="#第二种情况" class="headerlink" title="第二种情况"></a>第二种情况</h4><p>接收端只收到一个数据包，由于TCP是不会出现丢包的，所以这一个数据包中包含了发送端发送的两个数据包的信息，这种现象即为粘包。</p><p>这种情况由于接收端不知道这两个数据包的界限，所以对于接收端来说很难处理。<br><img src="https://img-blog.csdnimg.cn/5b0e17395ab0423a8b2c275fcf8de9eb.png" alt="在这里插入图片描述"></p><h4 id="第三种情况"><a href="#第三种情况" class="headerlink" title="第三种情况"></a>第三种情况</h4><p>接收端收到了两个数据包，但是这两个数据包要么是不完整的，要么就是多出来一块，这种情况即发生了拆包和粘包。<br><img src="https://img-blog.csdnimg.cn/2ebf028e7f7a404490314f5d6f41cd86.png" alt="在这里插入图片描述"><br>这两种情况如果不加特殊处理，对于接收端同样是不好处理的<br><img src="https://img-blog.csdnimg.cn/0b1efe60580848bca400bf9e802a7fef.png" alt="在这里插入图片描述"></p><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><ol><li><p>应用程序写入的数据大于套接字缓冲区大小，这将会发生拆包。</p></li><li><p>应用程序写入数据小于套接字缓冲区大小，网卡将应用多次写入的数据发送到网络上，这将会发生粘包。</p></li><li><p>进行MSS（最大报文长度）大小的TCP分段，当TCP报文长度-TCP头部长度&gt;MSS的时候将发生拆包。</p></li><li><p>接收方法不及时读取套接字缓冲区数据，这将发生粘包。</p></li></ol><h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><ol><li><p>发送端给每个数据包添加包首部，首部中应该至少包含数据包的长度，这样接收端在接收到数据后，通过读取包首部的长度字段，便知道每一个数据包的实际长度了。</p></li><li><p>发送端将每个数据包封装为固定长度（不够的可以通过补0填充），这样接收端每次从接收缓冲区中读取固定长度的数据就自然而然的把每个数据包拆分开来。</p></li><li><p>可以在数据包之间设置边界，如添加特殊符号，这样，接收端通过这个边界就可以将不同的数据包拆分开。</p></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> TCP </tag>
+            
+            <tag> 粘包拆包 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>select、poll和epoll的区别</title>
       <link href="/2021/11/07/select-poll-he-epoll-de-qu-bie/"/>
       <url>/2021/11/07/select-poll-he-epoll-de-qu-bie/</url>
       
         <content type="html"><![CDATA[<h2 id="进程所能打开的最大连接数"><a href="#进程所能打开的最大连接数" class="headerlink" title="进程所能打开的最大连接数"></a>进程所能打开的最大连接数</h2><h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><p>单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是32<em>32，同理64位机器上FD_ SETSIZE为32</em>64) </p><p>tips：我们可以对进行修改，然后重新编译内核，但是性能可能会受到影响，这需要进一步的测试。</p><h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p>poll本质上和select没有区别，但是它没有最大连接数的限制，原因是它是基于链表来存储的</p><h4 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h4><p>虽然连接数有上限，但是很大，1G内存的机器上可以打开10万左右的连接，2G内存的机器可以打开20万左右的连接</p><h2 id="FD剧增后带来的IO效率问题"><a href="#FD剧增后带来的IO效率问题" class="headerlink" title="FD剧增后带来的IO效率问题"></a>FD剧增后带来的IO效率问题</h2><h4 id="select-1"><a href="#select-1" class="headerlink" title="select"></a>select</h4><p>因为每次调用时都会对连接进行线性遍历，所以随着FD的增加会造成遍历<br>速度慢的“线性下降性能问题”。</p><h4 id="poll-1"><a href="#poll-1" class="headerlink" title="poll"></a>poll</h4><p>由于poll与select的本质是一样的，所有poll有着和select一样的问题</p><h4 id="epoll-1"><a href="#epoll-1" class="headerlink" title="epoll"></a>epoll</h4><p>因为epoll内核中实现是根据每个fd上的callback函数来实现的，只有活跃的socket才会主动调用calback,所以在活跃socket较少的情况下，使用epoll没有前面两者的线性下降的性能问题，但是所有socket都很活跃的情况下，可能会有性能问题。</p><h2 id="消息传递方式"><a href="#消息传递方式" class="headerlink" title="消息传递方式"></a>消息传递方式</h2><h4 id="select-2"><a href="#select-2" class="headerlink" title="select"></a>select</h4><p>内核需要将消息传递到用户空间，都需要内核拷贝动作</p><h4 id="poll-2"><a href="#poll-2" class="headerlink" title="poll"></a>poll</h4><p>与select一样</p><h4 id="epoll-2"><a href="#epoll-2" class="headerlink" title="epoll"></a>epoll</h4><p>epoll通过内核和用户空间共享一块内存来 实现的</p><h2 id="select和epoll的区别。"><a href="#select和epoll的区别。" class="headerlink" title="select和epoll的区别。"></a>select和epoll的区别。</h2><p>select 函数监视的文件描述符分3类，分别是writefds、readfds、和exceptfds。调用后select函数会阻塞，直到有描述符就绪（有数据 可读、可写、或者有except），或者超时（timeout指定等待时间，如果立即返回设为null即可），函数返回。当select函数返回后，可以通过遍历fdset，来找到就绪的描述符。</p><p>select目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select的一个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但是这样也会造成效率的降低。</p><p>内核需要传递消息到用户空间，需要内存拷贝</p><p>相对于select和poll来说，epoll更加灵活，没有描述符限制。epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p><p>epoll能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）。</p><p>效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。</p><h2 id="epoll的两种模式"><a href="#epoll的两种模式" class="headerlink" title="epoll的两种模式"></a>epoll的两种模式</h2><p>epoll对文件描述符的操作有两种模式：</p><ul><li>LT（level trigger）默认模式</li><li>ET（edge trigger）</li></ul><h3 id="LT模式"><a href="#LT模式" class="headerlink" title="LT模式"></a>LT模式</h3><p>当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序可以不立即处理该事件。下次调用epoll_wait时，会再次响应应用程序并通知此事件。</p><p>LT(level triggered)是缺省的工作方式，并且同时支持block和no-block socket。<br>在这种做法中，内核告诉你一个文件描述符是否就绪了，然后你可以对这个就绪的fd进行IO操作。如果你不作任何操作，内核还是会继续通知你的。</p><h3 id="ET模式"><a href="#ET模式" class="headerlink" title="ET模式"></a>ET模式</h3><p>当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序必须立即处理该事件。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</p><p>ET(edge-triggered)是高速工作方式，只支持no-block socket。</p><p>在这种模式下，当描述符从未就绪变为就绪时，内核通过epoll告诉你然后它会假设你知道文件描述符已经就绪，并且不会再为那个文件描述符发送更多的就绪通知，直到你做了某些操作导致那个文件描述符不再为就绪状态了</p><ul><li>比如，你在发送，接收或者接收请求，或者发送接收的数据少于一定量时导致了一个EWOULDBLOCK 错误</li></ul><p>如果一直不对这个fd作IO操作(从而导致它再次变成未就绪)，内核不会发送更多的通知(only once)。</p><ul><li>ET模式在很大程度上减少了epoll事件被重复触发的次数，因此效率要比LT模式高。</li><li>epoll工作在ET模式的时候，必须使用非阻塞套接口，以避免由于一个文件句柄的阻塞读/阻塞写操作把处理多个文件描述符的任务饿死。</li></ul>]]></content>
       
+      
+      <categories>
+          
+          <category> 操作系统 </category>
+          
+      </categories>
       
       
         <tags>
@@ -32,9 +65,7 @@
       
       <categories>
           
-          <category> 底层 </category>
-          
-          <category> 实现方式 </category>
+          <category> 操作系统 </category>
           
       </categories>
       
@@ -42,8 +73,6 @@
         <tags>
             
             <tag> IO流 </tag>
-            
-            <tag> 操作系统 </tag>
             
         </tags>
       
@@ -70,6 +99,8 @@
             
             <tag> 分布式事务 </tag>
             
+            <tag> 数据一致性 </tag>
+            
         </tags>
       
     </entry>
@@ -94,6 +125,8 @@
         <tags>
             
             <tag> 分布式事务 </tag>
+            
+            <tag> 数据一致性 </tag>
             
         </tags>
       
