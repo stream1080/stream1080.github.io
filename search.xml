@@ -52,6 +52,25 @@
     
     
     <entry>
+      <title>分布式事务之三阶段提交</title>
+      <link href="/2021/11/02/fen-bu-shi-shi-wu-zhi-san-jie-duan-ti-jiao/"/>
+      <url>/2021/11/02/fen-bu-shi-shi-wu-zhi-san-jie-duan-ti-jiao/</url>
+      
+        <content type="html"><![CDATA[<p>三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。</p><h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h4 id="询问阶段"><a href="#询问阶段" class="headerlink" title="询问阶段"></a>询问阶段</h4><p>协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。<br><img src="https://img-blog.csdnimg.cn/94897bae453343b6ac1c56b83a55d314.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h4 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h4><ul><li>如果在询问阶段所有参与者都返回可以执行操作，则协调者向参与者发送预执行请求，然后参与者写redo和undo日志，执行操作但是不提交操作；</li><li>如果在询问阶段任意参与者返回不能执行操作的结果，则协调者向参与者发送中止请求，这里的逻辑与两阶段提交协议的准备阶段是相似的。<br><img src="https://img-blog.csdnimg.cn/b04e26303c904cb9b78826d5b597b186.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li></ul><h4 id="提交阶段"><a href="#提交阶段" class="headerlink" title="提交阶段"></a>提交阶段</h4><ul><li><p>如果每个参与者在准备阶段返回准备成功，也就是说预留资源和执行操作成功，则协调者向参与者发起提交指令，参与者提交资源变更的事务，释放锁定的资源；</p></li><li><p>如果任何参与者返回准备失败，也就是说预留资源或者执行操作失败，则协调者向参与者发起中止指令，参与者取消已经变更的事务，执行 undo 日志，释放锁定的资源，这里的逻辑与两阶段提交协议的提交阶段一致。<br><img src="https://img-blog.csdnimg.cn/1cdb4a63102844b5aa07b1aec7ca680d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="三阶段提交协议的成功场景示意图如下图所示："></p><h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2></li><li><p>增加了一个询问阶段，询问阶段可以确保尽可能早地发现无法执行操作而需要中止的行为，但是它并不能发现所有这种行为，只会减少这种情况的发生。</p></li><li><p>在准备阶段以后，协调者和参与者执行的任务中都增加了超时，一旦超时，则协调者和参与者都会继续提交事务，默认为成功，这也是根据概率统计超时后默认为成功的正确性最大。</p></li><li><p>三阶段提交协议与两阶段提交协议相比，具有如上优点，但是一旦发生超时，系统仍然会发生不一致，只不过这种情况很少见，好处是至少不会阻塞和永远锁定资源。</p></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 分布式事务 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>分布式事务之两阶段提交</title>
       <link href="/2021/11/01/fen-bu-shi-shi-wu-zhi-liang-jie-duan-ti-jiao/"/>
       <url>/2021/11/01/fen-bu-shi-shi-wu-zhi-liang-jie-duan-ti-jiao/</url>
@@ -60,18 +79,11 @@
       
       
       
-    </entry>
-    
-    
-    
-    <entry>
-      <title>分布式事务之三阶段提交</title>
-      <link href="/2021/11/01/fen-bu-shi-shi-wu-zhi-san-jie-duan-ti-jiao/"/>
-      <url>/2021/11/01/fen-bu-shi-shi-wu-zhi-san-jie-duan-ti-jiao/</url>
-      
-        <content type="html"><![CDATA[<p>三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。</p><h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h4 id="询问阶段"><a href="#询问阶段" class="headerlink" title="询问阶段"></a>询问阶段</h4><p>协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。<br><img src="https://img-blog.csdnimg.cn/94897bae453343b6ac1c56b83a55d314.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h4 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h4><ul><li>如果在询问阶段所有参与者都返回可以执行操作，则协调者向参与者发送预执行请求，然后参与者写redo和undo日志，执行操作但是不提交操作；</li><li>如果在询问阶段任意参与者返回不能执行操作的结果，则协调者向参与者发送中止请求，这里的逻辑与两阶段提交协议的准备阶段是相似的。<br><img src="https://img-blog.csdnimg.cn/b04e26303c904cb9b78826d5b597b186.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li></ul><h4 id="提交阶段"><a href="#提交阶段" class="headerlink" title="提交阶段"></a>提交阶段</h4><ul><li><p>如果每个参与者在准备阶段返回准备成功，也就是说预留资源和执行操作成功，则协调者向参与者发起提交指令，参与者提交资源变更的事务，释放锁定的资源；</p></li><li><p>如果任何参与者返回准备失败，也就是说预留资源或者执行操作失败，则协调者向参与者发起中止指令，参与者取消已经变更的事务，执行 undo 日志，释放锁定的资源，这里的逻辑与两阶段提交协议的提交阶段一致。<br><img src="https://img-blog.csdnimg.cn/1cdb4a63102844b5aa07b1aec7ca680d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="三阶段提交协议的成功场景示意图如下图所示："></p><h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2></li><li><p>增加了一个询问阶段，询问阶段可以确保尽可能早地发现无法执行操作而需要中止的行为，但是它并不能发现所有这种行为，只会减少这种情况的发生。</p></li><li><p>在准备阶段以后，协调者和参与者执行的任务中都增加了超时，一旦超时，则协调者和参与者都会继续提交事务，默认为成功，这也是根据概率统计超时后默认为成功的正确性最大。</p></li><li><p>三阶段提交协议与两阶段提交协议相比，具有如上优点，但是一旦发生超时，系统仍然会发生不一致，只不过这种情况很少见，好处是至少不会阻塞和永远锁定资源。</p></li></ul>]]></content>
-      
-      
+        <tags>
+            
+            <tag> 分布式事务 </tag>
+            
+        </tags>
       
     </entry>
     
