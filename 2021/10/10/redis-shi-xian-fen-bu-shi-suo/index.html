@@ -5,7 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Redis实现分布式锁, stream Blog Pages">
-    <meta name="description" content="Redis实现分布式锁 | stream Blog Pages">
+    <meta name="description" content="什么是分布式锁分布式锁其实可以理解为:控制分布式系统有序的去对共享资源进行操作,通过互斥来保持一致性
+为什么要分布式锁当多个线程需要并发修改一个数据时，为了避免竞争，在单机的情况下，加synchronized或者Lock即可实现互斥
+但在分">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +386,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+                                <span class="chip bg-color">分布式锁</span>
+                            </a>
+                        
+                            <a href="/tags/Redis/">
+                                <span class="chip bg-color">Redis</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                缓存
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +417,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-10
+                    2021-10-10
                 </div>
                 
 
@@ -407,14 +426,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    738
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    2 Min
                 </div>
                 
 
@@ -432,7 +451,49 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="什么是分布式锁"><a href="#什么是分布式锁" class="headerlink" title="什么是分布式锁"></a>什么是分布式锁</h2><p>分布式锁其实可以理解为:控制分布式系统有序的去对共享资源进行操作,通过互斥来保持一致性</p>
+<h2 id="为什么要分布式锁"><a href="#为什么要分布式锁" class="headerlink" title="为什么要分布式锁"></a>为什么要分布式锁</h2><p>当多个线程需要并发修改一个数据时，为了避免竞争，在单机的情况下，加synchronized或者Lock即可实现互斥</p>
+<p>但在分布式的环境下，当多个server并发修改同一个资源时，为了避免竞争就需要使用分布式锁。</p>
+<p>那为什么不能使用Java自带的锁（synchronized或者Lock）呢？</p>
+<ul>
+<li>因为Java中的锁是面向多线程设计的，它只局限于当前的实例。</li>
+<li>而多个server实际上是多进程，是不同的实例，所以Java自带的锁机制在这个场景下是无效的。</li>
+</ul>
+<h2 id="如何实现分布式锁"><a href="#如何实现分布式锁" class="headerlink" title="如何实现分布式锁"></a>如何实现分布式锁</h2><p>采用Redis实现分布式锁，就是在Redis里存一份代表锁的数据，通常用随机字符串即可。</p>
+<h3 id="加锁："><a href="#加锁：" class="headerlink" title="加锁："></a>加锁：</h3><h4 id="第一种方式"><a href="#第一种方式" class="headerlink" title="第一种方式"></a>第一种方式</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java">setnx key value<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这种方式的缺点是容易产生死锁，因为客户端有可能忘记解锁，或者解锁失败。</p>
+<h4 id="第二种方式"><a href="#第二种方式" class="headerlink" title="第二种方式"></a>第二种方式</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java">setnx key value
+expire key seconds<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>给锁增加了过期时间，避免出现死锁。但这两个命令不是原子的，第二步可能会失败，依然无法避免死锁问题。</p>
+<h4 id="第三种方式"><a href="#第三种方式" class="headerlink" title="第三种方式"></a>第三种方式</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java">set key value nx ex seconds <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>通过“set…nx…”命令，将加锁、过期命令编排到一起，它们是原子操作了，可以避免死锁。</p>
+<h3 id="解锁："><a href="#解锁：" class="headerlink" title="解锁："></a>解锁：</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java">del key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>解锁就是删除代表锁的那份数据，直接删除redis上面的数据。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>上述方法看起来没有问题，但实际是有隐患的<br><img src="https://img-blog.csdnimg.cn/4678bef1efc04094b02729431c2069d8.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<ol>
+<li>进程A在任务没有执行完毕时，锁已经到期被释放了。</li>
+<li>等进程A的任务执行结束后，A会尝试释放锁，但是，它的锁已经过期不存在了，它此时释放的可能是其他线程的锁，比如B进程；</li>
+<li>红框时间内，两个进程同时操作数据，极有可能出现线程安全的问题；</li>
+</ol>
+<h3 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h3><p>在加锁时就要给锁设置一个标识，加锁进程要记住这个标识。</p>
+<ul>
+<li>当进程解锁的时候，进行判断，是自己持有的锁才能释放</li>
+<li>否则无法释放。可以为key设置一个随机字符串，来充当进程的标识。</li>
+</ul>
+<p>但是解锁的时候，判断、释放，这两步需要保证原子性，否则第二步失败的话，就会出现死锁，但判断和删除命令不是原子的。</p>
+<p>在Redis中可以使用Lua脚本，通过Lua脚本将两个命令编排在一起，而整个Lua脚本的执行是原子的。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"># 加锁
+set key random<span class="token operator">-</span>value nx ex seconds 
+
+# 解锁
+<span class="token keyword">if</span> redis<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token string">"get"</span><span class="token punctuation">,</span>KEYS<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> ARGV<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> then
+    <span class="token keyword">return</span> redis<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token string">"del"</span><span class="token punctuation">,</span>KEYS<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span>
+    <span class="token keyword">return</span> <span class="token number">0</span>
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
                 
             </div>
             <hr/>
@@ -458,7 +519,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/11/10/redis-shi-xian-fen-bu-shi-suo/">https://stream1080.github.io/2021/11/10/redis-shi-xian-fen-bu-shi-suo/</a>
+                    <a href="https://stream1080.github.io/2021/10/10/redis-shi-xian-fen-bu-shi-suo/">https://stream1080.github.io/2021/10/10/redis-shi-xian-fen-bu-shi-suo/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -495,7 +556,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+                                    <span class="chip bg-color">分布式锁</span>
+                                </a>
+                            
+                                <a href="/tags/Redis/">
+                                    <span class="chip bg-color">Redis</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -543,13 +612,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/11/10/redis-you-xu-ji-he-de-shu-ju-jie-gou/">
+                <a href="/2021/10/12/ji-yu-redlock-de-fen-bu-shi-suo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Redis-有序集合的数据结构">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="基于RedLock的分布式锁">
                         
-                        <span class="card-title">Redis-有序集合的数据结构</span>
+                        <span class="card-title">基于RedLock的分布式锁</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,15 +629,31 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-10
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-12
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                    缓存
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+                        <span class="chip bg-color">分布式锁</span>
+                    </a>
+                    
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -577,16 +662,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/07/select-poll-he-epoll-de-qu-bie/">
+                <a href="/2021/10/10/redis-shi-xian-fen-bu-shi-suo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Redis实现分布式锁">
                         
-                        <span class="card-title">select、poll和epoll的区别</span>
+                        <span class="card-title">Redis实现分布式锁</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -597,25 +682,30 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-10
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                    缓存
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/IO%E6%B5%81/">
-                        <span class="chip bg-color">IO流</span>
+                    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+                        <span class="chip bg-color">分布式锁</span>
+                    </a>
+                    
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
                     </a>
                     
                 </div>
