@@ -5,7 +5,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="MySQL的执行计划(三), stream Blog Pages">
-    <meta name="description" content="MySQL的执行计划(三) | stream Blog Pages">
+    <meta name="description" content="书接上回 MySQL的执行计划(二)
+执行计划中的列possible_keys显示在查询中使用了哪些索引
+key
+实际使用的索引，如果为NULL，则没有使用索引；
+查询中如果使用了覆盖索引，则该索引仅出现在key列中。
+possible_k">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +389,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                                <span class="chip bg-color">执行计划</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +420,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-11
+                    2021-10-07
                 </div>
                 
 
@@ -407,14 +429,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    617
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    2 Min
                 </div>
                 
 
@@ -432,7 +454,46 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>书接上回 <a target="_blank" rel="noopener" href="https://blog.csdn.net/upstream480/article/details/120615700">MySQL的执行计划(二)</a></p>
+<h2 id="执行计划中的列"><a href="#执行计划中的列" class="headerlink" title="执行计划中的列"></a>执行计划中的列</h2><h3 id="possible-keys"><a href="#possible-keys" class="headerlink" title="possible_keys"></a>possible_keys</h3><p>显示在查询中使用了哪些索引<br><img src="https://img-blog.csdnimg.cn/75296e9e4b8f420498f3a01f1015d330.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h3 id="key"><a href="#key" class="headerlink" title="key"></a>key</h3><ul>
+<li>实际使用的索引，如果为NULL，则没有使用索引；</li>
+<li>查询中如果使用了覆盖索引，则该索引仅出现在key列中。<br><img src="https://img-blog.csdnimg.cn/bbf4082c4e8447c8b4ac51dab855ed62.png" alt="在这里插入图片描述"></li>
+<li>possible_keys列表明哪一个索引有助于更高效的查询；</li>
+<li>key是possible_keys的子集；</li>
+<li>而key列表明实际优化采用了哪一个索引可以更加高效。</li>
+</ul>
+<h3 id="key-len"><a href="#key-len" class="headerlink" title="key_len"></a>key_len</h3><p>表示索引中使用的字节数，查询中使用的索的长度（最大可能长度），并非实际使用长度，理论上长度越短越好。</p>
+<ul>
+<li>key_len是根据表定义计算而得的，不是通过表内查询出来的</li>
+<li>这个字段可以评估组合索引是否完全被使用，这也是我们优化sql时，评估索引的重要指标</li>
+</ul>
+<h3 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h3><ul>
+<li>表示在key列记录的索引中查找值，所用的列或常量const。</li>
+</ul>
+<h3 id="rows"><a href="#rows" class="headerlink" title="rows"></a>rows</h3><p>估算出找到所需行而要读取的行数<br><img src="https://img-blog.csdnimg.cn/f6c9cad466c64e429d039525b18704dc.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>这个数字是内嵌循环关联计划里的循环数，它不是最终从表中读取出来的行数，而是MySQL为了找到符合查询的那些行而必须读取行的平均数，只能作为一个相对数来进行衡量。</p>
+<ul>
+<li>估算该sql返回结果集需要扫描读取的行数，这个值相关重要；</li>
+<li>索引优化之后，扫描读取的行数越多，说明要么是索引设置不对，要么是字段传入的类型之类的问题，说明要优化空间越大</li>
+</ul>
+<h3 id="filtered"><a href="#filtered" class="headerlink" title="filtered"></a>filtered</h3><ul>
+<li>返回结果的行数占读取行数的百分比，值越大越好；</li>
+<li>百分比越高，说明需要查询到数据越准确；</li>
+<li>百分比越小，说明查询到的数据量大，而结果集很少。</li>
+</ul>
+<h3 id="extra"><a href="#extra" class="headerlink" title="extra"></a>extra</h3><p>额外信息</p>
+<p><strong>Using index</strong><br>表示SQL中使用了覆盖索引。<br><img src="https://img-blog.csdnimg.cn/e759b9b2122e427f9744249ce088b986.png" alt="在这里插入图片描述"></p>
+<p><strong>Using where</strong><br>许多where条件里是涉及索引中的列，当它读取索引时，就能被存储引擎检验，因此不是所有带·where子句的查询都会显示“Using where”。<br><img src="https://img-blog.csdnimg.cn/4347858fe7c64a4da610448b50cdcfa8.png" alt="在这里插入图片描述"></p>
+<p><strong>Using temporary</strong></p>
+<ul>
+<li>对查询结果排序时，使用了一个临时表，常见于order by 和group by<br><img src="https://img-blog.csdnimg.cn/0ba88e162d504c368a7be2cf126e2308.png" alt="在这里插入图片描述"></li>
+</ul>
+<p><strong>Using filesort</strong></p>
+<ul>
+<li>对数据使用了一个外部的索引排序，而不是按照表内的索引进行排序读取；</li>
+<li>MySQL无法利用索引完成的排序操作成为“文件排序”。<br><img src="https://img-blog.csdnimg.cn/93c3a906083f4366af3623533e092f44.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -458,7 +519,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/11/11/mysql-de-zhi-xing-ji-hua-san/">https://stream1080.github.io/2021/11/11/mysql-de-zhi-xing-ji-hua-san/</a>
+                    <a href="https://stream1080.github.io/2021/10/07/mysql-de-zhi-xing-ji-hua-san/">https://stream1080.github.io/2021/10/07/mysql-de-zhi-xing-ji-hua-san/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -495,7 +556,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                                    <span class="chip bg-color">执行计划</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -539,18 +608,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/11/11/mysql-de-zhi-xing-ji-hua-san/">
+                <a href="/2021/10/10/redis-shi-xian-fen-bu-shi-suo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="MySQL的执行计划(三)">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Redis实现分布式锁">
                         
-                        <span class="card-title">MySQL的执行计划(三)</span>
+                        <span class="card-title">Redis实现分布式锁</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,18 +628,33 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-11
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-10
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                    缓存
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+                        <span class="chip bg-color">分布式锁</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -582,13 +665,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/07/select-poll-he-epoll-de-qu-bie/">
+                <a href="/2021/10/06/redis-you-xu-ji-he-de-shu-ju-jie-gou/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Redis-有序集合的数据结构">
                         
-                        <span class="card-title">select、poll和epoll的区别</span>
+                        <span class="card-title">Redis-有序集合的数据结构</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -599,14 +682,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-06
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                    缓存
                                 </a>
                             
                             
@@ -616,8 +699,16 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/IO%E6%B5%81/">
-                        <span class="chip bg-color">IO流</span>
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88/">
+                        <span class="chip bg-color">有序集合</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%B7%B3%E8%A1%A8/">
+                        <span class="chip bg-color">跳表</span>
                     </a>
                     
                 </div>
