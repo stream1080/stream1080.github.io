@@ -5,7 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="MySQL的执行计划(二), stream Blog Pages">
-    <meta name="description" content="MySQL的执行计划(二) | stream Blog Pages">
+    <meta name="description" content="书接上回：MySQL执行计划(一)
+执行计划中的列typetype列指代访问类型，是MySQL决定如何查找表中的行。
+是SQL查询优化中一个很重要的指标，拥有很多值，依次从最差到最优：
+ALL全表扫描，性能最差，在写SQL时尽量避免此种情况">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +387,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                                <span class="chip bg-color">执行计划</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +418,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-11
+                    2021-10-06
                 </div>
                 
 
@@ -407,7 +427,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    477
                 </div>
                 
 
@@ -432,7 +452,37 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <p>书接上回：<a target="_blank" rel="noopener" href="https://blog.csdn.net/upstream480/article/details/120615005">MySQL执行计划(一)</a></p>
+<h2 id="执行计划中的列"><a href="#执行计划中的列" class="headerlink" title="执行计划中的列"></a>执行计划中的列</h2><h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><p>type列指代访问类型，是MySQL决定如何查找表中的行。</p>
+<p>是SQL查询优化中一个很重要的指标，拥有很多值，依次从最差到最优：</p>
+<h4 id="ALL"><a href="#ALL" class="headerlink" title="ALL"></a>ALL</h4><p>全表扫描，性能最差，在写SQL时尽量避免此种情况的出现，也就是避免是</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://img-blog.csdnimg.cn/e83044a80d254d0fb5fc9357bb7e521c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h4 id="index"><a href="#index" class="headerlink" title="index"></a>index</h4><p>全索引查询，和全表查询的ALL类似，但是扫描表时按索引次序进行（遍历索引树），而不是按行扫描</p>
+<p>index与ALL虽然都是读全表，但index是从索引中读取，而ALL是从硬盘读取。<br>显然，index性能上明显优于ALL，所有，合理的添加索引将有助于提升性能。</p>
+<p>举例如下：<br><img src="https://img-blog.csdnimg.cn/2fabd07cdb3d4966b999143de1a18214.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h4 id="range"><a href="#range" class="headerlink" title="range"></a>range</h4><p>只查询给定范围的行，使用一个索引来选择行。</p>
+<ul>
+<li>key列显示使用了那个索引；</li>
+<li>一般就是在where语句中出现了bettween、&lt;、&gt;、in等的查询；</li>
+<li>这种索引列上的范围扫描比全索引扫描index要好。<img src="https://img-blog.csdnimg.cn/623618fb584d447e96dd743f8d47c7ee.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4>非唯一性索引扫描，返回匹配某个单独值的所有行。本质是也是一种索引访问，它返回所有匹配某个单独值的行，然而它可能会找到多个符合条件的行，所以它属于查找和扫描的混合体。</li>
+</ul>
+<p>此类型只有当使用非唯一索引或者唯一索引的非唯一性前缀时，才会发生。<br><img src="https://img-blog.csdnimg.cn/0d76d82b62b14e6dbdb453d2a7e561c0.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h4 id="eq-ref"><a href="#eq-ref" class="headerlink" title="eq_ref"></a>eq_ref</h4><ul>
+<li>唯一索引扫描</li>
+<li>主要用于主键或唯一索引扫描。</li>
+</ul>
+<h4 id="const"><a href="#const" class="headerlink" title="const"></a>const</h4><ul>
+<li>通过索引一次就能找到，const用于比较primary key 或者unique索引。</li>
+<li>因为只需匹配一行数据，所有很快。</li>
+<li>将主键置于where列表中，mysql就能将该查询转换为一个const。<br><img src="https://img-blog.csdnimg.cn/accbeada941a4b16ada04d80985d3232.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+</ul>
+<h4 id="system"><a href="#system" class="headerlink" title="system"></a>system</h4><ul>
+<li>表只有一行记录，这是const类型的特例，比较少见。</li>
+</ul>
+<p>下一篇<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/upstream480/article/details/120616953">MySQL执行计划(三)</a></p>
+
                 
             </div>
             <hr/>
@@ -458,7 +508,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/11/11/mysql-de-zhi-xing-ji-hua-er/">https://stream1080.github.io/2021/11/11/mysql-de-zhi-xing-ji-hua-er/</a>
+                    <a href="https://stream1080.github.io/2021/10/06/mysql-de-zhi-xing-ji-hua-er/">https://stream1080.github.io/2021/10/06/mysql-de-zhi-xing-ji-hua-er/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -495,7 +545,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                                    <span class="chip bg-color">执行计划</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -543,13 +601,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/11/11/mysql-de-zhi-xing-ji-hua-san/">
+                <a href="/2021/10/06/redis-you-xu-ji-he-de-shu-ju-jie-gou/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="MySQL的执行计划(三)">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Redis-有序集合的数据结构">
                         
-                        <span class="card-title">MySQL的执行计划(三)</span>
+                        <span class="card-title">Redis-有序集合的数据结构</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,15 +618,35 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-11
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-06
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                    缓存
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88/">
+                        <span class="chip bg-color">有序集合</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%B7%B3%E8%A1%A8/">
+                        <span class="chip bg-color">跳表</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -580,13 +658,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/07/select-poll-he-epoll-de-qu-bie/">
+                <a href="/2021/10/05/mysql-de-zhi-xing-ji-hua-yi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="MySQL的执行计划(一)">
                         
-                        <span class="card-title">select、poll和epoll的区别</span>
+                        <span class="card-title">MySQL的执行计划(一)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -597,14 +675,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-05
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
                                 </a>
                             
                             
@@ -614,8 +692,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/IO%E6%B5%81/">
-                        <span class="chip bg-color">IO流</span>
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                        <span class="chip bg-color">执行计划</span>
                     </a>
                     
                 </div>

@@ -17,19 +17,6 @@
     
     
     <entry>
-      <title>MySQL的执行计划(二)</title>
-      <link href="/2021/11/11/mysql-de-zhi-xing-ji-hua-er/"/>
-      <url>/2021/11/11/mysql-de-zhi-xing-ji-hua-er/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>select、poll和epoll的区别</title>
       <link href="/2021/11/07/select-poll-he-epoll-de-qu-bie/"/>
       <url>/2021/11/07/select-poll-he-epoll-de-qu-bie/</url>
@@ -290,6 +277,33 @@
             <tag> 有序集合 </tag>
             
             <tag> 跳表 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MySQL的执行计划(二)</title>
+      <link href="/2021/10/06/mysql-de-zhi-xing-ji-hua-er/"/>
+      <url>/2021/10/06/mysql-de-zhi-xing-ji-hua-er/</url>
+      
+        <content type="html"><![CDATA[<p>书接上回：<a href="https://blog.csdn.net/upstream480/article/details/120615005">MySQL执行计划(一)</a></p><h2 id="执行计划中的列"><a href="#执行计划中的列" class="headerlink" title="执行计划中的列"></a>执行计划中的列</h2><h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><p>type列指代访问类型，是MySQL决定如何查找表中的行。</p><p>是SQL查询优化中一个很重要的指标，拥有很多值，依次从最差到最优：</p><h4 id="ALL"><a href="#ALL" class="headerlink" title="ALL"></a>ALL</h4><p>全表扫描，性能最差，在写SQL时尽量避免此种情况的出现，也就是避免是</p><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="https://img-blog.csdnimg.cn/e83044a80d254d0fb5fc9357bb7e521c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h4 id="index"><a href="#index" class="headerlink" title="index"></a>index</h4><p>全索引查询，和全表查询的ALL类似，但是扫描表时按索引次序进行（遍历索引树），而不是按行扫描</p><p>index与ALL虽然都是读全表，但index是从索引中读取，而ALL是从硬盘读取。<br>显然，index性能上明显优于ALL，所有，合理的添加索引将有助于提升性能。</p><p>举例如下：<br><img src="https://img-blog.csdnimg.cn/2fabd07cdb3d4966b999143de1a18214.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h4 id="range"><a href="#range" class="headerlink" title="range"></a>range</h4><p>只查询给定范围的行，使用一个索引来选择行。</p><ul><li>key列显示使用了那个索引；</li><li>一般就是在where语句中出现了bettween、&lt;、&gt;、in等的查询；</li><li>这种索引列上的范围扫描比全索引扫描index要好。<img src="https://img-blog.csdnimg.cn/623618fb584d447e96dd743f8d47c7ee.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4>非唯一性索引扫描，返回匹配某个单独值的所有行。本质是也是一种索引访问，它返回所有匹配某个单独值的行，然而它可能会找到多个符合条件的行，所以它属于查找和扫描的混合体。</li></ul><p>此类型只有当使用非唯一索引或者唯一索引的非唯一性前缀时，才会发生。<br><img src="https://img-blog.csdnimg.cn/0d76d82b62b14e6dbdb453d2a7e561c0.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h4 id="eq-ref"><a href="#eq-ref" class="headerlink" title="eq_ref"></a>eq_ref</h4><ul><li>唯一索引扫描</li><li>主要用于主键或唯一索引扫描。</li></ul><h4 id="const"><a href="#const" class="headerlink" title="const"></a>const</h4><ul><li>通过索引一次就能找到，const用于比较primary key 或者unique索引。</li><li>因为只需匹配一行数据，所有很快。</li><li>将主键置于where列表中，mysql就能将该查询转换为一个const。<br><img src="https://img-blog.csdnimg.cn/accbeada941a4b16ada04d80985d3232.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li></ul><h4 id="system"><a href="#system" class="headerlink" title="system"></a>system</h4><ul><li>表只有一行记录，这是const类型的特例，比较少见。</li></ul><p>下一篇<br><a href="https://blog.csdn.net/upstream480/article/details/120616953">MySQL执行计划(三)</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> 执行计划 </tag>
             
         </tags>
       
