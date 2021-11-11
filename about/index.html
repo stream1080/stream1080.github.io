@@ -325,21 +325,21 @@
                     <div class="post-statis col l4 hide-on-med-and-down" data-aos="zoom-in-right">
                         
 <div class="statis">
-    <span class="count"><a href="/">10</a></span>
+    <span class="count"><a href="/">13</a></span>
     <span class="name">Posts</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">5</a></span>
+    <span class="count"><a href="/categories">6</a></span>
     <span class="name">Categories</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">12</a></span>
+    <span class="count"><a href="/tags">14</a></span>
     <span class="name">Tags</span>
 </div>
 
@@ -355,21 +355,21 @@
                                 <div class="post-statis hide-on-large-only" data-aos="zoom-in-right">
                                     
 <div class="statis">
-    <span class="count"><a href="/">10</a></span>
+    <span class="count"><a href="/">13</a></span>
     <span class="name">Posts</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">5</a></span>
+    <span class="count"><a href="/categories">6</a></span>
     <span class="name">Categories</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">12</a></span>
+    <span class="count"><a href="/tags">14</a></span>
     <span class="name">Tags</span>
 </div>
 
@@ -497,7 +497,7 @@
                 name: 'Number of posts',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,0,0,0,0,0,0,0,0,0,0,6,4],
+                data: [0,0,0,0,0,0,0,0,0,0,0,7,6],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -539,7 +539,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"消息队列","value":2},{"name":"操作系统","value":2},{"name":"缓存","value":3},{"name":"计算机网络","value":1},{"name":"分布式微服务","value":2}],
+                data: [{"name":"操作系统","value":2},{"name":"数据库","value":1},{"name":"消息队列","value":2},{"name":"缓存","value":3},{"name":"计算机网络","value":1},{"name":"分布式微服务","value":2}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -563,7 +563,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["Redis","RabbitMQ","IO流","分布式锁","分布式事务","数据一致性","重复消费","顺序消费","有序集合","跳表"]
+                data: ["Redis","IO流","RabbitMQ","分布式锁","分布式事务","数据一致性","MySQL","执行计划","重复消费","有序集合"]
             }
         ],
         yAxis: [
@@ -746,6 +746,24 @@
         <div class="tag-chips center-align">
             
             
+            <a href="/tags/IO%E6%B5%81/">
+                <span class="chip center-align waves-effect waves-light chip-default">IO流</span>
+            </a>
+            
+            
+            
+            <a href="/tags/MySQL/">
+                <span class="chip center-align waves-effect waves-light chip-default">MySQL</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                <span class="chip center-align waves-effect waves-light chip-default">执行计划</span>
+            </a>
+            
+            
+            
             <a href="/tags/RabbitMQ/">
                 <span class="chip center-align waves-effect waves-light chip-default">RabbitMQ</span>
             </a>
@@ -754,18 +772,6 @@
             
             <a href="/tags/%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9/">
                 <span class="chip center-align waves-effect waves-light chip-default">重复消费</span>
-            </a>
-            
-            
-            
-            <a href="/tags/IO%E6%B5%81/">
-                <span class="chip center-align waves-effect waves-light chip-default">IO流</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9/">
-                <span class="chip center-align waves-effect waves-light chip-default">顺序消费</span>
             </a>
             
             
@@ -784,6 +790,12 @@
             
             <a href="/tags/%E8%B7%B3%E8%A1%A8/">
                 <span class="chip center-align waves-effect waves-light chip-default">跳表</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9/">
+                <span class="chip center-align waves-effect waves-light chip-default">顺序消费</span>
             </a>
             
             

@@ -4,9 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Redis-有序集合的数据结构, stream Blog Pages">
-    <meta name="description" content="集合概念SetSet类似于Java中的HashSet 。Redis中的set类型是一种无序集合，集合中的元素没有先后顺序，并且不可重复。
-当需要存储一个列表数据，又不不能出现重复数据时，Set 是一个很好的选择，并且set提供了判断某个成员">
+    <meta name="keywords" content="MySQL的执行计划(一), stream Blog Pages">
+    <meta name="description" content="什么是执行计划执行计划，就是一条SQL语句，在数据库中实际执行的时候，一步步的分别都做了什么事情
+EXPLAIN命令是查看查询优化器是如何决定执行查询的主要方法，从它的查询结果中我们可以知道：
+
+一个SQL语句每一步是如何执行的；
+都做了哪">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +21,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Redis-有序集合的数据结构 | stream Blog Pages</title>
+    <title>MySQL的执行计划(一) | stream Blog Pages</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -266,12 +269,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Redis-有序集合的数据结构</h1>
+                    <h1 class="description center-align post-title">MySQL的执行计划(一)</h1>
                 </div>
             </div>
         </div>
@@ -387,16 +390,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Redis/">
-                                <span class="chip bg-color">Redis</span>
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
                             </a>
                         
-                            <a href="/tags/%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88/">
-                                <span class="chip bg-color">有序集合</span>
-                            </a>
-                        
-                            <a href="/tags/%E8%B7%B3%E8%A1%A8/">
-                                <span class="chip bg-color">跳表</span>
+                            <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                                <span class="chip bg-color">执行计划</span>
                             </a>
                         
                     </div>
@@ -407,8 +406,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
-                                缓存
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
                             </a>
                         
                     </div>
@@ -420,7 +419,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-10-06
+                    2021-10-05
                 </div>
                 
 
@@ -429,14 +428,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.1k
+                    557
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    3 Min
+                    2 Min
                 </div>
                 
 
@@ -454,37 +453,50 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="集合概念"><a href="#集合概念" class="headerlink" title="集合概念"></a>集合概念</h2><h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>Set类似于Java中的HashSet 。Redis中的set类型是一种无序集合，集合中的元<br>素没有先后顺序，并且不可重复。</p>
-<p>当需要存储一个列表数据，又不不能出现重复数据时，Set 是一个很好的选择，并且set提供了判断某个成员是否在一个Set集合内的接口，List是没有这种接口的</p>
-<p>可以基于set轻易实现交集、并集、差集的操作。Redis 可以非常方便的实现如共同关注、共同粉丝、共同喜好等功能。这个过程也就是求交集的过程。</p>
-<h3 id="Zset"><a href="#Zset" class="headerlink" title="Zset"></a>Zset</h3><p>和Set相比，sorted set增加了一个权重参数score, 使得集合中的元素能够按score<br>进行有序排列，还可以通过score的范围来获取元素的列表。有点像是Java中HashMap和TreeSet的结合体。</p>
-<p>其有两种实现方式，分别是ziplist和skiplist</p>
-<h2 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h2><p>当有序集合保存的元素数量小于128个或者有序集合保存的所有元素的长度小于64字节时，Zset选用ziplist实现，其他情况选用skiplist实现；</p>
-<h3 id="ziplist-压缩列表"><a href="#ziplist-压缩列表" class="headerlink" title="ziplist - 压缩列表"></a>ziplist - 压缩列表</h3><p>ziplist，顾名思义压缩列表，每个集合元素使用两个紧挨在一起的压缩列表节点来保存，第一个节点保存元素的value，第二个元素保存元素的score；<br><img src="https://img-blog.csdnimg.cn/c4876263c60945998016ba6c5f3e7889.png" alt="在这里插入图片描述"></p>
-<h3 id="skiplist-跳表"><a href="#skiplist-跳表" class="headerlink" title="skiplist - 跳表"></a>skiplist - 跳表</h3><p>跳表(skip List)是一种随机化的数据结构，基于并联的链表，实现简单，插入、删除、查找的复杂度均为logn。</p>
-<p>简单说来跳表也是链表的一种，只不过它在链表的基础上增加了跳跃功能，正是这个跳跃的功能，使得在查找元素时，跳表能够提供logn的时间复杂度</p>
-<p>普通链表<br><img src="https://img-blog.csdnimg.cn/92511fe8120b48a1af0a80a8a2c0f349.png" alt="在这里插入图片描述"></p>
-<p>在普通链表中，如果我们要查找某个元素，那么需要从头开始逐个进行比较，直到找到包含数据的那个节点，或者找完所有的节点（没找到）。</p>
+                <h2 id="什么是执行计划"><a href="#什么是执行计划" class="headerlink" title="什么是执行计划"></a>什么是执行计划</h2><p>执行计划，就是一条SQL语句，在数据库中实际执行的时候，一步步的分别都做了什么事情</p>
+<p>EXPLAIN命令是查看查询优化器是如何决定执行查询的主要方法，从它的查询结果中我们可以知道：</p>
 <ul>
-<li>这样的话，时间复杂度为O(n)；</li>
-<li>当我们要插入新数据的时候，也要经历同样的查找过程，从而确定插入位置</li>
+<li>一个SQL语句每一步是如何执行的；</li>
+<li>都做了哪些事，分为哪几步；</li>
+<li>有没有用到索引；</li>
+<li>哪些字段用到了什么样的索引，是否有一些可优化的地方等。</li>
 </ul>
-<p>跳表</p>
-<p><img src="https://img-blog.csdnimg.cn/01ce37da07c940b6b717e644c524d5f4.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<p>假如我们每相邻两个节点增加一个指针，让指针指向下下个节点，如上图，比如节点是1 - 2 - 3 - 4 - 5，增加节点1 - 3 - 5</p>
-<p>这样形成一个新的链表，但它包含的节点个数只有原来的一半1，3，5</p>
+<p>查看执行计划，只需在查询中的SELECT关键字之前增加EXPLAIN即可</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">语法：<span class="token keyword">EXPLAIN</span> <span class="token operator">+</span> <span class="token keyword">SELECT</span>查询语句
+示例：<span class="token keyword">EXPLAIN</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>使用EXPLAIN时，会返回执行计划中每一步的信息，它会返回一行或多行信息，显示出执行计划中的每一部分和执行的次序。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">EXPLAIN</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://img-blog.csdnimg.cn/65163a07c98048638d4dfab62c0045a8.png" alt="在这里插入图片描述"></p>
+<h2 id="执行计划中的列"><a href="#执行计划中的列" class="headerlink" title="执行计划中的列"></a>执行计划中的列</h2><p><img src="https://img-blog.csdnimg.cn/bb0128492f804b059e162e8af194fd0a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_15,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h3 id="Id"><a href="#Id" class="headerlink" title="Id"></a>Id</h3><p>id是一个编号，用于标识SELECT查询的序列号，表示执行SQL查询过程中SELECT子句或操作表的顺序。</p>
 <ul>
-<li>当我们想查找数据的时候，可以先沿着这个新链表进行查找。当碰到比待查数据大的节点时，再回到原来的链表中进行查找。</li>
-<li>比如查找3，之间可用从1指向3，即可跳过2，当数据量大的时候，只需要查询原有数据量的一半</li>
+<li>如果在SQL语句中没有子查询或关联查询，那么id列为1</li>
+<li>否则，内层的SELECT语句一般会顺序编号；</li>
 </ul>
-<p>利用同样的方式，我们可以在上层新产生的链表上，继续为每相邻的两个节点增加一个指针，从而产生第三层链表。<br><img src="https://img-blog.csdnimg.cn/9e80530dd5324377ae5aa097a26751a4.png" alt="在这里插入图片描述"><br>依次类推，当链表足够长的时候，这种多层链表的查找方式能让我们跳过很多下层节点，大大加快查找的速度。</p>
-<p>skiplist正是受这种多层链表的想法的启发而设计出来的。实际上，按照上面生成链表的方式，上面每一层链表的节点个数，是下面一层的节点个数的一半，这样查找过程就非常类似于一个二分查找，使得查找的时间复杂度可以降低到O(log n)。</p>
-<h3 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h3><p>这种数据结构可用加快查询速度，但是在插入删除数据是就会出现问题</p>
+<p>Id列可能会存在三种情况，以下一一列举：</p>
+<h4 id="Id相同"><a href="#Id相同" class="headerlink" title="Id相同"></a>Id相同</h4><p>只有普通的查询，没有子查询，则Id相同为1</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">EXPLAIN</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span><span class="token punctuation">,</span><span class="token punctuation">`</span><span class="token keyword">comment</span><span class="token punctuation">`</span> <span class="token keyword">WHERE</span> <span class="token punctuation">`</span><span class="token keyword">comment</span><span class="token punctuation">`</span><span class="token punctuation">.</span>user_id <span class="token operator">=</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span><span class="token punctuation">.</span>id<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://img-blog.csdnimg.cn/057a89f6b571498fbefb5f821a4145a2.png" alt="在这里插入图片描述"></p>
+<h4 id="Id不同"><a href="#Id不同" class="headerlink" title="Id不同"></a>Id不同</h4><p>存在子查询，id的序号会递增，id值越大优先级越高，越先被执行。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">EXPLAIN</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span> <span class="token keyword">WHERE</span> id <span class="token operator">=</span> 
+<span class="token punctuation">(</span><span class="token keyword">SELECT</span> user_id <span class="token keyword">FROM</span> <span class="token punctuation">`</span><span class="token keyword">comment</span><span class="token punctuation">`</span> <span class="token keyword">WHERE</span> entity_type <span class="token operator">=</span> <span class="token number">2</span> <span class="token keyword">LIMIT</span> <span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="https://img-blog.csdnimg.cn/310ff579697e43a497a2a7970fc28bb4.png" alt="在这里插入图片描述"></p>
+<h4 id="Id相同和不同"><a href="#Id相同和不同" class="headerlink" title="Id相同和不同"></a>Id相同和不同</h4><p>id如果相同，认为是一组，从从上往下执行。<br>在所有组中，id值越大，优先级越高，越先执行。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">EXPLAIN</span> <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span> <span class="token keyword">WHERE</span> id <span class="token operator">IN</span> 
+<span class="token punctuation">(</span><span class="token keyword">SELECT</span> user_id <span class="token keyword">FROM</span> <span class="token punctuation">`</span><span class="token keyword">comment</span><span class="token punctuation">`</span> <span class="token keyword">WHERE</span> entity_type <span class="token operator">=</span> <span class="token number">2</span> <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="https://img-blog.csdnimg.cn/03a08fc0cd824c5181da896aabfb1815.png" alt="在这里插入图片描述"></p>
+<h3 id="select-type列"><a href="#select-type列" class="headerlink" title="select_type列"></a>select_type列</h3><p>select_type列表示对应行的查询类型，是简单查询还是复杂查询</p>
 <ul>
-<li>新插入一个节点之后，就会打乱上下相邻两层链表上节点个数严格的2:1的对应关系。</li>
-<li>如果要维持这种对应关系，就必须把新插入的节点后面的所有节点（也包括新插入的节点）重新进行调整，这会让时间复杂度重新蜕化成O(n)。</li>
-<li>删除数据也有同样的问题。</li>
+<li>主要用于区分普通查询、联合查询、子查询等复杂的查询。<br><img src="https://img-blog.csdnimg.cn/522f97c08a8d423a881a4973d547b41d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><h3 id="table"><a href="#table" class="headerlink" title="table"></a>table</h3>table列表示对应行正在执行的哪张表，指代对应表名</li>
+<li>如果SQL中定义了别名，则会显示该表的别名</li>
 </ul>
+<h3 id="partitions"><a href="#partitions" class="headerlink" title="partitions"></a>partitions</h3><ul>
+<li>查询涉及到的分区。</li>
+</ul>
+<p>下一篇</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/upstream480/article/details/120615700">MySQL执行计划(二)</a></p>
 
                 
             </div>
@@ -511,7 +523,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/10/06/redis-you-xu-ji-he-de-shu-ju-jie-gou/">https://stream1080.github.io/2021/10/06/redis-you-xu-ji-he-de-shu-ju-jie-gou/</a>
+                    <a href="https://stream1080.github.io/2021/10/05/mysql-de-zhi-xing-ji-hua-yi/">https://stream1080.github.io/2021/10/05/mysql-de-zhi-xing-ji-hua-yi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -549,16 +561,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Redis/">
-                                    <span class="chip bg-color">Redis</span>
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
                                 </a>
                             
-                                <a href="/tags/%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88/">
-                                    <span class="chip bg-color">有序集合</span>
-                                </a>
-                            
-                                <a href="/tags/%E8%B7%B3%E8%A1%A8/">
-                                    <span class="chip bg-color">跳表</span>
+                                <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                                    <span class="chip bg-color">执行计划</span>
                                 </a>
                             
                         </div>
@@ -608,13 +616,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/10/10/redis-shi-xian-fen-bu-shi-suo/">
+                <a href="/2021/10/06/redis-you-xu-ji-he-de-shu-ju-jie-gou/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Redis实现分布式锁">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Redis-有序集合的数据结构">
                         
-                        <span class="card-title">Redis实现分布式锁</span>
+                        <span class="card-title">Redis-有序集合的数据结构</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -625,7 +633,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-10
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-06
                         </span>
                         <span class="publish-author">
                             
@@ -646,8 +654,12 @@
                         <span class="chip bg-color">Redis</span>
                     </a>
                     
-                    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
-                        <span class="chip bg-color">分布式锁</span>
+                    <a href="/tags/%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88/">
+                        <span class="chip bg-color">有序集合</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%B7%B3%E8%A1%A8/">
+                        <span class="chip bg-color">跳表</span>
                     </a>
                     
                 </div>
@@ -658,7 +670,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
                 <a href="/2021/10/05/mysql-de-zhi-xing-ji-hua-yi/">
@@ -692,6 +704,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
