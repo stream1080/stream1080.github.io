@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>扩展线程池捕获线程异常</title>
+      <link href="/2021/11/12/kuo-zhan-xian-cheng-chi-bu-huo-xian-cheng-yi-chang-1/"/>
+      <url>/2021/11/12/kuo-zhan-xian-cheng-chi-bu-huo-xian-cheng-yi-chang-1/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>select、poll和epoll的区别</title>
       <link href="/2021/11/07/select-poll-he-epoll-de-qu-bie/"/>
       <url>/2021/11/07/select-poll-he-epoll-de-qu-bie/</url>
@@ -205,9 +218,9 @@
       
         <tags>
             
-            <tag> Redis </tag>
-            
             <tag> 分布式锁 </tag>
+            
+            <tag> Redis </tag>
             
         </tags>
       
@@ -232,9 +245,9 @@
       
         <tags>
             
-            <tag> Redis </tag>
-            
             <tag> 分布式锁 </tag>
+            
+            <tag> Redis </tag>
             
         </tags>
       
@@ -473,9 +486,9 @@
       
         <tags>
             
-            <tag> ACID </tag>
-            
             <tag> MySQL </tag>
+            
+            <tag> ACID </tag>
             
         </tags>
       
@@ -632,6 +645,31 @@
             <tag> 锁 </tag>
             
             <tag> synchronized </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>扩展线程池捕获线程异常</title>
+      <link href="/2021/09/15/kuo-zhan-xian-cheng-chi-bu-huo-xian-cheng-yi-chang/"/>
+      <url>/2021/09/15/kuo-zhan-xian-cheng-chi-bu-huo-xian-cheng-yi-chang/</url>
+      
+        <content type="html"><![CDATA[<h2 id="如何捕获线程池中的线程异常"><a href="#如何捕获线程池中的线程异常" class="headerlink" title="如何捕获线程池中的线程异常"></a>如何捕获线程池中的线程异常</h2><h3 id="简单案例"><a href="#简单案例" class="headerlink" title="简单案例"></a>简单案例</h3><p>我们先看一个案例，实现Runnable接口，计算两个数的商<br><img src="https://img-blog.csdnimg.cn/412d931173c34e70ae14e23a7236c8cb.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>创建一个线程池，参数如下<br><img src="https://img-blog.csdnimg.cn/a274f18d22894035b24ed64b36fe2835.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>提交任务到线程池，查看执行结果<br><img src="https://img-blog.csdnimg.cn/2cea315595974aab8d54688a7d456f14.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>执行结果<br><img src="https://img-blog.csdnimg.cn/c9999b695a714397aa4b35c320caef04.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><ul><li>我们发现，我们代码中，提交了5个线程，但最终只打印了4个结果，</li><li>而且没有报何错误，很明显100/0的那个任务没有打印</li><li>100/0会报除零异常，但是显然这次没有报任何错误</li></ul><h3 id="改用execute-提交线程"><a href="#改用execute-提交线程" class="headerlink" title="改用execute()提交线程"></a>改用execute()提交线程</h3><p>为了获得线程报错信息，我们可以改用execute()提交线程<br><img src="https://img-blog.csdnimg.cn/0066bbf997c746beae88e10f83264575.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><ul><li>从这里的控制台，我们得到了部分的报错信息，但是我们只能知道异常是在哪里抛出来的，ThreadPoolTest.java的第51行；</li><li>但是我们还是希望得到其他的更重要的信息，这个任务在哪里提交的？<h3 id="扩展线程池ThreadPoolExecutor"><a href="#扩展线程池ThreadPoolExecutor" class="headerlink" title="扩展线程池ThreadPoolExecutor"></a>扩展线程池ThreadPoolExecutor</h3>我们可以扩展一下ThreadPoolExecutor这个线程池，让他在任务调度前，先保存一下提交任务线程的堆栈信息</li></ul><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>stream<span class="token punctuation">.</span>juc</span><span class="token punctuation">;</span><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">BlockingQueue</span><span class="token punctuation">;</span><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">Future</span><span class="token punctuation">;</span><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">;</span><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">TimeUnit</span><span class="token punctuation">;</span><span class="token comment">/** * 扩展线程池 * 捕获线程池的异常 * * @author stream * @since 2021/9/15 7:51 */</span><span class="token keyword">class</span> <span class="token class-name">ExtenThreadPoolExecutor</span> <span class="token keyword">extends</span> <span class="token class-name">ThreadPoolExecutor</span> <span class="token punctuation">&#123;</span>    <span class="token keyword">public</span> <span class="token class-name">ExtenThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token keyword">int</span> corePoolSize<span class="token punctuation">,</span> <span class="token keyword">int</span> maximumPoolSize<span class="token punctuation">,</span> <span class="token keyword">long</span> keepAliveTime<span class="token punctuation">,</span> <span class="token class-name">TimeUnit</span> unit<span class="token punctuation">,</span> <span class="token class-name">BlockingQueue</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Runnable</span><span class="token punctuation">></span></span> workQueue<span class="token punctuation">,</span> <span class="token class-name">CallerRunsPolicy</span> callerRunsPolicy<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>        <span class="token keyword">super</span><span class="token punctuation">(</span>corePoolSize<span class="token punctuation">,</span> maximumPoolSize<span class="token punctuation">,</span> keepAliveTime<span class="token punctuation">,</span> unit<span class="token punctuation">,</span> workQueue<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span>    <span class="token annotation punctuation">@Override</span>    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token class-name">Runnable</span> command<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token function">wrap</span><span class="token punctuation">(</span>command<span class="token punctuation">,</span><span class="token function">clientTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span>    <span class="token annotation punctuation">@Override</span>    <span class="token keyword">public</span> <span class="token class-name">Future</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> <span class="token function">submit</span><span class="token punctuation">(</span><span class="token class-name">Runnable</span> task<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>        <span class="token keyword">return</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token function">wrap</span><span class="token punctuation">(</span>task<span class="token punctuation">,</span><span class="token function">clientTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span><span class="token comment">// 抛出异常信息</span>    <span class="token keyword">private</span> <span class="token class-name">Exception</span> <span class="token function">clientTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"Thread Stack"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span>    <span class="token keyword">private</span> <span class="token class-name">Runnable</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token class-name">Runnable</span> task<span class="token punctuation">,</span> <span class="token class-name">Exception</span> exception <span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>            <span class="token annotation punctuation">@Override</span>            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>                    task<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 捕获异常</span>                <span class="token punctuation">&#125;</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>                    exception<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                    <span class="token keyword">throw</span> e<span class="token punctuation">;</span>                <span class="token punctuation">&#125;</span>            <span class="token punctuation">&#125;</span>        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>我们用扩展后的线程池提交任务，还是刚才的代码<br><img src="https://img-blog.csdnimg.cn/f585e3e0943b4c089071ef9f7df94552.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>这样，我们就得到了异常发生的内部堆栈信息，帮助我们快速定位问题</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 线程池 </tag>
             
         </tags>
       

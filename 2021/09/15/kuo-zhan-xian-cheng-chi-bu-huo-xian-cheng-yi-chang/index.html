@@ -4,13 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="MySQL的执行计划(三), stream blog">
-    <meta name="description" content="书接上回 MySQL的执行计划(二)
-执行计划中的列possible_keys显示在查询中使用了哪些索引
-key
-实际使用的索引，如果为NULL，则没有使用索引；
-查询中如果使用了覆盖索引，则该索引仅出现在key列中。
-possible_k">
+    <meta name="keywords" content="扩展线程池捕获线程异常, stream blog">
+    <meta name="description" content="如何捕获线程池中的线程异常简单案例我们先看一个案例，实现Runnable接口，计算两个数的商创建一个线程池，参数如下提交任务到线程池，查看执行结果执行结果
+
+我们发现，我们代码中，提交了5个线程，但最终只打印了4个结果，
+而且没有报何错误，">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +20,7 @@ possible_k">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>MySQL的执行计划(三) | stream blog</title>
+    <title>扩展线程池捕获线程异常 | stream blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -270,12 +268,12 @@ possible_k">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">MySQL的执行计划(三)</h1>
+                    <h1 class="description center-align post-title">扩展线程池捕获线程异常</h1>
                 </div>
             </div>
         </div>
@@ -391,12 +389,8 @@ possible_k">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/MySQL/">
-                                <span class="chip bg-color">MySQL</span>
-                            </a>
-                        
-                            <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
-                                <span class="chip bg-color">执行计划</span>
+                            <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+                                <span class="chip bg-color">线程池</span>
                             </a>
                         
                     </div>
@@ -407,8 +401,8 @@ possible_k">
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                数据库
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                多线程
                             </a>
                         
                     </div>
@@ -420,7 +414,7 @@ possible_k">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-10-07
+                    2021-09-15
                 </div>
                 
 
@@ -429,7 +423,7 @@ possible_k">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    617
+                    493
                 </div>
                 
 
@@ -454,45 +448,68 @@ possible_k">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>书接上回 <a target="_blank" rel="noopener" href="https://blog.csdn.net/upstream480/article/details/120615700">MySQL的执行计划(二)</a></p>
-<h2 id="执行计划中的列"><a href="#执行计划中的列" class="headerlink" title="执行计划中的列"></a>执行计划中的列</h2><h3 id="possible-keys"><a href="#possible-keys" class="headerlink" title="possible_keys"></a>possible_keys</h3><p>显示在查询中使用了哪些索引<br><img src="https://img-blog.csdnimg.cn/75296e9e4b8f420498f3a01f1015d330.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h3 id="key"><a href="#key" class="headerlink" title="key"></a>key</h3><ul>
-<li>实际使用的索引，如果为NULL，则没有使用索引；</li>
-<li>查询中如果使用了覆盖索引，则该索引仅出现在key列中。<br><img src="https://img-blog.csdnimg.cn/bbf4082c4e8447c8b4ac51dab855ed62.png" alt="在这里插入图片描述"></li>
-<li>possible_keys列表明哪一个索引有助于更高效的查询；</li>
-<li>key是possible_keys的子集；</li>
-<li>而key列表明实际优化采用了哪一个索引可以更加高效。</li>
-</ul>
-<h3 id="key-len"><a href="#key-len" class="headerlink" title="key_len"></a>key_len</h3><p>表示索引中使用的字节数，查询中使用的索的长度（最大可能长度），并非实际使用长度，理论上长度越短越好。</p>
+                <h2 id="如何捕获线程池中的线程异常"><a href="#如何捕获线程池中的线程异常" class="headerlink" title="如何捕获线程池中的线程异常"></a>如何捕获线程池中的线程异常</h2><h3 id="简单案例"><a href="#简单案例" class="headerlink" title="简单案例"></a>简单案例</h3><p>我们先看一个案例，实现Runnable接口，计算两个数的商<br><img src="https://img-blog.csdnimg.cn/412d931173c34e70ae14e23a7236c8cb.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>创建一个线程池，参数如下<br><img src="https://img-blog.csdnimg.cn/a274f18d22894035b24ed64b36fe2835.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>提交任务到线程池，查看执行结果<br><img src="https://img-blog.csdnimg.cn/2cea315595974aab8d54688a7d456f14.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>执行结果<br><img src="https://img-blog.csdnimg.cn/c9999b695a714397aa4b35c320caef04.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
 <ul>
-<li>key_len是根据表定义计算而得的，不是通过表内查询出来的</li>
-<li>这个字段可以评估组合索引是否完全被使用，这也是我们优化sql时，评估索引的重要指标</li>
+<li>我们发现，我们代码中，提交了5个线程，但最终只打印了4个结果，</li>
+<li>而且没有报何错误，很明显100/0的那个任务没有打印</li>
+<li>100/0会报除零异常，但是显然这次没有报任何错误</li>
 </ul>
-<h3 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h3><ul>
-<li>表示在key列记录的索引中查找值，所用的列或常量const。</li>
-</ul>
-<h3 id="rows"><a href="#rows" class="headerlink" title="rows"></a>rows</h3><p>估算出找到所需行而要读取的行数<br><img src="https://img-blog.csdnimg.cn/f6c9cad466c64e429d039525b18704dc.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>这个数字是内嵌循环关联计划里的循环数，它不是最终从表中读取出来的行数，而是MySQL为了找到符合查询的那些行而必须读取行的平均数，只能作为一个相对数来进行衡量。</p>
+<h3 id="改用execute-提交线程"><a href="#改用execute-提交线程" class="headerlink" title="改用execute()提交线程"></a>改用execute()提交线程</h3><p>为了获得线程报错信息，我们可以改用execute()提交线程<br><img src="https://img-blog.csdnimg.cn/0066bbf997c746beae88e10f83264575.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
 <ul>
-<li>估算该sql返回结果集需要扫描读取的行数，这个值相关重要；</li>
-<li>索引优化之后，扫描读取的行数越多，说明要么是索引设置不对，要么是字段传入的类型之类的问题，说明要优化空间越大</li>
+<li>从这里的控制台，我们得到了部分的报错信息，但是我们只能知道异常是在哪里抛出来的，ThreadPoolTest.java的第51行；</li>
+<li>但是我们还是希望得到其他的更重要的信息，这个任务在哪里提交的？<h3 id="扩展线程池ThreadPoolExecutor"><a href="#扩展线程池ThreadPoolExecutor" class="headerlink" title="扩展线程池ThreadPoolExecutor"></a>扩展线程池ThreadPoolExecutor</h3>我们可以扩展一下ThreadPoolExecutor这个线程池，让他在任务调度前，先保存一下提交任务线程的堆栈信息</li>
 </ul>
-<h3 id="filtered"><a href="#filtered" class="headerlink" title="filtered"></a>filtered</h3><ul>
-<li>返回结果的行数占读取行数的百分比，值越大越好；</li>
-<li>百分比越高，说明需要查询到数据越准确；</li>
-<li>百分比越小，说明查询到的数据量大，而结果集很少。</li>
-</ul>
-<h3 id="extra"><a href="#extra" class="headerlink" title="extra"></a>extra</h3><p>额外信息</p>
-<p><strong>Using index</strong><br>表示SQL中使用了覆盖索引。<br><img src="https://img-blog.csdnimg.cn/e759b9b2122e427f9744249ce088b986.png" alt="在这里插入图片描述"></p>
-<p><strong>Using where</strong><br>许多where条件里是涉及索引中的列，当它读取索引时，就能被存储引擎检验，因此不是所有带·where子句的查询都会显示“Using where”。<br><img src="https://img-blog.csdnimg.cn/4347858fe7c64a4da610448b50cdcfa8.png" alt="在这里插入图片描述"></p>
-<p><strong>Using temporary</strong></p>
-<ul>
-<li>对查询结果排序时，使用了一个临时表，常见于order by 和group by<br><img src="https://img-blog.csdnimg.cn/0ba88e162d504c368a7be2cf126e2308.png" alt="在这里插入图片描述"></li>
-</ul>
-<p><strong>Using filesort</strong></p>
-<ul>
-<li>对数据使用了一个外部的索引排序，而不是按照表内的索引进行排序读取；</li>
-<li>MySQL无法利用索引完成的排序操作成为“文件排序”。<br><img src="https://img-blog.csdnimg.cn/93c3a906083f4366af3623533e092f44.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
-</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>stream<span class="token punctuation">.</span>juc</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">BlockingQueue</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">Future</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">TimeUnit</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 扩展线程池
+ * 捕获线程池的异常
+ *
+ * @author stream
+ * @since 2021/9/15 7:51
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name">ExtenThreadPoolExecutor</span> <span class="token keyword">extends</span> <span class="token class-name">ThreadPoolExecutor</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">ExtenThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token keyword">int</span> corePoolSize<span class="token punctuation">,</span> <span class="token keyword">int</span> maximumPoolSize<span class="token punctuation">,</span> <span class="token keyword">long</span> keepAliveTime<span class="token punctuation">,</span> <span class="token class-name">TimeUnit</span> unit<span class="token punctuation">,</span> <span class="token class-name">BlockingQueue</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Runnable</span><span class="token punctuation">></span></span> workQueue<span class="token punctuation">,</span> <span class="token class-name">CallerRunsPolicy</span> callerRunsPolicy<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>corePoolSize<span class="token punctuation">,</span> maximumPoolSize<span class="token punctuation">,</span> keepAliveTime<span class="token punctuation">,</span> unit<span class="token punctuation">,</span> workQueue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token class-name">Runnable</span> command<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token function">wrap</span><span class="token punctuation">(</span>command<span class="token punctuation">,</span><span class="token function">clientTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">Future</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> <span class="token function">submit</span><span class="token punctuation">(</span><span class="token class-name">Runnable</span> task<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token function">wrap</span><span class="token punctuation">(</span>task<span class="token punctuation">,</span><span class="token function">clientTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+	<span class="token comment">// 抛出异常信息</span>
+    <span class="token keyword">private</span> <span class="token class-name">Exception</span> <span class="token function">clientTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"Thread Stack"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token class-name">Runnable</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token class-name">Runnable</span> task<span class="token punctuation">,</span> <span class="token class-name">Exception</span> exception <span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    task<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 捕获异常</span>
+                <span class="token punctuation">&#125;</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                    exception<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">throw</span> e<span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们用扩展后的线程池提交任务，还是刚才的代码<br><img src="https://img-blog.csdnimg.cn/f585e3e0943b4c089071ef9f7df94552.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>这样，我们就得到了异常发生的内部堆栈信息，帮助我们快速定位问题</p>
 
                 
             </div>
@@ -519,7 +536,7 @@ possible_k">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/10/07/mysql-de-zhi-xing-ji-hua-san/">https://stream1080.github.io/2021/10/07/mysql-de-zhi-xing-ji-hua-san/</a>
+                    <a href="https://stream1080.github.io/2021/09/15/kuo-zhan-xian-cheng-chi-bu-huo-xian-cheng-yi-chang/">https://stream1080.github.io/2021/09/15/kuo-zhan-xian-cheng-chi-bu-huo-xian-cheng-yi-chang/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -557,12 +574,8 @@ possible_k">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/MySQL/">
-                                    <span class="chip bg-color">MySQL</span>
-                                </a>
-                            
-                                <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
-                                    <span class="chip bg-color">执行计划</span>
+                                <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+                                    <span class="chip bg-color">线程池</span>
                                 </a>
                             
                         </div>
@@ -612,13 +625,13 @@ possible_k">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/10/10/redis-shi-xian-fen-bu-shi-suo/">
+                <a href="/2021/09/17/synchronized-guan-jian-zi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Redis实现分布式锁">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="synchronized关键字">
                         
-                        <span class="card-title">Redis实现分布式锁</span>
+                        <span class="card-title">synchronized关键字</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -629,14 +642,14 @@ possible_k">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-10
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-17
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
-                                    缓存
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
@@ -646,12 +659,12 @@ possible_k">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
-                        <span class="chip bg-color">分布式锁</span>
+                    <a href="/tags/%E9%94%81/">
+                        <span class="chip bg-color">锁</span>
                     </a>
                     
-                    <a href="/tags/Redis/">
-                        <span class="chip bg-color">Redis</span>
+                    <a href="/tags/synchronized/">
+                        <span class="chip bg-color">synchronized</span>
                     </a>
                     
                 </div>
@@ -665,13 +678,13 @@ possible_k">
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/10/06/redis-you-xu-ji-he-de-shu-ju-jie-gou/">
+                <a href="/2021/09/15/threadlocal-de-shi-yong/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Redis-有序集合的数据结构">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="ThreadLocal的使用">
                         
-                        <span class="card-title">Redis-有序集合的数据结构</span>
+                        <span class="card-title">ThreadLocal的使用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -682,14 +695,14 @@ possible_k">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-15
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
-                                    缓存
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
@@ -699,16 +712,12 @@ possible_k">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Redis/">
-                        <span class="chip bg-color">Redis</span>
+                    <a href="/tags/ThreadLocal/">
+                        <span class="chip bg-color">ThreadLocal</span>
                     </a>
                     
-                    <a href="/tags/%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88/">
-                        <span class="chip bg-color">有序集合</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%B7%B3%E8%A1%A8/">
-                        <span class="chip bg-color">跳表</span>
+                    <a href="/tags/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F/">
+                        <span class="chip bg-color">共享变量</span>
                     </a>
                     
                 </div>
