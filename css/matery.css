@@ -247,6 +247,7 @@ mark {
 }
 
 /*
+方案二
 .bg-color {
     background-image: linear-gradient(to right, #514fc8 0%, #e8b096 100%);
 	opacity: 0.8  /* 透明效果 
