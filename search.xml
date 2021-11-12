@@ -482,6 +482,31 @@
     </entry>
     
     
+    
+    <entry>
+      <title>AQS原理</title>
+      <link href="/2021/09/22/aqs-yuan-li/"/>
+      <url>/2021/09/22/aqs-yuan-li/</url>
+      
+        <content type="html"><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>AQS是AbstarctQueuedSynchronizer 的简称 ，是一个用于构建锁和同步容器的框架。</p><p>juc并发 包内许多类都是基于 AQS 构建的</p><ul><li>ReentrantLock</li><li>ReentrantReadWriteLock</li><li>FutureTask</li></ul><p>AQS 解决了在实现同步容器时大量的细节问题。<br><img src="https://img-blog.csdnimg.cn/d49c82af4c5a4687806b853b3dd7065e.png" alt="在这里插入图片描述"></p><ul><li>AQS 使用一个 FIFO 队列表示排队等待锁的线程，队列头结点称作 “哨兵节点” ，它不与任何线程关联。</li><li>其他的节点与等待线程关联，每个阶段维护一个等待状态 waitStatus。</li></ul><h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul><li>独占锁：每次只能有一个线程持有锁， ReentrantLock 就是以独占方式实现的互斥锁；</li><li>共享锁：允许多个线程同时获取锁，并发访问共享资源，比如 ReentrantReadWriteLock。</li></ul><h2 id="内部原理"><a href="#内部原理" class="headerlink" title="内部原理"></a>内部原理</h2><p>AQS 的实现依赖内部的同步队列，也就是 FIFO 的双向队列，如果当前线程竞争锁失败，那么 AQS 会把当前线程以及等待状态信息构造成一个 Node 加入到同步队列中，同时再阻塞该线程。当获取锁的线程释放锁以后，会从队列中唤醒一个阻塞的节点 (线程)。<br><img src="https://img-blog.csdnimg.cn/8695a8335e9a4807877d1af86fe1b3d2.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>一个节点表示一个线程，它保存着线程的引用（thread）、状态（waitStatus）、前驱节点（prev）、后继节点（next），其实就是个双端双向链表</p><ul><li>AQS 队列内部维护的是一个 FIFO 的双向链表，这种结构的特点是每个数据结构都有两个指针，分别指向直接的后继节点和直接前驱节点。</li><li>双向链表可以从任意一个节点开始，很方便的访问前驱和后继。</li><li>每个 Node 其实是由线程封装，当线程争抢锁失败后会封装成 Node 加入到 ASQ 队列中去。</li></ul><h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><h4 id="添加线程"><a href="#添加线程" class="headerlink" title="添加线程"></a>添加线程</h4><p>当出现锁竞争以及释放锁的时候，AQS 同步队列中的节点会发生变化<br><img src="https://img-blog.csdnimg.cn/33188515e0eb44faa67106d48c0558ea.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><ul><li>队列操作的变化：新的线程封装成 Node 节点追加到同步队列中，设置 prev 节点以及修改当前节点的前置节点的 next 节点指向自己；</li><li>tail 指向变化：通过同步器将 tail 重新指向新的尾部节点。<h4 id="销毁线程"><a href="#销毁线程" class="headerlink" title="销毁线程"></a>销毁线程</h4>第一个 head 节点表示获取锁成功的节点，当头结点在释放同步状态时，会唤醒后继节点，如果后继节点获得锁成功，会把自己设置为头结点<br><img src="https://img-blog.csdnimg.cn/58333e8c7310454e819205749b8e93e9.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li><li>head 节点指向：修改 head 节点指向下一个获得锁的节点；</li><li>新的获得锁的节点：第二个节点被 head 指向了，此时将 prev 的指针指向 null，因为它自己本身就是第一个首节点，所以 pre 指向 null。</li></ul><h2 id="AQS-与-ReentrantLock-的联系"><a href="#AQS-与-ReentrantLock-的联系" class="headerlink" title="AQS 与 ReentrantLock 的联系"></a>AQS 与 ReentrantLock 的联系</h2><p>ReentrantLock 是根据 AQS 实现的独占锁，提供了两个构造方法</p><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>       sync <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NonfairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token punctuation">&#125;</span>   <span class="token keyword">public</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> fair<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>       sync <span class="token operator">=</span> fair <span class="token operator">?</span> <span class="token keyword">new</span> <span class="token class-name">FairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">NonfairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>ReentrantLock 有三个内部类：Sync，NonfairSync，FairSync<br><img src="https://img-blog.csdnimg.cn/52499b5bb0d5442c8c604837e047566c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_13,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>这三个内部类都是基于 AQS 进行的实现，所以ReentrantLock 是基于 AQS 进行的实现。</p><p>ReentrantLock 提供两种类型的锁：</p><ul><li>公平锁-FairSync</li><li>非公平锁-NonfairSync</li><li>默认实现是 NonFairSync。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 队列 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
   
   
 </search>

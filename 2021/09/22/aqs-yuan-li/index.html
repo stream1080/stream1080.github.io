@@ -4,12 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="MySQL如何保证ACID, stream blog">
-    <meta name="description" content="ACID
-原子性：事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行
-一致性：事务开始前和结束后，数据库的完整性约束没有被破坏。
-隔离性：同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。
-持久性：事务">
+    <meta name="keywords" content="AQS原理, stream blog">
+    <meta name="description" content="概念AQS是AbstarctQueuedSynchronizer 的简称 ，是一个用于构建锁和同步容器的框架。
+juc并发 包内许多类都是基于 AQS 构建的
+
+ReentrantLock
+ReentrantReadWriteLock
+Fu">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +22,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>MySQL如何保证ACID | stream blog</title>
+    <title>AQS原理 | stream blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -269,12 +270,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">MySQL如何保证ACID</h1>
+                    <h1 class="description center-align post-title">AQS原理</h1>
                 </div>
             </div>
         </div>
@@ -390,12 +391,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/ACID/">
-                                <span class="chip bg-color">ACID</span>
-                            </a>
-                        
-                            <a href="/tags/MySQL/">
-                                <span class="chip bg-color">MySQL</span>
+                            <a href="/tags/%E9%98%9F%E5%88%97/">
+                                <span class="chip bg-color">队列</span>
                             </a>
                         
                     </div>
@@ -406,8 +403,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                数据库
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                多线程
                             </a>
                         
                     </div>
@@ -419,7 +416,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-10-01
+                    2021-09-22
                 </div>
                 
 
@@ -428,14 +425,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.2k
+                    788
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    2 Min
                 </div>
                 
 
@@ -453,43 +450,52 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ol>
-<li>原子性：事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行</li>
-<li>一致性：事务开始前和结束后，数据库的完整性约束没有被破坏。</li>
-<li>隔离性：同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。</li>
-<li>持久性：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。</li>
-</ol>
-<h2 id="undo-log"><a href="#undo-log" class="headerlink" title="undo log"></a>undo log</h2><ul>
-<li>undoLog 也就是我们常说的回滚日志文件 主要用于事务中执行失败，进行回滚，以及MVCC中对于数据历史版本的查看。</li>
-<li>undo log由引擎层的InnoDB引擎实现,是逻辑日志,记录数据修改被修改前的值,比如”把id=’B’ 修改为id = ‘B2’ ，那么undo日志就会用来存放id =’B’的记录”。</li>
-<li>当一条数据需要更新前,会先把修改前的记录存储在undolog中,如果这个修改出现异常,则会使用undo日志来实现回滚操作,保证事务的一致性。</li>
-<li>当事务提交之后，undo log并不能立马被删除,而是会被放到待清理链表中,待判断没有事物用到该版本的信息时才可以清理相应undolog。</li>
-<li>它保存了事务发生之前的数据的一个版本，用于回滚，同时可以提供多版本并发控制下的读（MVCC），也即非锁定读。</li>
+                <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>AQS是AbstarctQueuedSynchronizer 的简称 ，是一个用于构建锁和同步容器的框架。</p>
+<p>juc并发 包内许多类都是基于 AQS 构建的</p>
+<ul>
+<li>ReentrantLock</li>
+<li>ReentrantReadWriteLock</li>
+<li>FutureTask</li>
 </ul>
-<h2 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h2><ul>
-<li>redoLog 是重做日志文件是记录数据修改之后的值，用于持久化到磁盘中。</li>
-<li>redo log包括两部分<ul>
-<li>一是内存中的日志缓冲(redo log buffer)，该部分日志是易失性的；</li>
-<li>二是磁盘上的重做日志文件(redo log file)，该部分日志是持久的。由引擎层的InnoDB引擎实现,是物理日志,记录的是物理数据页修改的信息,比如“某个数据页上内容发生了哪些改动”。</li>
+<p>AQS 解决了在实现同步容器时大量的细节问题。<br><img src="https://img-blog.csdnimg.cn/d49c82af4c5a4687806b853b3dd7065e.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>AQS 使用一个 FIFO 队列表示排队等待锁的线程，队列头结点称作 “哨兵节点” ，它不与任何线程关联。</li>
+<li>其他的节点与等待线程关联，每个阶段维护一个等待状态 waitStatus。</li>
 </ul>
-</li>
-<li>当一条数据需要更新时,InnoDB会先将数据更新，然后记录redoLog 在内存中，然后找个时间将redoLog的操作执行到磁盘上的文件上。</li>
-<li>不管是否提交成功我都记录，你要是回滚了，那我连回滚的修改也记录。它确保了事务的持久性。</li>
-<li>每个InnoDB存储引擎至少有1个重做日志文件组（group），每个文件组下至少有2个重做日志文件，如默认的ib_logfile0和ib_logfile1。</li>
-<li>为了得到更高的可靠性，用户可以设置多个的镜像日志组（mirrored log groups），将不同的文件组放在不同的磁盘上，以此提高重做日志的高可用性。</li>
-<li>在日志组中每个重做日志文件的大小一致，并以循环写入的方式运行。InnoDB存储引擎先写重做日志文件1，当达到文件的最后时，会切换至重做日志文件2，再当重做日志文件2也被写满时，会再切换到重做日志文件1中。</li>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<li>独占锁：每次只能有一个线程持有锁， ReentrantLock 就是以独占方式实现的互斥锁；</li>
+<li>共享锁：允许多个线程同时获取锁，并发访问共享资源，比如 ReentrantReadWriteLock。</li>
 </ul>
-<h2 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h2><ul>
-<li>MVCC多版本并发控制是MySQL中基于乐观锁理论实现隔离级别的方式，用于读已提交和可重复读取隔离级别的实现。</li>
-<li>在MySQL中，会在表中每一条数据后面添加两个字段：最近修改该行数据的事务ID，指向该行（undolog表中）回滚段的指针。</li>
-<li>Read View判断行的可见性，创建一个新事务时，copy一份当前系统中的活跃事务列表。</li>
-<li>当前不应该被本事务看到的其他事务id列表。</li>
-<li>已提交读隔离级别下的事务在每次查询的开始都会生成一个独立的ReadView,而可重复读隔离级别则在第一次读的时候生成一个ReadView，之后的读都复用之前的ReadView。</li>
+<h2 id="内部原理"><a href="#内部原理" class="headerlink" title="内部原理"></a>内部原理</h2><p>AQS 的实现依赖内部的同步队列，也就是 FIFO 的双向队列，如果当前线程竞争锁失败，那么 AQS 会把当前线程以及等待状态信息构造成一个 Node 加入到同步队列中，同时再阻塞该线程。当获取锁的线程释放锁以后，会从队列中唤醒一个阻塞的节点 (线程)。<br><img src="https://img-blog.csdnimg.cn/8695a8335e9a4807877d1af86fe1b3d2.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>一个节点表示一个线程，它保存着线程的引用（thread）、状态（waitStatus）、前驱节点（prev）、后继节点（next），其实就是个双端双向链表</p>
+<ul>
+<li>AQS 队列内部维护的是一个 FIFO 的双向链表，这种结构的特点是每个数据结构都有两个指针，分别指向直接的后继节点和直接前驱节点。</li>
+<li>双向链表可以从任意一个节点开始，很方便的访问前驱和后继。</li>
+<li>每个 Node 其实是由线程封装，当线程争抢锁失败后会封装成 Node 加入到 ASQ 队列中去。</li>
 </ul>
-<h2 id="数据库如何保证原子性"><a href="#数据库如何保证原子性" class="headerlink" title="数据库如何保证原子性"></a>数据库如何保证原子性</h2><p>原子性由undolog日志来保证，它记录了需要回滚的日志信息，事务回滚时撤销已经执行成功的sql</p>
-<h2 id="数据库如何保证隔离性"><a href="#数据库如何保证隔离性" class="headerlink" title="数据库如何保证隔离性"></a>数据库如何保证隔离性</h2><p>隔离性是由MVCC来保证</p>
-<h2 id="数据库如何保证持久性"><a href="#数据库如何保证持久性" class="headerlink" title="数据库如何保证持久性"></a>数据库如何保证持久性</h2><p>持久性由redolog来保证，mysq|修改数据的时候会在redolog中记录一份日志数据，就算数据没有保存成功，只要日志保存成功了，数据仍然不会丢失</p>
-<h2 id="数据库如何保证一致性"><a href="#数据库如何保证一致性" class="headerlink" title="数据库如何保证一致性"></a>数据库如何保证一致性</h2><p>一致性由其他三大特性保证，程序代码要保证业务上的一致性</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><h4 id="添加线程"><a href="#添加线程" class="headerlink" title="添加线程"></a>添加线程</h4><p>当出现锁竞争以及释放锁的时候，AQS 同步队列中的节点会发生变化<br><img src="https://img-blog.csdnimg.cn/33188515e0eb44faa67106d48c0558ea.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<ul>
+<li>队列操作的变化：新的线程封装成 Node 节点追加到同步队列中，设置 prev 节点以及修改当前节点的前置节点的 next 节点指向自己；</li>
+<li>tail 指向变化：通过同步器将 tail 重新指向新的尾部节点。<h4 id="销毁线程"><a href="#销毁线程" class="headerlink" title="销毁线程"></a>销毁线程</h4>第一个 head 节点表示获取锁成功的节点，当头结点在释放同步状态时，会唤醒后继节点，如果后继节点获得锁成功，会把自己设置为头结点<br><img src="https://img-blog.csdnimg.cn/58333e8c7310454e819205749b8e93e9.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+<li>head 节点指向：修改 head 节点指向下一个获得锁的节点；</li>
+<li>新的获得锁的节点：第二个节点被 head 指向了，此时将 prev 的指针指向 null，因为它自己本身就是第一个首节点，所以 pre 指向 null。</li>
+</ul>
+<h2 id="AQS-与-ReentrantLock-的联系"><a href="#AQS-与-ReentrantLock-的联系" class="headerlink" title="AQS 与 ReentrantLock 的联系"></a>AQS 与 ReentrantLock 的联系</h2><p>ReentrantLock 是根据 AQS 实现的独占锁，提供了两个构造方法</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       sync <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NonfairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token keyword">public</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> fair<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       sync <span class="token operator">=</span> fair <span class="token operator">?</span> <span class="token keyword">new</span> <span class="token class-name">FairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">NonfairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>ReentrantLock 有三个内部类：Sync，NonfairSync，FairSync<br><img src="https://img-blog.csdnimg.cn/52499b5bb0d5442c8c604837e047566c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_13,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>这三个内部类都是基于 AQS 进行的实现，所以ReentrantLock 是基于 AQS 进行的实现。</p>
+<p>ReentrantLock 提供两种类型的锁：</p>
+<ul>
+<li>公平锁-FairSync</li>
+<li>非公平锁-NonfairSync</li>
+<li>默认实现是 NonFairSync。</li>
+</ul>
 
                 
             </div>
@@ -516,7 +522,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/10/01/mysql-ru-he-bao-zheng-acid/">https://stream1080.github.io/2021/10/01/mysql-ru-he-bao-zheng-acid/</a>
+                    <a href="https://stream1080.github.io/2021/09/22/aqs-yuan-li/">https://stream1080.github.io/2021/09/22/aqs-yuan-li/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -554,12 +560,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/ACID/">
-                                    <span class="chip bg-color">ACID</span>
-                                </a>
-                            
-                                <a href="/tags/MySQL/">
-                                    <span class="chip bg-color">MySQL</span>
+                                <a href="/tags/%E9%98%9F%E5%88%97/">
+                                    <span class="chip bg-color">队列</span>
                                 </a>
                             
                         </div>
@@ -609,13 +611,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/10/02/xian-liu-suan-fa-you-na-xie/">
+                <a href="/2021/10/01/mysql-ru-he-bao-zheng-acid/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="限流算法有哪些？">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="MySQL如何保证ACID">
                         
-                        <span class="card-title">限流算法有哪些？</span>
+                        <span class="card-title">MySQL如何保证ACID</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -626,14 +628,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-02
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-01
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
-                                    分布式微服务
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
                                 </a>
                             
                             
@@ -643,12 +645,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%99%90%E6%B5%81/">
-                        <span class="chip bg-color">限流</span>
+                    <a href="/tags/ACID/">
+                        <span class="chip bg-color">ACID</span>
                     </a>
                     
-                    <a href="/tags/%E7%AE%97%E6%B3%95/">
-                        <span class="chip bg-color">算法</span>
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
                     </a>
                     
                 </div>
@@ -659,7 +661,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
                 <a href="/2021/09/22/aqs-yuan-li/">
@@ -693,6 +695,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
