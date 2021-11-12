@@ -378,6 +378,31 @@
     </entry>
     
     
+    
+    <entry>
+      <title>Java的IO流</title>
+      <link href="/2021/10/03/java-de-io-liu/"/>
+      <url>/2021/10/03/java-de-io-liu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>同步和异步是通信机制</p><ul><li><strong>同步</strong>：同步IO是用户线程发起IO请求后需要等待或轮询内核IO操作完成后才能继续执行。</li><li><strong>异步</strong>：异步IO是用户线程发起IO请求后可以继续执行，当内核IO操作完成后会通知用户线程，或调用用户线程注册的回调函数。</li></ul><h2 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h2><p>阻塞和非阻塞是调用状态</p><ul><li><strong>阻塞</strong>：阻塞IO是IO操作需要彻底完成后才能返回用户空间。</li><li><strong>非阻塞</strong>：非阻塞IO是IO操作调用后立即返回一个状态值，无需等IO操作彻底完成。</li></ul><h2 id="BIO"><a href="#BIO" class="headerlink" title="BIO"></a>BIO</h2><p>BIO是同步阻塞式IO，是JDK1.4 之前的IO模型。</p><ul><li>服务器实现模式为一个连接请求对应一个线程，服务器需要为每一个客户端请求创建一个线程，如果这个连接不做任何事会造成不必要的线程开销。</li><li>可以通过线程池改善，这种IO称为伪异步IO。适用连接数目少且服务器资源多的场景。</li></ul><h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><p>NIO是同步非阻塞IO，JDK1.4引入。服务器实现模式为多个连接请求对应一个线程，客户端连接请求会注册到一个多路复用器Selector，Selector 轮询到连接有IO请求时才启动一个线程处理。适用连接数目多且连接时间短的场景。</p><ul><li>同步是指线程还是要不断接收客户端连接并处理数据</li><li>非阻塞是指如果一个管道没有数据，不需要等待，可以轮询下一个管道。</li></ul><p>核心组件<br><img src="https://img-blog.csdnimg.cn/998e97c315244aa8a478105aac7f055b.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h4 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h4><p>多路复用器，轮询检查多个Channel的状态，判断注册事件是否发生，即判断<br>Channel是否处于可读或可写状态。使用前需要将Channel注册到Selector，注册后会得到一个SelectionKey，通过SelectionKey获取Channel和Selector相关信息。</p><h4 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h4><p>双向通道，替换了BIO 中的Stream流，不能直接访问数据，要通过Buffer来读写数据，也可以和其他Channel交互。<br><img src="https://img-blog.csdnimg.cn/edee367f257d4e99bed4bd022bd46dd6.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h4 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h4><p><img src="https://img-blog.csdnimg.cn/f0d063ff0fac40a88dfc149007f61bf0.png" alt="在这里插入图片描述"></p><p>缓冲区，本质是一块可读写数据的内存，用来简化数据读写。<br>Buffer三个重要属性：</p><ul><li>position下次读写数据的位置</li><li>limit 本次读写的极限位置</li><li>capacity 最大容量<ul><li>flip将写转为读，底层实现原理把position置0，并把limit设为当前的position值</li><li>clear将读转为写模式(用于读完全部数据的情况，把position置0，limit设为capacity)</li><li>compact将读转为写模式(用于存在未读数据的情况，让position指向未读数据的下一个)</li><li>通道方向和Buffer方向相反，读数据相当于向Buffer写，写数据相当于从Buffer读</li></ul></li></ul><p>使用步骤</p><ul><li>向Buffer写数据，调用flip方法转为读模式；</li><li>从Buffer中读数据，调用clear或compact方法清空缓冲区；</li></ul><h2 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h2><p>异步非阻塞IO，JDK1.7引入，服务器实现模式为一个有效请求对应一个线程，客户端的IO请求都是由操作系统先完成IO操作后再通知服务器应用来直接使用准备好的数据。适用连接数目多且连接时间长的场景。</p><ul><li>异步是指服务端线程接收到客户端管道后就交给底层处理IO通信，自己可以做其他事情</li><li>非阻塞是指客户端有数据才会处理，处理好再通知服务器。</li></ul><h4 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h4><ul><li>通过Future的get方法进行阻塞式调用</li><li>实现CompletionHandler接口，重写请求成功的回调方法completed 和请求失败回调方法failed </li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> IO流 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
   
   
 </search>
