@@ -4,11 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Java的IO流, stream blog">
-    <meta name="description" content="基本概念同步和异步同步和异步是通信机制
+    <meta name="keywords" content="限流算法有哪些？, stream blog">
+    <meta name="description" content="在开发高并发系统时，有三把利器用来保护系统：
 
-同步：同步IO是用户线程发起IO请求后需要等待或轮询内核IO操作完成后才能继续执行。
-异步：异步IO是用户线程发起IO请求后可以继续执行，当内核IO操作完成后会通知用户线程，或调用用户线程注册的回调">
+缓存
+降级
+限流
+
+那么何为限流呢？顾名思义，限流就是限制流量，那又有那些限流算法呢？
+计数器算法计数器限流算法，是指在指定的时间周期内累加访问次数,达到设定的需值时，触发限流策略。下一个时间">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +24,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Java的IO流 | stream blog</title>
+    <title>限流算法有哪些？ | stream blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -268,12 +272,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Java的IO流</h1>
+                    <h1 class="description center-align post-title">限流算法有哪些？</h1>
                 </div>
             </div>
         </div>
@@ -389,8 +393,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/IO%E6%B5%81/">
-                                <span class="chip bg-color">IO流</span>
+                            <a href="/tags/%E9%99%90%E6%B5%81/">
+                                <span class="chip bg-color">限流</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%AE%97%E6%B3%95/">
+                                <span class="chip bg-color">算法</span>
                             </a>
                         
                     </div>
@@ -401,8 +409,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
-                                多线程
+                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
+                                分布式微服务
                             </a>
                         
                     </div>
@@ -414,7 +422,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-10-03
+                    2021-10-02
                 </div>
                 
 
@@ -423,14 +431,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    931
+                    1.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    3 Min
+                    5 Min
                 </div>
                 
 
@@ -448,56 +456,60 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>同步和异步是通信机制</p>
+                <p>在开发高并发系统时，有三把利器用来保护系统：</p>
 <ul>
-<li><strong>同步</strong>：同步IO是用户线程发起IO请求后需要等待或轮询内核IO操作完成后才能继续执行。</li>
-<li><strong>异步</strong>：异步IO是用户线程发起IO请求后可以继续执行，当内核IO操作完成后会通知用户线程，或调用用户线程注册的回调函数。</li>
+<li>缓存</li>
+<li>降级</li>
+<li>限流</li>
 </ul>
-<h2 id="阻塞和非阻塞"><a href="#阻塞和非阻塞" class="headerlink" title="阻塞和非阻塞"></a>阻塞和非阻塞</h2><p>阻塞和非阻塞是调用状态</p>
+<p>那么何为限流呢？顾名思义，限流就是限制流量，那又有那些限流算法呢？</p>
+<h2 id="计数器算法"><a href="#计数器算法" class="headerlink" title="计数器算法"></a>计数器算法</h2><p>计数器限流算法，是指在指定的时间周期内累加访问次数,达到设定的需值时，触发限流策略。<br>下一个时间周期进行访问时，访问次数清零。此算法无论在单机还是分布式环境下实现都非常简单，使用redis的incr原子自增性,再结合key的过期时间，即可轻松实现。<br><img src="https://img-blog.csdnimg.cn/acd8164f89de46bfa67b8fff1149c755.png" alt="在这里插入图片描述"></p>
 <ul>
-<li><strong>阻塞</strong>：阻塞IO是IO操作需要彻底完成后才能返回用户空间。</li>
-<li><strong>非阻塞</strong>：非阻塞IO是IO操作调用后立即返回一个状态值，无需等IO操作彻底完成。</li>
+<li>设置一个计数器计数器，每当一个请求过来的时候，计数器就加1，如果计数器的值大于100并且该请求与第一个 请求的间隔时间还在1分钟之内，那么说明请求数过多；</li>
+<li>如果该请求与第一个请求的间隔时间大于1分钟，且计数器的值还在限流范围内，那么就重置 计数器</li>
 </ul>
-<h2 id="BIO"><a href="#BIO" class="headerlink" title="BIO"></a>BIO</h2><p>BIO是同步阻塞式IO，是JDK1.4 之前的IO模型。</p>
+<p>这个算法实现简单，但是有一个十分致命的问题，那就是临界问题<br><img src="https://img-blog.csdnimg.cn/57e92cf031304c1a9d6a4644a9f0c322.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h3 id="临界问题"><a href="#临界问题" class="headerlink" title="临界问题"></a>临界问题</h3><p>在第一个时间周期结束前的一秒进来100个请求，在第二个时间周期开始后一秒，进来100个请求，那么这个系统在两秒之内处理了200个请求，没有达到我们要求的限流</p>
+<p>我们规定的是1分钟最多100个请求，也就是每秒大约1.7个请求，用户通过在时间窗口的重置节点处突发请求，可以瞬间超过我们的速率限制。用户有可能通过算法的这个漏洞，瞬间压垮我们的系统。</p>
+<h2 id="滑动时间窗口"><a href="#滑动时间窗口" class="headerlink" title="滑动时间窗口"></a>滑动时间窗口</h2><p>为了应对计数器算法的临界问题，人们想出来滑动窗口算法。</p>
 <ul>
-<li>服务器实现模式为一个连接请求对应一个线程，服务器需要为每一个客户端请求创建一个线程，如果这个连接不做任何事会造成不必要的线程开销。</li>
-<li>可以通过线程池改善，这种IO称为伪异步IO。适用连接数目少且服务器资源多的场景。</li>
+<li>在TCP网络通信协议中。就采用滑动时间窗口算法来解决网络拥堵问题。</li>
+<li>滑动时间官口是将计数箱算法中的实际周期切分成多个小的时间窗口，分别在每个小的时间官口中记录访问次数。</li>
+<li>然后根据时间将官口往前滑动并删吟过期的小时间会口。最终只需要统计滑动官口范围内的小时间离口的总的清求数即可。</li>
 </ul>
-<h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><p>NIO是同步非阻塞IO，JDK1.4引入。服务器实现模式为多个连接请求对应一个线程，客户端连接请求会注册到一个多路复用器Selector，Selector 轮询到连接有IO请求时才启动一个线程处理。适用连接数目多且连接时间短的场景。</p>
+<p><img src="https://img-blog.csdnimg.cn/064eeb2427b244c2833f98a3370f9916.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>整个红色的矩形框表示一个时间窗口，一个时间窗口就是一分钟。然后我们将时间窗口进行划分</p>
 <ul>
-<li>同步是指线程还是要不断接收客户端连接并处理数据</li>
-<li>非阻塞是指如果一个管道没有数据，不需要等待，可以轮询下一个管道。</li>
+<li>比如图中，我们就将滑动窗口 划成了3格，所以每格代表的是20秒钟。</li>
+<li>每过20秒钟，我们的时间窗口就会往右滑动一格，每一个格子都有自己独立的计数器</li>
+<li>比如当一个请求 在0:12秒的时候到达，那么0:00~0:19对应的计数器就会加1。</li>
 </ul>
-<p>核心组件<br><img src="https://img-blog.csdnimg.cn/998e97c315244aa8a478105aac7f055b.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h4 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h4><p>多路复用器，轮询检查多个Channel的状态，判断注册事件是否发生，即判断<br>Channel是否处于可读或可写状态。使用前需要将Channel注册到Selector，注册后会得到一个SelectionKey，通过SelectionKey获取Channel和Selector相关信息。</p>
-<h4 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h4><p>双向通道，替换了BIO 中的Stream流，不能直接访问数据，要通过Buffer来读写数据，也可以和其他Channel交互。<br><img src="https://img-blog.csdnimg.cn/edee367f257d4e99bed4bd022bd46dd6.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h4 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h4><p><img src="https://img-blog.csdnimg.cn/f0d063ff0fac40a88dfc149007f61bf0.png" alt="在这里插入图片描述"></p>
-<p>缓冲区，本质是一块可读写数据的内存，用来简化数据读写。<br>Buffer三个重要属性：</p>
+<h3 id="滑动窗口是怎么解决计数器算法的临界问题的呢？"><a href="#滑动窗口是怎么解决计数器算法的临界问题的呢？" class="headerlink" title="滑动窗口是怎么解决计数器算法的临界问题的呢？"></a>滑动窗口是怎么解决计数器算法的临界问题的呢？</h3><p>还是刚才那个例子，0:59到达的100个请求会落在最后的黄色格子中，而1:00到达的请求会落在红色的格子中。当时间到达1:00时，我们的窗口会往右移动一格，那么此时时间周期窗口内的总请求数量一共是200个，超过了限定的一个周期100个，所以触发了限流。</p>
 <ul>
-<li>position下次读写数据的位置</li>
-<li>limit 本次读写的极限位置</li>
-<li>capacity 最大容量<ul>
-<li>flip将写转为读，底层实现原理把position置0，并把limit设为当前的position值</li>
-<li>clear将读转为写模式(用于读完全部数据的情况，把position置0，limit设为capacity)</li>
-<li>compact将读转为写模式(用于存在未读数据的情况，让position指向未读数据的下一个)</li>
-<li>通道方向和Buffer方向相反，读数据相当于向Buffer写，写数据相当于从Buffer读</li>
+<li>计数器算法和滑动窗口算法原理一致，滑动窗口算法就是计数器算法。只是计数器算法没有对时间窗口做进一步地划分，所以只有1格。</li>
+<li>当滑动窗口的格子划分的越多，那么滑动窗口的滚动就越平滑，限流的统计就会越精确。</li>
 </ul>
-</li>
-</ul>
-<p>使用步骤</p>
+<h2 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h2><p>漏桶算法的原理就像它的名字一样, 我们维持一个漏斗， 它有恒定的流出速度,不管水流流入的速度有多快，漏斗出水的速度始终保持不变,类似于消息中间件,不管消息的生产者请求量有多大,消息的处理能力取决于消费者<br><img src="https://img-blog.csdnimg.cn/3c18214711f2423fbe29a3454cb84121.png" alt="在这里插入图片描述"></p>
+<p>漏桶的容量=漏桶的流出速度*可接受的等待时长。</p>
 <ul>
-<li>向Buffer写数据，调用flip方法转为读模式；</li>
-<li>从Buffer中读数据，调用clear或compact方法清空缓冲区；</li>
+<li>在这个容量范围内的清求可以排队等待系统的处理，超过这个容量的清求，才会被抛弃。</li>
 </ul>
-<h2 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h2><p>异步非阻塞IO，JDK1.7引入，服务器实现模式为一个有效请求对应一个线程，客户端的IO请求都是由操作系统先完成IO操作后再通知服务器应用来直接使用准备好的数据。适用连接数目多且连接时间长的场景。</p>
+<p>在漏桶限流算法中，存在下面几种情况:</p>
+<ol>
+<li>当清求速度大于漏桶的流出速度时，也就是清求量大于当前服务所能处理的最大极跟值时，触发限流策略.</li>
+<li>请求速度小于或等于漏桶的流出速度时，也就是服务的处理能力大于或等于请求量时，正常执行。</li>
+</ol>
+<p>漏桶算法有一个缺点:</p>
 <ul>
-<li>异步是指服务端线程接收到客户端管道后就交给底层处理IO通信，自己可以做其他事情</li>
-<li>非阻塞是指客户端有数据才会处理，处理好再通知服务器。</li>
+<li>当系统在短时间内有突发的大流量时，漏桶算法处理不了，相当于桶装不了那么大水</li>
 </ul>
-<h4 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h4><ul>
-<li>通过Future的get方法进行阻塞式调用</li>
-<li>实现CompletionHandler接口，重写请求成功的回调方法completed 和请求失败回调方法failed </li>
-</ul>
+<h2 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h2><p>令牌桶算法，是增加一个大小固定的容著,也就是令牌桶，系统以恒定的速率向令牌桶中放入令牌,如果有客户端来请求，先需要从令牌桶中拿一个令牌，拿到令牌，才有资格访问系统，这时令牌桶中少一个令牌。当令牌桶满的时候，再向令牌桶生成令牌时，令牌会被抛弃。<br><img src="https://img-blog.csdnimg.cn/b8fa455214134741bc3731fb991f7859.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>在令牌桶算法中，存在以下几种情况:</p>
+<ol>
+<li>请求速度大于令牌的生成速度：那么令牌桶中的令牌会被取完，后续再进来的清求，由于拿不到令牌，会被限流。</li>
+<li>清求速度等于令牌的生成速度：那么此时系统处于平稳状态。</li>
+<li>请求速度小于令牌的生成速度:那么此时系统的访问量远远低于系统的并发能力，请求可以被正常处理,令牌桶算法，由于有一个桶的存在，可以处理短时间大流量的场景，这是令牌桶和漏桶的一个区别。</li>
+</ol>
 
                 
             </div>
@@ -524,7 +536,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/10/03/java-de-io-liu/">https://stream1080.github.io/2021/10/03/java-de-io-liu/</a>
+                    <a href="https://stream1080.github.io/2021/10/02/xian-liu-suan-fa-you-na-xie/">https://stream1080.github.io/2021/10/02/xian-liu-suan-fa-you-na-xie/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -562,8 +574,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/IO%E6%B5%81/">
-                                    <span class="chip bg-color">IO流</span>
+                                <a href="/tags/%E9%99%90%E6%B5%81/">
+                                    <span class="chip bg-color">限流</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%AE%97%E6%B3%95/">
+                                    <span class="chip bg-color">算法</span>
                                 </a>
                             
                         </div>
@@ -613,13 +629,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/10/04/mysql-de-ri-zhi-wen-jian/">
+                <a href="/2021/10/03/java-de-io-liu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="MySQL的日志文件">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java的IO流">
                         
-                        <span class="card-title">MySQL的日志文件</span>
+                        <span class="card-title">Java的IO流</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -630,14 +646,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-04
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-03
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                    数据库
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
@@ -647,12 +663,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MySQL/">
-                        <span class="chip bg-color">MySQL</span>
-                    </a>
-                    
-                    <a href="/tags/%E6%97%A5%E5%BF%97/">
-                        <span class="chip bg-color">日志</span>
+                    <a href="/tags/IO%E6%B5%81/">
+                        <span class="chip bg-color">IO流</span>
                     </a>
                     
                 </div>
@@ -663,7 +675,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
                 <a href="/2021/10/02/xian-liu-suan-fa-you-na-xie/">
@@ -697,6 +709,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
