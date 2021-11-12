@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="select、poll和epoll的区别, stream blog">
-    <meta name="description" content="进程所能打开的最大连接数select单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是3232，同理64位机器上FD_ SETSIZE为3264) 
-tips：我们可以对进行修">
+    <meta name="keywords" content="TCP三次握手和四次挥手, stream blog">
+    <meta name="description" content="概念SYN-(Synchronize Sequence Numbers)
+同步序列编号。是TCP/IP建立连接时使用的握手信号。在客户机和服务器之间建立TCP连接时，首先会发送的一个信号。客户端在接受到SYN消息时，就会在自己的段内生成一个">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@ tips：我们可以对进行修">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>select、poll和epoll的区别 | stream blog</title>
+    <title>TCP三次握手和四次挥手 | stream blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -266,12 +266,12 @@ tips：我们可以对进行修">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">select、poll和epoll的区别</h1>
+                    <h1 class="description center-align post-title">TCP三次握手和四次挥手</h1>
                 </div>
             </div>
         </div>
@@ -387,8 +387,16 @@ tips：我们可以对进行修">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/IO%E6%B5%81/">
-                                <span class="chip bg-color">IO流</span>
+                            <a href="/tags/TCP/">
+                                <span class="chip bg-color">TCP</span>
+                            </a>
+                        
+                            <a href="/tags/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B/">
+                                <span class="chip bg-color">三次握手</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
+                                <span class="chip bg-color">四次挥手</span>
                             </a>
                         
                     </div>
@@ -399,8 +407,8 @@ tips：我们可以对进行修">
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                操作系统
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
+                                计算机网络
                             </a>
                         
                     </div>
@@ -412,7 +420,7 @@ tips：我们可以对进行修">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-07
+                    2021-09-05
                 </div>
                 
 
@@ -421,14 +429,14 @@ tips：我们可以对进行修">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.3k
+                    981
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    3 Min
                 </div>
                 
 
@@ -446,39 +454,46 @@ tips：我们可以对进行修">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="进程所能打开的最大连接数"><a href="#进程所能打开的最大连接数" class="headerlink" title="进程所能打开的最大连接数"></a>进程所能打开的最大连接数</h2><h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><p>单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是32<em>32，同理64位机器上FD_ SETSIZE为32</em>64) </p>
-<p>tips：我们可以对进行修改，然后重新编译内核，但是性能可能会受到影响，这需要进一步的测试。</p>
-<h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p>poll本质上和select没有区别，但是它没有最大连接数的限制，原因是它是基于链表来存储的</p>
-<h4 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h4><p>虽然连接数有上限，但是很大，1G内存的机器上可以打开10万左右的连接，2G内存的机器可以打开20万左右的连接</p>
-<h2 id="FD剧增后带来的IO效率问题"><a href="#FD剧增后带来的IO效率问题" class="headerlink" title="FD剧增后带来的IO效率问题"></a>FD剧增后带来的IO效率问题</h2><h4 id="select-1"><a href="#select-1" class="headerlink" title="select"></a>select</h4><p>因为每次调用时都会对连接进行线性遍历，所以随着FD的增加会造成遍历<br>速度慢的“线性下降性能问题”。</p>
-<h4 id="poll-1"><a href="#poll-1" class="headerlink" title="poll"></a>poll</h4><p>由于poll与select的本质是一样的，所有poll有着和select一样的问题</p>
-<h4 id="epoll-1"><a href="#epoll-1" class="headerlink" title="epoll"></a>epoll</h4><p>因为epoll内核中实现是根据每个fd上的callback函数来实现的，只有活跃的socket才会主动调用calback,所以在活跃socket较少的情况下，使用epoll没有前面两者的线性下降的性能问题，但是所有socket都很活跃的情况下，可能会有性能问题。</p>
-<h2 id="消息传递方式"><a href="#消息传递方式" class="headerlink" title="消息传递方式"></a>消息传递方式</h2><h4 id="select-2"><a href="#select-2" class="headerlink" title="select"></a>select</h4><p>内核需要将消息传递到用户空间，都需要内核拷贝动作</p>
-<h4 id="poll-2"><a href="#poll-2" class="headerlink" title="poll"></a>poll</h4><p>与select一样</p>
-<h4 id="epoll-2"><a href="#epoll-2" class="headerlink" title="epoll"></a>epoll</h4><p>epoll通过内核和用户空间共享一块内存来 实现的</p>
-<h2 id="select和epoll的区别。"><a href="#select和epoll的区别。" class="headerlink" title="select和epoll的区别。"></a>select和epoll的区别。</h2><p>select 函数监视的文件描述符分3类，分别是writefds、readfds、和exceptfds。调用后select函数会阻塞，直到有描述符就绪（有数据 可读、可写、或者有except），或者超时（timeout指定等待时间，如果立即返回设为null即可），函数返回。当select函数返回后，可以通过遍历fdset，来找到就绪的描述符。</p>
-<p>select目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select的一个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但是这样也会造成效率的降低。</p>
-<p>内核需要传递消息到用户空间，需要内存拷贝</p>
-<p>相对于select和poll来说，epoll更加灵活，没有描述符限制。epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p>
-<p>epoll能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）。</p>
-<p>效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。</p>
-<h2 id="epoll的两种模式"><a href="#epoll的两种模式" class="headerlink" title="epoll的两种模式"></a>epoll的两种模式</h2><p>epoll对文件描述符的操作有两种模式：</p>
-<ul>
-<li>LT（level trigger）默认模式</li>
-<li>ET（edge trigger）</li>
+                <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h4 id="SYN-Synchronize-Sequence-Numbers"><a href="#SYN-Synchronize-Sequence-Numbers" class="headerlink" title="SYN-(Synchronize Sequence Numbers)"></a>SYN-(Synchronize Sequence Numbers)</h4><ul>
+<li>同步序列编号。是TCP/IP建立连接时使用的握手信号。在客户机和服务器之间建立TCP连接时，首先会发送的一个信号。客户端在接受到SYN消息时，就会在自己的段内生成一个随机值seq=x。<h4 id="ACK-Acknowledge-character"><a href="#ACK-Acknowledge-character" class="headerlink" title="ACK-(Acknowledge character)"></a>ACK-(Acknowledge character)</h4></li>
+<li>确认字符，表示发来的数据已确认接收无误。最后，客户端将ACK发送给服务器。序列号被设置为所接收的确认值即Y + 1。<h4 id="SYN-ACK"><a href="#SYN-ACK" class="headerlink" title="SYN-ACK"></a>SYN-ACK</h4></li>
+<li>服务器收到SYN后，打开客户端连接，发送一个SYN-ACK作为答复。确认号设置为比接收到的序列号多一个，即X+ 1，服务器为数据包选择的序列号是另一个随机数Y。<h4 id="FIN"><a href="#FIN" class="headerlink" title="FIN"></a>FIN</h4></li>
+<li>用于断开连接的</li>
 </ul>
-<h3 id="LT模式"><a href="#LT模式" class="headerlink" title="LT模式"></a>LT模式</h3><p>当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序可以不立即处理该事件。下次调用epoll_wait时，会再次响应应用程序并通知此事件。</p>
-<p>LT(level triggered)是缺省的工作方式，并且同时支持block和no-block socket。<br>在这种做法中，内核告诉你一个文件描述符是否就绪了，然后你可以对这个就绪的fd进行IO操作。如果你不作任何操作，内核还是会继续通知你的。</p>
-<h3 id="ET模式"><a href="#ET模式" class="headerlink" title="ET模式"></a>ET模式</h3><p>当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序必须立即处理该事件。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</p>
-<p>ET(edge-triggered)是高速工作方式，只支持no-block socket。</p>
-<p>在这种模式下，当描述符从未就绪变为就绪时，内核通过epoll告诉你然后它会假设你知道文件描述符已经就绪，并且不会再为那个文件描述符发送更多的就绪通知，直到你做了某些操作导致那个文件描述符不再为就绪状态了</p>
+<h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><h4 id="三次握手过程"><a href="#三次握手过程" class="headerlink" title="三次握手过程"></a>三次握手过程</h4><p>建立TCP连接需要进行三次握手，分配初始序列号和资源，在相互确认之后才开始数据的传输。握手初始化了传输可靠性以及数据顺序性必要的信息，这些信息包括两个方向的初始序列号，确认号由初始序列号生成，使用3次握手是因为3次握手已经准备好了传输可靠性以及数据顺序性所必要的信息</p>
 <ul>
-<li>比如，你在发送，接收或者接收请求，或者发送接收的数据少于一定量时导致了一个EWOULDBLOCK 错误</li>
+<li>客户端主动打开</li>
+<li>服务端被动打开</li>
 </ul>
-<p>如果一直不对这个fd作IO操作(从而导致它再次变成未就绪)，内核不会发送更多的通知(only once)。</p>
+<h3 id="握手过程"><a href="#握手过程" class="headerlink" title="握手过程"></a>握手过程</h3><p><img src="https://img-blog.csdnimg.cn/64eada28b1244e1a93be6d2a1cf55a71.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
 <ul>
-<li>ET模式在很大程度上减少了epoll事件被重复触发的次数，因此效率要比LT模式高。</li>
-<li>epoll工作在ET模式的时候，必须使用非阻塞套接口，以避免由于一个文件句柄的阻塞读/阻塞写操作把处理多个文件描述符的任务饿死。</li>
+<li><p>第一次握手:客户端将标志位SYN置为1，随机产生一个值序列号seq=x，并将该数据包发送给服务端，客户端进入syn_sent状态，等待服务端确认。</p>
+</li>
+<li><p>第二次握手:服务端收到数据包后由标志位SYN=1知道客户端请求建立连接，服务端将标志位SYN和 ACK都置为1，ack=x+1,随机产生一个值seq=y，并将该数据包发送给客户端以确认连接请求，服务端进入syn_rcvd状态。</p>
+</li>
+<li><p>第三次握手:客户端收到确认后检查,如果正确则将标志位ACK为1，ack=y+1，并将该数据包发送给服务端，服务端进行检查如果正确则连接建立成功，客户端和服务端进入established状态，完成三次握手，随后客户端和服务端之间可以开始传输数据了</p>
+</li>
+</ul>
+<h4 id="为什么需要三次握手"><a href="#为什么需要三次握手" class="headerlink" title="为什么需要三次握手"></a>为什么需要三次握手</h4><ul>
+<li>TCP的连接是发送消息两个方向的连接都要建立成功。</li>
+<li>如果要保证双向连接都成功的话，三次通信是最少的次数了。</li>
+<li>大于三次的话，后面的次数通信就没有必要了，是在浪费资源。</li>
+</ul>
+<h2 id="TCP四次挥手"><a href="#TCP四次挥手" class="headerlink" title="TCP四次挥手"></a>TCP四次挥手</h2><p>断开TCP连接需要四次挥手</p>
+<h4 id="挥手过程"><a href="#挥手过程" class="headerlink" title="挥手过程"></a>挥手过程</h4><p><img src="https://img-blog.csdnimg.cn/d6b11ef8598a4a78b47dfe037816ebfd.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_15,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<ul>
+<li><p>第一次挥手：客户端发送一个FIN，用来关闭客户端到服务端的数据传送，客户端进入finwait1状态。</p>
+</li>
+<li><p>第二次挥手：服务端收到FIN后，发送一个ACK给客户端，确认序号为收到序号+1，服务端进入Close_wait状态。此时TCP连接处于半关闭状态，即客户端已经没有要发送的数据了，但服务端若发送数据，则客户端仍要接收。</p>
+</li>
+<li><p>第三次挥手：服务端发送一个FIN，用来关闭服务端到客户端的数据传送，服务端进入Last_ack状态。</p>
+</li>
+<li><p>第四次挥手：客户端收到FIN后，客户端进入Time_wait状态，接着发送一个ACK给服务端，确认后，服务端进入Closed状态，完成四次挥手。</p>
+</li>
+</ul>
+<h4 id="为什么要四次挥手"><a href="#为什么要四次挥手" class="headerlink" title="为什么要四次挥手"></a>为什么要四次挥手</h4><ul>
+<li>任何一方都可以在数据传送结束后发出连接释放的通知，待对方确认后进入半关闭状态。</li>
+<li>当另一方也没有数据再发送的时候，则发出连接释放通知，对方确认后就完全关闭了TCP连接。</li>
 </ul>
 
                 
@@ -506,7 +521,7 @@ tips：我们可以对进行修">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/11/07/select-poll-he-epoll-de-qu-bie/">https://stream1080.github.io/2021/11/07/select-poll-he-epoll-de-qu-bie/</a>
+                    <a href="https://stream1080.github.io/2021/09/05/tcp-san-ci-wo-shou-he-si-ci-hui-shou/">https://stream1080.github.io/2021/09/05/tcp-san-ci-wo-shou-he-si-ci-hui-shou/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -544,8 +559,16 @@ tips：我们可以对进行修">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/IO%E6%B5%81/">
-                                    <span class="chip bg-color">IO流</span>
+                                <a href="/tags/TCP/">
+                                    <span class="chip bg-color">TCP</span>
+                                </a>
+                            
+                                <a href="/tags/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B/">
+                                    <span class="chip bg-color">三次握手</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
+                                    <span class="chip bg-color">四次挥手</span>
                                 </a>
                             
                         </div>
@@ -595,7 +618,60 @@ tips：我们可以对进行修">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/11/12/tcp-san-ci-wo-shou-he-si-ci-hui-shou-1/">
+                <a href="/2021/09/12/hashmap-de-kuo-rong/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="HashMap的扩容">
+                        
+                        <span class="card-title">HashMap的扩容</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Java%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    Java基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/HashMap/">
+                        <span class="chip bg-color">HashMap</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%89%A9%E5%AE%B9/">
+                        <span class="chip bg-color">扩容</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Current&nbsp;<i class="far fa-dot-circle"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/09/05/tcp-san-ci-wo-shou-he-si-ci-hui-shou/">
                     <div class="card-image">
                         
                         
@@ -611,63 +687,35 @@ tips：我们可以对进行修">
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-12
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/11/06/io-duo-lu-fu-yong/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="IO多路复用">
-                        
-                        <span class="card-title">IO多路复用</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-05
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    计算机网络
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/IO%E6%B5%81/">
-                        <span class="chip bg-color">IO流</span>
+                    <a href="/tags/TCP/">
+                        <span class="chip bg-color">TCP</span>
+                    </a>
+                    
+                    <a href="/tags/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B/">
+                        <span class="chip bg-color">三次握手</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
+                        <span class="chip bg-color">四次挥手</span>
                     </a>
                     
                 </div>
