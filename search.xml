@@ -4,19 +4,6 @@
   
     
     <entry>
-      <title>TCP三次握手和四次挥手</title>
-      <link href="/2021/11/12/tcp-san-ci-wo-shou-he-si-ci-hui-shou-1/"/>
-      <url>/2021/11/12/tcp-san-ci-wo-shou-he-si-ci-hui-shou-1/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>select、poll和epoll的区别</title>
       <link href="/2021/11/07/select-poll-he-epoll-de-qu-bie/"/>
       <url>/2021/11/07/select-poll-he-epoll-de-qu-bie/</url>
@@ -724,6 +711,33 @@
             <tag> HashMap </tag>
             
             <tag> 扩容 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>MySQL索引(二)</title>
+      <link href="/2021/09/05/mysql-suo-yin-er/"/>
+      <url>/2021/09/05/mysql-suo-yin-er/</url>
+      
+        <content type="html"><![CDATA[<h1 id="MySQL索引-二"><a href="#MySQL索引-二" class="headerlink" title="MySQL索引(二)"></a>MySQL索引(二)</h1><h2 id="自适应哈希索引"><a href="#自适应哈希索引" class="headerlink" title="自适应哈希索引"></a>自适应哈希索引</h2><ul><li>自适应哈希索引是InnoDB引擎的一个特殊功能，当它注意到某些索引值被使用的非常频繁时，会在内<br>存中基于B-Tree索引之上再创键一个哈希索引，这样就让B-Tree索引也具有哈希索引的一些优点，比<br>如快速哈希查找</li><li>这是一个完全自动的内部行为，用户无法控制或配置，但如果有必要可以关闭该功能。</li></ul><h2 id="空间索引"><a href="#空间索引" class="headerlink" title="空间索引"></a>空间索引</h2><ul><li>MyISAM的表支持空间索引，可以用作地理数据存储</li><li>和B-Tree索引不同，这类索引无需前缀查询。</li><li>空间索引会从所有维度来索引数据，查询时可以有效地使用任意维度来组合查询。</li><li>必须使用MySQL的GIS即地理信息系统的相关函数来维护数据</li><li>MySQL对地理信息的支持并不完善，因此大基本不会使用这种索引。</li></ul><h2 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h2><p>通过数值比较、范围过滤等就可以完成绝大多数需要的查询，但如果希望通过关键字匹配进行查询，就<br>需要基于相似度的查询，而不是精确的数值比较，全文索引就是为这种场景设计的。</p><ul><li>MyISAM的全文索引是一种特殊的B-Tree索引，共有两层</li><li>第一层是所有关键字，然后对于每一个关键字的第二层，包含的是一组相关的”文档指针”。</li><li>全文索引不会索引文档对象中的所有词语，它会根据规则过滤掉一些词语</li></ul><h2 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h2><p>聚簇索引并不是一种索引类型，而是一种数据存储方式。InnoDB 的聚簇索引实际上在同一个结构中保存<br>了B-Tree索引和数据行。当表有聚餐索引时，它的行数据实际上存放在索引的叶子页中，因为无法同<br>时把数据行存放在两个不同的地方，所以一个表只能有一个聚簇索引。聚簇索引也叫主键索引</p><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul><li>可以把相关数据保存在一起，将数据放在索引树的叶子节点下，找到叶子就可以找到数据</li><li>数据访问更快，聚簇索引将索引和数据保存在同一个B-Tree中，因此获取数据比非聚簇索引要更快。</li><li>使用覆盖索引扫描的查询可以直接使用页节点中的主键值。<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4></li><li>聚簇索引最大限度提高了IO密集型应用的性能，如果数据全部在内存中将会失去优势</li><li>更新聚簇索引列的代价很高，因为会强制每个被更新的行移动到新位置</li><li>基于聚簇索引的表插入新行或主键被更新导致行移动时，可能导致页分裂，表会占用更多磁盘空间</li><li>当行稀疏或由于页分裂导致数据存储不连续时，全表扫描可能很慢。</li></ul><h2 id="非聚簇索引"><a href="#非聚簇索引" class="headerlink" title="非聚簇索引"></a>非聚簇索引</h2><ul><li>非聚簇索引是在索引树的叶子节点上存放数据的地址，找到该地址后，需要到磁盘中查询一次才能获取到数据。</li><li>MyISAM存储引擎的索引方式就是非聚簇索引，只在索引树的叶子节点上存放地址。</li></ul><h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><ul><li>在InnoDB 里，索引 B+Tree 的叶子节点存储了”整行数据”的是主键索引，也被称之为聚簇索引</li><li>索引B+Tree的叶子节点只存储了”主键的值和索引列”的是非主键索引，也被称之为非聚簇索引</li></ul><h2 id="索引覆盖"><a href="#索引覆盖" class="headerlink" title="索引覆盖"></a>索引覆盖</h2><p>覆盖索引指一个索引包含或覆盖了所有需要查询的字段的值，不再需要根据索引回表查询数据。覆盖索<br>引必须要存储索引列的值，因此MySQL只能使用B-Tree索引做覆盖索引。</p><h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ul><li>索引条目通常远小于数据行大小，可以极大减少数据访问量</li><li>因为索引按照列值顺序存储，所以对于IO密集型防伪查询回避随机从磁盘读取每一行数据的IO少得多</li><li>由于InnoDB使用.聚簇索引，覆盖索引对InnoDB很有帮助。InnoDB 的二级索引在叶子节点保存了行的主键值，如果二级主键能覆盖查询那么可以避免对主键索引的二次查询。</li></ul><h2 id="什么情况下索引失效"><a href="#什么情况下索引失效" class="headerlink" title="什么情况下索引失效"></a>什么情况下索引失效</h2><ul><li>模糊查询 %like</li><li>索引列参与计算,使用了函数</li><li>非最左前缀顺序</li><li>where单列索引对null判断 </li><li>where不等于</li><li>or操作有至少一个字段没有索引</li><li>需要回表的查询结果集过大（超过配置的范围）</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> 索引 </tag>
             
         </tags>
       
