@@ -455,6 +455,33 @@
     </entry>
     
     
+    
+    <entry>
+      <title>MySQL如何保证ACID</title>
+      <link href="/2021/10/01/mysql-ru-he-bao-zheng-acid/"/>
+      <url>/2021/10/01/mysql-ru-he-bao-zheng-acid/</url>
+      
+        <content type="html"><![CDATA[<h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ol><li>原子性：事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行</li><li>一致性：事务开始前和结束后，数据库的完整性约束没有被破坏。</li><li>隔离性：同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。</li><li>持久性：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。</li></ol><h2 id="undo-log"><a href="#undo-log" class="headerlink" title="undo log"></a>undo log</h2><ul><li>undoLog 也就是我们常说的回滚日志文件 主要用于事务中执行失败，进行回滚，以及MVCC中对于数据历史版本的查看。</li><li>undo log由引擎层的InnoDB引擎实现,是逻辑日志,记录数据修改被修改前的值,比如”把id=’B’ 修改为id = ‘B2’ ，那么undo日志就会用来存放id =’B’的记录”。</li><li>当一条数据需要更新前,会先把修改前的记录存储在undolog中,如果这个修改出现异常,则会使用undo日志来实现回滚操作,保证事务的一致性。</li><li>当事务提交之后，undo log并不能立马被删除,而是会被放到待清理链表中,待判断没有事物用到该版本的信息时才可以清理相应undolog。</li><li>它保存了事务发生之前的数据的一个版本，用于回滚，同时可以提供多版本并发控制下的读（MVCC），也即非锁定读。</li></ul><h2 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h2><ul><li>redoLog 是重做日志文件是记录数据修改之后的值，用于持久化到磁盘中。</li><li>redo log包括两部分<ul><li>一是内存中的日志缓冲(redo log buffer)，该部分日志是易失性的；</li><li>二是磁盘上的重做日志文件(redo log file)，该部分日志是持久的。由引擎层的InnoDB引擎实现,是物理日志,记录的是物理数据页修改的信息,比如“某个数据页上内容发生了哪些改动”。</li></ul></li><li>当一条数据需要更新时,InnoDB会先将数据更新，然后记录redoLog 在内存中，然后找个时间将redoLog的操作执行到磁盘上的文件上。</li><li>不管是否提交成功我都记录，你要是回滚了，那我连回滚的修改也记录。它确保了事务的持久性。</li><li>每个InnoDB存储引擎至少有1个重做日志文件组（group），每个文件组下至少有2个重做日志文件，如默认的ib_logfile0和ib_logfile1。</li><li>为了得到更高的可靠性，用户可以设置多个的镜像日志组（mirrored log groups），将不同的文件组放在不同的磁盘上，以此提高重做日志的高可用性。</li><li>在日志组中每个重做日志文件的大小一致，并以循环写入的方式运行。InnoDB存储引擎先写重做日志文件1，当达到文件的最后时，会切换至重做日志文件2，再当重做日志文件2也被写满时，会再切换到重做日志文件1中。</li></ul><h2 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h2><ul><li>MVCC多版本并发控制是MySQL中基于乐观锁理论实现隔离级别的方式，用于读已提交和可重复读取隔离级别的实现。</li><li>在MySQL中，会在表中每一条数据后面添加两个字段：最近修改该行数据的事务ID，指向该行（undolog表中）回滚段的指针。</li><li>Read View判断行的可见性，创建一个新事务时，copy一份当前系统中的活跃事务列表。</li><li>当前不应该被本事务看到的其他事务id列表。</li><li>已提交读隔离级别下的事务在每次查询的开始都会生成一个独立的ReadView,而可重复读隔离级别则在第一次读的时候生成一个ReadView，之后的读都复用之前的ReadView。</li></ul><h2 id="数据库如何保证原子性"><a href="#数据库如何保证原子性" class="headerlink" title="数据库如何保证原子性"></a>数据库如何保证原子性</h2><p>原子性由undolog日志来保证，它记录了需要回滚的日志信息，事务回滚时撤销已经执行成功的sql</p><h2 id="数据库如何保证隔离性"><a href="#数据库如何保证隔离性" class="headerlink" title="数据库如何保证隔离性"></a>数据库如何保证隔离性</h2><p>隔离性是由MVCC来保证</p><h2 id="数据库如何保证持久性"><a href="#数据库如何保证持久性" class="headerlink" title="数据库如何保证持久性"></a>数据库如何保证持久性</h2><p>持久性由redolog来保证，mysq|修改数据的时候会在redolog中记录一份日志数据，就算数据没有保存成功，只要日志保存成功了，数据仍然不会丢失</p><h2 id="数据库如何保证一致性"><a href="#数据库如何保证一致性" class="headerlink" title="数据库如何保证一致性"></a>数据库如何保证一致性</h2><p>一致性由其他三大特性保证，程序代码要保证业务上的一致性</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ACID </tag>
+            
+            <tag> MySQL </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
   
   
 </search>
