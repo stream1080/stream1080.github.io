@@ -4,10 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="RabbitMQ如何保证消息顺序消费, stream blog">
-    <meta name="description" content="为什么要顺序消费保证消息的顺序消费是生产业务场景下经常面临的挑战，例如电商的下单逻辑，在用户下单之后，会发送创建订单和扣减库存的消息，我们需要保证扣减库存在创建订单之后执行。
+    <meta name="keywords" content="ThreadLocal的使用, stream blog">
+    <meta name="description" content="概述ThreadLocal 为解决多线程程序的并发问题提供了一种新的思路，使用这个工具类可以很简洁地编写出优美的多线程程序。
 
-处理业务逻辑后，向MQ发送一条消息，再由消费者从 MQ 中获取">
+ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地线程”。其实，ThreadLocal 并不">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>RabbitMQ如何保证消息顺序消费 | stream blog</title>
+    <title>ThreadLocal的使用 | stream blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -267,12 +267,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">RabbitMQ如何保证消息顺序消费</h1>
+                    <h1 class="description center-align post-title">ThreadLocal的使用</h1>
                 </div>
             </div>
         </div>
@@ -388,12 +388,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/RabbitMQ/">
-                                <span class="chip bg-color">RabbitMQ</span>
+                            <a href="/tags/ThreadLocal/">
+                                <span class="chip bg-color">ThreadLocal</span>
                             </a>
                         
-                            <a href="/tags/%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9/">
-                                <span class="chip bg-color">顺序消费</span>
+                            <a href="/tags/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F/">
+                                <span class="chip bg-color">共享变量</span>
                             </a>
                         
                     </div>
@@ -404,8 +404,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
-                                消息队列
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                多线程
                             </a>
                         
                     </div>
@@ -417,7 +417,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-10-29
+                    2021-09-15
                 </div>
                 
 
@@ -426,14 +426,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    465
+                    796
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    3 Min
                 </div>
                 
 
@@ -451,23 +451,75 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="为什么要顺序消费"><a href="#为什么要顺序消费" class="headerlink" title="为什么要顺序消费"></a>为什么要顺序消费</h2><p>保证消息的顺序消费是生产业务场景下经常面临的挑战，例如电商的下单逻辑，在用户下单之后，会发送创建订单和扣减库存的消息，我们需要保证扣减库存在创建订单之后执行。</p>
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ThreadLocal 为解决多线程程序的并发问题提供了一种新的思路，使用这个工具类可以很简洁地编写出优美的多线程程序。</p>
 <ul>
-<li>处理业务逻辑后，向MQ发送一条消息，再由消费者从 MQ 中获取 消息落盘到MySQL 中。</li>
-<li>在这个过程中，可能会有增删改的操作，比如执行顺序是增加、修改、删除。</li>
-<li>消费者可能换了顺序给执行成删除、修改、增加，所以我们要保证消息的顺序消费</li>
+<li><p>ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地线程”。其实，ThreadLocal 并不是一个 Thread，而是 Thread 的局部变量，也许把它命名为 ThreadLocalVariable 更容易让人理解一些。</p>
+</li>
+<li><p>当使用 ThreadLocal 维护变量时，ThreadLocal 为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。</p>
+</li>
 </ul>
-<h2 id="为什么会不按顺序消费"><a href="#为什么会不按顺序消费" class="headerlink" title="为什么会不按顺序消费"></a>为什么会不按顺序消费</h2><p>对于 RabbitMQ 来说，导致上面顺序错乱的原因通常是消费者是集群部署，不同的消费者消费到了同一订单的不同的消息。</p>
+<p>从线程的角度看，目标变量就象是线程的本地变量，这也是类名中 “Local” 所要表达的意思。</p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>ThreadLocal提供了线程本地变量，如果你创建了一个 ThreadLocal 变量，那么访问这个变量的每个线程都会有这个变量的一个本地副本。当多个线程操作这个变量时，实际操作的是自己本地内存里面的变量，从而避免了线程安全问题。<br><img src="https://img-blog.csdnimg.cn/da73098b996a4ca582c20451c3665a3c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>ThreadLocal 是线程本地存储，在每个线程中都创建了一个 ThreadLocalMap 对象，每个线程可以访问自己内部 ThreadLocalMap 对象内的 value。通过这种方式，避免资源在多线程间共享。</p>
+<h2 id="set-和get-方法"><a href="#set-和get-方法" class="headerlink" title="set()和get()方法"></a>set()和get()方法</h2><p>set 方法是为了设置 ThreadLocal 变量，设置成功后，该变量只能够被当前线程访问，其他线程不可直接访问操作改变量。参数是泛型<br><img src="https://img-blog.csdnimg.cn/add11667446f4362b06ddd7dd0650846.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>get 方法是为了获取 ThreadLocal 变量的值，get 方法没有任何入参，直接调用即可获取。<br><img src="https://img-blog.csdnimg.cn/402c399592cb48ac9707f2629e92f9ca.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h2 id="remove-方法"><a href="#remove-方法" class="headerlink" title="remove() 方法"></a>remove() 方法</h2><p>remove 方法是为了清除 ThreadLocal 变量，清除成功后，该 ThreadLocal 中没有变量值。<br><img src="https://img-blog.csdnimg.cn/144cb735fb68441f9b4db94121c50f34.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h2 id="单线程使用案例"><a href="#单线程使用案例" class="headerlink" title="单线程使用案例"></a>单线程使用案例</h2><p><img src="https://img-blog.csdnimg.cn/d06fb2b2ea2e4d96a728e4cc6a93099f.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h2 id="多线程下的-ThreadLocal使用案例"><a href="#多线程下的-ThreadLocal使用案例" class="headerlink" title="多线程下的 ThreadLocal使用案例"></a>多线程下的 ThreadLocal使用案例</h2><p>看个简单案例</p>
 <ul>
-<li>如消费者1执行了增加，消费者2执行了修改，消费者C执行了删除</li>
-<li>但是消费者C执行比消费者B快，消费者B又比消费者A快，就会导致消费消息的时候顺序错乱</li>
-<li>本该顺序是增加、修改、删除，变成了删除、修改、增加.<br><img src="https://img-blog.csdnimg.cn/77a568c090d24eb68f041cd17126220b.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+<li>线程1设置了ThreadLocal（thread-1 local value）</li>
+<li>线程2设置了ThreadLocal（thread-2 local value）</li>
+<li>线程2remove变量ThreadLocal</li>
+<li>看看线程1是否还能打印之前设置的ThreadLocal</li>
 </ul>
-<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><p>RabbitMQ 的问题是由于不同的消息都发送到了同一个 queue 中，多个消费者都消费同一个 queue 的消息。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>stream<span class="token punctuation">.</span>juc</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * @author stream
+ * @since 2021/9/15 16:11
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadLocalTest</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> local <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Thread</span> threadOne <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                local<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"thread-1 local value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    <span class="token comment">// 等待5000毫秒，确保threadTwo 执行remove完成</span>
+                    <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+                <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>local<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Thread</span> threadTwo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                local<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"thread-2 local value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>local<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                local<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"thread-2 remove 变量local 操作完毕。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        threadTwo<span class="token punctuation">.</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        threadOne<span class="token punctuation">.</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>执行结果<br><img src="https://img-blog.csdnimg.cn/d9aa7d2f2fd4417babdb562ef719b084.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
 <ul>
-<li>我们可以给 RabbitMQ 创建多个 queue，每个消费者固定消费一个 queue 的消息，</li>
-<li>生产者发送消息的时候，同一个类型的消息发送到同一个 queue 中</li>
-<li>由于同一个 queue 的消息是一定会保证有序的，那么同一个订单号的消息就只会被一个消费者顺序消费，从而保证了消息的顺序性。<br><img src="https://img-blog.csdnimg.cn/d8c2d643644646f9be78cf4884a828ff.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+<li>从结果来看，在 threadTwo 执行完 remove 方法后，threadOne 仍然能够成功打印</li>
+<li>从而证明了 ThreadLocal 的专属特性，线程独有，其他线程不可修改</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>ThreadLocal 是解决线程安全问题一个很好的思路，</li>
+<li>它通过为每个线程提供一个独立的变量副本解决了变量并发访问的冲突问题。</li>
+<li>ThreadLocal 比直接使用 synchronized 同步机制解决线程安全问题更简单，更方便，且程序拥有更高的并发性。</li>
 </ul>
 
                 
@@ -495,7 +547,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/10/29/rabbitmq-ru-he-bao-zheng-xiao-xi-shun-xu-xiao-fei/">https://stream1080.github.io/2021/10/29/rabbitmq-ru-he-bao-zheng-xiao-xi-shun-xu-xiao-fei/</a>
+                    <a href="https://stream1080.github.io/2021/09/15/threadlocal-de-shi-yong/">https://stream1080.github.io/2021/09/15/threadlocal-de-shi-yong/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -533,12 +585,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/RabbitMQ/">
-                                    <span class="chip bg-color">RabbitMQ</span>
+                                <a href="/tags/ThreadLocal/">
+                                    <span class="chip bg-color">ThreadLocal</span>
                                 </a>
                             
-                                <a href="/tags/%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9/">
-                                    <span class="chip bg-color">顺序消费</span>
+                                <a href="/tags/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F/">
+                                    <span class="chip bg-color">共享变量</span>
                                 </a>
                             
                         </div>
@@ -588,13 +640,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/10/30/rabbitmq-ru-he-bao-zheng-xiao-xi-bu-hui-bei-chong-fu-xiao-fei/">
+                <a href="/2021/09/17/synchronized-guan-jian-zi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="RabbitMQ 如何保证消息不会被重复消费">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="synchronized关键字">
                         
-                        <span class="card-title">RabbitMQ 如何保证消息不会被重复消费</span>
+                        <span class="card-title">synchronized关键字</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -605,14 +657,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-30
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-17
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
-                                    消息队列
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
@@ -622,12 +674,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/RabbitMQ/">
-                        <span class="chip bg-color">RabbitMQ</span>
+                    <a href="/tags/%E9%94%81/">
+                        <span class="chip bg-color">锁</span>
                     </a>
                     
-                    <a href="/tags/%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9/">
-                        <span class="chip bg-color">重复消费</span>
+                    <a href="/tags/synchronized/">
+                        <span class="chip bg-color">synchronized</span>
                     </a>
                     
                 </div>
@@ -638,16 +690,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/2021/10/13/tcp-de-nian-bao-he-chai-bao/">
+                <a href="/2021/09/15/threadlocal-de-shi-yong/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="TCP的粘包和拆包">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="ThreadLocal的使用">
                         
-                        <span class="card-title">TCP的粘包和拆包</span>
+                        <span class="card-title">ThreadLocal的使用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -658,29 +710,30 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-15
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
-                                    计算机网络
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/TCP-IP/">
-                        <span class="chip bg-color">TCP/IP</span>
+                    <a href="/tags/ThreadLocal/">
+                        <span class="chip bg-color">ThreadLocal</span>
                     </a>
                     
-                    <a href="/tags/%E7%B2%98%E5%8C%85%E6%8B%86%E5%8C%85/">
-                        <span class="chip bg-color">粘包拆包</span>
+                    <a href="/tags/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F/">
+                        <span class="chip bg-color">共享变量</span>
                     </a>
                     
                 </div>

@@ -162,56 +162,6 @@
     
     
     <entry>
-      <title>volatile 关键字</title>
-      <link href="/2021/10/19/volatile-guan-jian-zi/"/>
-      <url>/2021/10/19/volatile-guan-jian-zi/</url>
-      
-        <content type="html"><![CDATA[<h2 id="volatile-关键字"><a href="#volatile-关键字" class="headerlink" title="volatile 关键字"></a>volatile 关键字</h2><ul><li>volatile 关键字解决内存可见性问题，是一种弱形式的同步。</li><li>该关键字可以确保当一个线程更新共享变量时，更新操作对其他线程马上可见。</li><li>当一个变量被声明为 volatile 时，线程在写入变量时不会把值缓存在寄存器或者其他地方，而是会把值刷新回主内存。</li><li>当其他线程读取该共享变量时，会从主内存重新获取最新值，而不是使用当前线程的工作内存中的值。</li></ul><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>Java 语言提供了一种弱同步机制，即 volatile 变量，用来确保将变量的更新操作通知到其他线程。</p><p>当把变量声明为 volatile 类型后，编译器与运行时都会注意到这个变量是共享的，volatile 变量不会被缓存在寄存器或者对其他处理器不可见的地方，因此在读取 volatile 类型的变量时总会返回最新写入的值。</p><p>在访问 volatile 变量时不会执行加锁操作，因此也就不会使执行线程阻塞，因此 volatile 变量是一种比 sychronized 关键字更轻量级的同步机制。</p><p><img src="https://img-blog.csdnimg.cn/9e8d11a885064a3ab64812f35796106b.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_19,color_FFFFFF,t_70,g_se,x_16"></p><ul><li><p>当对非 volatile 变量进行读写的时候，每个线程先从内存拷贝变量到 CPU 缓存中。如果计算机有多个 CPU，每个线程可能在不同的 CPU 上被处理，这意味着每个线程可以拷贝到不同的 CPU cache 中。</p></li><li><p>而声明变量是 volatile 的，JVM 保证了每次读变量都从内存中读，跳过 CPU cache。</p></li></ul><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul><li>保证变量的可见性</li><li>禁止指令重排</li></ul><h4 id="保证变量的可见性"><a href="#保证变量的可见性" class="headerlink" title="保证变量的可见性"></a>保证变量的可见性</h4><p>当一条线程修改了变量值，新值对于其他线程来说是立即可以得知的。volatile 变量在各个线程的<br>工作内存中不存在-致性问题，但Java的运算操作符并非原子操作，导致volatile变量运算在并<br>发下仍不安全。</p><h4 id="禁止指令重排"><a href="#禁止指令重排" class="headerlink" title="禁止指令重排"></a>禁止指令重排</h4><p>使用volatile变量进行写操作，汇编指令带有lock前缀，相当于一个内存屏障，后面的指令不能<br>重排到内存屏障之前。</p><h4 id="使用lock前缀引发两件事"><a href="#使用lock前缀引发两件事" class="headerlink" title="使用lock前缀引发两件事:"></a>使用lock前缀引发两件事:</h4><ol><li>将当前处理器缓存行的数据写回系统内存。</li><li>使其他处理器的缓存无效。</li></ol><p>相当于对缓存变量做了- -次store和write操作，让volatile变量的修改对其他处理器立即可见。</p><h2 id="volatile-与-synchronized-的区别"><a href="#volatile-与-synchronized-的区别" class="headerlink" title="volatile 与 synchronized 的区别"></a>volatile 与 synchronized 的区别</h2><h4 id="相似处："><a href="#相似处：" class="headerlink" title="相似处："></a>相似处：</h4><p>volatile 的内存语义和 synchronized 有相似之处，具体来说就是，当线程写入了 volatile 变量值时就等价于线程退出 synchronized 同步块（把写入工作内存的变量值同步到主内存），读取 volatile 变量值时就相当于进入 synchronized 同步块（ 先清空本地内存变量值，再从主内存获取最新值）。</p><h4 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h4><p>使用锁的方式可以解决共享变量内存可见性问题，但是使用锁太笨重，因为它会带来线程上下文的切换开销。具体区别如下：</p><ul><li>volatile 本质是在告诉 jvm 当前变量在寄存器（工作内存）中的值是不确定的，需要从主存中读取；</li><li>synchronized 则是锁定当前变量，只有当前线程可以访问该变量，其他线程被阻塞住；</li><li>volatile 仅能使用在变量级别；synchronized 则可以使用在变量、方法、和类级别的；</li><li>volatile 仅能实现变量的修改可见性，不能保证原子性；而 synchronized 则可以保证变量的修改可见性和原子性；</li><li>volatile 不会造成线程的阻塞；synchronized 可能会造成线程的阻塞；</li><li>volatile 标记的变量不会被编译器优化；synchronized 标记的变量可以被编译器优化</li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> 多线程 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> volatile </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>JDK的锁优化策略</title>
-      <link href="/2021/10/19/jdk-de-suo-you-hua-ce-lue/"/>
-      <url>/2021/10/19/jdk-de-suo-you-hua-ce-lue/</url>
-      
-        <content type="html"><![CDATA[<h2 id="锁的优化策略"><a href="#锁的优化策略" class="headerlink" title="锁的优化策略"></a>锁的优化策略</h2><ul><li>JDK6对synchronized做了很多优化，引入了自适应自旋、锁消除、锁粗化、偏向锁和轻量级锁等优化策略，提高锁的效率；</li><li>锁一共有4个状态，级别从低到高依次是:无锁、偏向锁、轻量级锁和重量级锁，状态会随竞争情况升级。</li><li>锁可以升级但不能降级，这种只能升级不能降级的锁策略是为了提高锁获得和释放的效率。</li></ul><h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><ul><li>线程同步对性能最大的影响是阻塞，挂起和恢复线程的操作都需要从用户态转入内核态完成。</li><li>许多应用上共享数据的锁定只会持续很短的时间，为了这段时间去挂起和恢复线程并不值得。</li><li>如果机器有多个处理器核心，我们可以让后面请求锁的线程稍等一会， 但不放弃处理器的执行时间，看看持有锁的线程是否很快会释放锁。</li><li>为了让线程等待只需让线程执行一个循环，这项技术就是自旋锁。</li></ul><p>自旋锁在JDK4就已引入，默认关闭，在JDK6中改为默认开启。自旋不能代替阻塞，虽然避免了线程<br>切换开销，但要占用处理器时间。</p><ul><li>如果锁被占用的时间很短，自旋的效果就会非常好，反之只会白白消耗处理器资源。</li><li>如果自旋超过了限定的次数仍然没有成功获得锁，就应挂起线程，自旋默认限定次数是10</li></ul><h3 id="自适应自旋"><a href="#自适应自旋" class="headerlink" title="自适应自旋"></a>自适应自旋</h3><ul><li>JDK6对自旋锁进行了优化，自旋时间不再固定，而是由前一次的自旋时间及锁拥有者的状态决定。</li><li>如果在同一个锁上，自旋刚刚成功获得过锁且持有锁的线程正在运行，虚拟机会认为这次自旋也很可能成功，进而允许自旋持续更久。</li><li>如果自旋很少成功，以后获取锁时将可能直接省略掉自旋，避免浪费处理器资源。有了自适应自旋，随着程序运行时间的增长，虚拟机对程序锁的状况预测就会越来越精准。</li></ul><h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><ul><li>锁消除指即时编译器对检测到不可能存在共享数据竞争的锁进行消除。</li><li>主要判定依据来源于逃逸分析，如果判断一段代码中堆上的所有数据都只被一个线程访问，就可以当作栈上的数据对待，认为它们是线程私有的而无须同步。<h2 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h2></li><li>一般来说需要将同步块的作用范围限制得尽量小，只在共享数据的实际作用域中进行同步，这是为了使等待锁的线程尽快拿到锁。</li><li>但如果一系列的连续操作都对同一个对象反复加锁和解锁，甚至加锁操作是出现在循环体之外的，即使没有线程竞争也会导致不必要的性能消耗。</li><li>因此如果虚拟机探测到有一串零碎的操作都对同一个对象加锁，将会把同步的范围扩展到整个操作序列的外部。</li></ul><h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><ul><li>偏向锁是为了在没有竞争的情况下减少锁开销，锁会偏向于第一个获得它的线程，如果在执行过程中锁一直没有被其他线程获取，则持有偏向锁的线程将不需要进行同步。</li><li>当锁对象第一次被线程获取时，虚拟机会将对象头中的偏向模式设为1，同时使用CAS把获取到锁的线<br>程ID记录在对象的Mark Word中。</li><li>如果CAS成功，持有偏向锁的线程以后每次进入锁相关的同步块都不再进行任何同步操作。</li><li>一旦有其他线程尝试获取锁，偏向模式立即结束，根据锁对象是否处于锁定状态决定是否撤销偏向，后续同步按照轻量级锁那样执行。</li></ul><h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2><p>轻量级锁是为了在没有竞争的前提下减少重量级锁使用操作系统互斥量产生的性能消耗。</p><p>在代码即将进入同步块时，如果同步对象没有被锁定，虚拟机将在当前线程的栈帧中建立一个锁记录空<br>间，存储锁对象目前Mark Word的拷贝。然后虚拟机使用CAS尝试把对象的Mark Word更新为指向<br>锁记录的指针，如果更新成功即代表该线程拥有了锁，锁标志位将转变为00，表示处于轻量级锁定状<br>念。</p><p>如果更新失败就意味着至少存在一条线程与当前线程竞争。虚拟机检查对象的Mark Word是否指向当<br>前线程的栈帧，如果是则说明当前线程已经拥有了锁，直接进入同步块继续执行，否则说明锁对象已经<br>被其他线程抢占。如果出现两条以上线程争用同一个锁，轻量级锁就不再有效，将膨胀为重量级锁，锁<br>标志状态变为10，此时Mark Word存储的就是指向重量级锁的指针，后面等待锁的线程也必须阻塞。</p><p>解锁同样通过CAS进行，如果对象Mark Word仍然指向线程的锁记录，就用CAS把对象当前的Mark<br>Word和线程复制的Mark Word替换回来。假如替换成功同步过程就顺利完成了，如果失败则说明有<br>其他线程尝试过获取该锁，就要在释放锁的同时唤醒被挂起的线程。</p><h2 id="偏向锁、轻量级锁和重量级锁之间的区别"><a href="#偏向锁、轻量级锁和重量级锁之间的区别" class="headerlink" title="偏向锁、轻量级锁和重量级锁之间的区别?"></a>偏向锁、轻量级锁和重量级锁之间的区别?</h2><ul><li>偏向锁的优点是加解锁不需要额外消耗，和执行非同步方法比仅存在纳秒级差距，缺点是如果存在锁竞争会带来额外锁撤销的消耗，适用只有一个线程访问同步代码块的场景。</li><li>轻量级锁的优点是竞争线程不阻塞，程序响应速度快，缺点是如果线程始终得不到锁会自旋消耗CPU,适用追求响应时间、同步代码块执行快的场景。</li><li>重量级锁的优点是线程竞争不使用自旋不消耗CPU，缺点是线程会阻塞,响应时间慢，适应追求吞吐<br>量、同步代码块执行慢的场景。</li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> 多线程 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 锁 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>TCP的粘包和拆包</title>
       <link href="/2021/10/13/tcp-de-nian-bao-he-chai-bao/"/>
       <url>/2021/10/13/tcp-de-nian-bao-he-chai-bao/</url>
@@ -613,6 +563,56 @@
     
     
     <entry>
+      <title>volatile 关键字</title>
+      <link href="/2021/09/19/volatile-guan-jian-zi/"/>
+      <url>/2021/09/19/volatile-guan-jian-zi/</url>
+      
+        <content type="html"><![CDATA[<h2 id="volatile-关键字"><a href="#volatile-关键字" class="headerlink" title="volatile 关键字"></a>volatile 关键字</h2><ul><li>volatile 关键字解决内存可见性问题，是一种弱形式的同步。</li><li>该关键字可以确保当一个线程更新共享变量时，更新操作对其他线程马上可见。</li><li>当一个变量被声明为 volatile 时，线程在写入变量时不会把值缓存在寄存器或者其他地方，而是会把值刷新回主内存。</li><li>当其他线程读取该共享变量时，会从主内存重新获取最新值，而不是使用当前线程的工作内存中的值。</li></ul><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>Java 语言提供了一种弱同步机制，即 volatile 变量，用来确保将变量的更新操作通知到其他线程。</p><p>当把变量声明为 volatile 类型后，编译器与运行时都会注意到这个变量是共享的，volatile 变量不会被缓存在寄存器或者对其他处理器不可见的地方，因此在读取 volatile 类型的变量时总会返回最新写入的值。</p><p>在访问 volatile 变量时不会执行加锁操作，因此也就不会使执行线程阻塞，因此 volatile 变量是一种比 sychronized 关键字更轻量级的同步机制。</p><p><img src="https://img-blog.csdnimg.cn/9e8d11a885064a3ab64812f35796106b.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_19,color_FFFFFF,t_70,g_se,x_16"></p><ul><li><p>当对非 volatile 变量进行读写的时候，每个线程先从内存拷贝变量到 CPU 缓存中。如果计算机有多个 CPU，每个线程可能在不同的 CPU 上被处理，这意味着每个线程可以拷贝到不同的 CPU cache 中。</p></li><li><p>而声明变量是 volatile 的，JVM 保证了每次读变量都从内存中读，跳过 CPU cache。</p></li></ul><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><ul><li>保证变量的可见性</li><li>禁止指令重排</li></ul><h4 id="保证变量的可见性"><a href="#保证变量的可见性" class="headerlink" title="保证变量的可见性"></a>保证变量的可见性</h4><p>当一条线程修改了变量值，新值对于其他线程来说是立即可以得知的。volatile 变量在各个线程的<br>工作内存中不存在-致性问题，但Java的运算操作符并非原子操作，导致volatile变量运算在并<br>发下仍不安全。</p><h4 id="禁止指令重排"><a href="#禁止指令重排" class="headerlink" title="禁止指令重排"></a>禁止指令重排</h4><p>使用volatile变量进行写操作，汇编指令带有lock前缀，相当于一个内存屏障，后面的指令不能<br>重排到内存屏障之前。</p><h4 id="使用lock前缀引发两件事"><a href="#使用lock前缀引发两件事" class="headerlink" title="使用lock前缀引发两件事:"></a>使用lock前缀引发两件事:</h4><ol><li>将当前处理器缓存行的数据写回系统内存。</li><li>使其他处理器的缓存无效。</li></ol><p>相当于对缓存变量做了- -次store和write操作，让volatile变量的修改对其他处理器立即可见。</p><h2 id="volatile-与-synchronized-的区别"><a href="#volatile-与-synchronized-的区别" class="headerlink" title="volatile 与 synchronized 的区别"></a>volatile 与 synchronized 的区别</h2><h4 id="相似处："><a href="#相似处：" class="headerlink" title="相似处："></a>相似处：</h4><p>volatile 的内存语义和 synchronized 有相似之处，具体来说就是，当线程写入了 volatile 变量值时就等价于线程退出 synchronized 同步块（把写入工作内存的变量值同步到主内存），读取 volatile 变量值时就相当于进入 synchronized 同步块（ 先清空本地内存变量值，再从主内存获取最新值）。</p><h4 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h4><p>使用锁的方式可以解决共享变量内存可见性问题，但是使用锁太笨重，因为它会带来线程上下文的切换开销。具体区别如下：</p><ul><li>volatile 本质是在告诉 jvm 当前变量在寄存器（工作内存）中的值是不确定的，需要从主存中读取；</li><li>synchronized 则是锁定当前变量，只有当前线程可以访问该变量，其他线程被阻塞住；</li><li>volatile 仅能使用在变量级别；synchronized 则可以使用在变量、方法、和类级别的；</li><li>volatile 仅能实现变量的修改可见性，不能保证原子性；而 synchronized 则可以保证变量的修改可见性和原子性；</li><li>volatile 不会造成线程的阻塞；synchronized 可能会造成线程的阻塞；</li><li>volatile 标记的变量不会被编译器优化；synchronized 标记的变量可以被编译器优化</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> volatile </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JDK的锁优化策略</title>
+      <link href="/2021/09/19/jdk-de-suo-you-hua-ce-lue/"/>
+      <url>/2021/09/19/jdk-de-suo-you-hua-ce-lue/</url>
+      
+        <content type="html"><![CDATA[<h2 id="锁的优化策略"><a href="#锁的优化策略" class="headerlink" title="锁的优化策略"></a>锁的优化策略</h2><ul><li>JDK6对synchronized做了很多优化，引入了自适应自旋、锁消除、锁粗化、偏向锁和轻量级锁等优化策略，提高锁的效率；</li><li>锁一共有4个状态，级别从低到高依次是:无锁、偏向锁、轻量级锁和重量级锁，状态会随竞争情况升级。</li><li>锁可以升级但不能降级，这种只能升级不能降级的锁策略是为了提高锁获得和释放的效率。</li></ul><h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><ul><li>线程同步对性能最大的影响是阻塞，挂起和恢复线程的操作都需要从用户态转入内核态完成。</li><li>许多应用上共享数据的锁定只会持续很短的时间，为了这段时间去挂起和恢复线程并不值得。</li><li>如果机器有多个处理器核心，我们可以让后面请求锁的线程稍等一会， 但不放弃处理器的执行时间，看看持有锁的线程是否很快会释放锁。</li><li>为了让线程等待只需让线程执行一个循环，这项技术就是自旋锁。</li></ul><p>自旋锁在JDK4就已引入，默认关闭，在JDK6中改为默认开启。自旋不能代替阻塞，虽然避免了线程<br>切换开销，但要占用处理器时间。</p><ul><li>如果锁被占用的时间很短，自旋的效果就会非常好，反之只会白白消耗处理器资源。</li><li>如果自旋超过了限定的次数仍然没有成功获得锁，就应挂起线程，自旋默认限定次数是10</li></ul><h3 id="自适应自旋"><a href="#自适应自旋" class="headerlink" title="自适应自旋"></a>自适应自旋</h3><ul><li>JDK6对自旋锁进行了优化，自旋时间不再固定，而是由前一次的自旋时间及锁拥有者的状态决定。</li><li>如果在同一个锁上，自旋刚刚成功获得过锁且持有锁的线程正在运行，虚拟机会认为这次自旋也很可能成功，进而允许自旋持续更久。</li><li>如果自旋很少成功，以后获取锁时将可能直接省略掉自旋，避免浪费处理器资源。有了自适应自旋，随着程序运行时间的增长，虚拟机对程序锁的状况预测就会越来越精准。</li></ul><h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><ul><li>锁消除指即时编译器对检测到不可能存在共享数据竞争的锁进行消除。</li><li>主要判定依据来源于逃逸分析，如果判断一段代码中堆上的所有数据都只被一个线程访问，就可以当作栈上的数据对待，认为它们是线程私有的而无须同步。<h2 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h2></li><li>一般来说需要将同步块的作用范围限制得尽量小，只在共享数据的实际作用域中进行同步，这是为了使等待锁的线程尽快拿到锁。</li><li>但如果一系列的连续操作都对同一个对象反复加锁和解锁，甚至加锁操作是出现在循环体之外的，即使没有线程竞争也会导致不必要的性能消耗。</li><li>因此如果虚拟机探测到有一串零碎的操作都对同一个对象加锁，将会把同步的范围扩展到整个操作序列的外部。</li></ul><h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><ul><li>偏向锁是为了在没有竞争的情况下减少锁开销，锁会偏向于第一个获得它的线程，如果在执行过程中锁一直没有被其他线程获取，则持有偏向锁的线程将不需要进行同步。</li><li>当锁对象第一次被线程获取时，虚拟机会将对象头中的偏向模式设为1，同时使用CAS把获取到锁的线<br>程ID记录在对象的Mark Word中。</li><li>如果CAS成功，持有偏向锁的线程以后每次进入锁相关的同步块都不再进行任何同步操作。</li><li>一旦有其他线程尝试获取锁，偏向模式立即结束，根据锁对象是否处于锁定状态决定是否撤销偏向，后续同步按照轻量级锁那样执行。</li></ul><h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2><p>轻量级锁是为了在没有竞争的前提下减少重量级锁使用操作系统互斥量产生的性能消耗。</p><p>在代码即将进入同步块时，如果同步对象没有被锁定，虚拟机将在当前线程的栈帧中建立一个锁记录空<br>间，存储锁对象目前Mark Word的拷贝。然后虚拟机使用CAS尝试把对象的Mark Word更新为指向<br>锁记录的指针，如果更新成功即代表该线程拥有了锁，锁标志位将转变为00，表示处于轻量级锁定状<br>念。</p><p>如果更新失败就意味着至少存在一条线程与当前线程竞争。虚拟机检查对象的Mark Word是否指向当<br>前线程的栈帧，如果是则说明当前线程已经拥有了锁，直接进入同步块继续执行，否则说明锁对象已经<br>被其他线程抢占。如果出现两条以上线程争用同一个锁，轻量级锁就不再有效，将膨胀为重量级锁，锁<br>标志状态变为10，此时Mark Word存储的就是指向重量级锁的指针，后面等待锁的线程也必须阻塞。</p><p>解锁同样通过CAS进行，如果对象Mark Word仍然指向线程的锁记录，就用CAS把对象当前的Mark<br>Word和线程复制的Mark Word替换回来。假如替换成功同步过程就顺利完成了，如果失败则说明有<br>其他线程尝试过获取该锁，就要在释放锁的同时唤醒被挂起的线程。</p><h2 id="偏向锁、轻量级锁和重量级锁之间的区别"><a href="#偏向锁、轻量级锁和重量级锁之间的区别" class="headerlink" title="偏向锁、轻量级锁和重量级锁之间的区别?"></a>偏向锁、轻量级锁和重量级锁之间的区别?</h2><ul><li>偏向锁的优点是加解锁不需要额外消耗，和执行非同步方法比仅存在纳秒级差距，缺点是如果存在锁竞争会带来额外锁撤销的消耗，适用只有一个线程访问同步代码块的场景。</li><li>轻量级锁的优点是竞争线程不阻塞，程序响应速度快，缺点是如果线程始终得不到锁会自旋消耗CPU,适用追求响应时间、同步代码块执行快的场景。</li><li>重量级锁的优点是线程竞争不使用自旋不消耗CPU，缺点是线程会阻塞,响应时间慢，适应追求吞吐<br>量、同步代码块执行慢的场景。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 锁 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>synchronized关键字</title>
       <link href="/2021/09/17/synchronized-guan-jian-zi/"/>
       <url>/2021/09/17/synchronized-guan-jian-zi/</url>
@@ -632,6 +632,33 @@
             <tag> 锁 </tag>
             
             <tag> synchronized </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>ThreadLocal的使用</title>
+      <link href="/2021/09/15/threadlocal-de-shi-yong/"/>
+      <url>/2021/09/15/threadlocal-de-shi-yong/</url>
+      
+        <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ThreadLocal 为解决多线程程序的并发问题提供了一种新的思路，使用这个工具类可以很简洁地编写出优美的多线程程序。</p><ul><li><p>ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地线程”。其实，ThreadLocal 并不是一个 Thread，而是 Thread 的局部变量，也许把它命名为 ThreadLocalVariable 更容易让人理解一些。</p></li><li><p>当使用 ThreadLocal 维护变量时，ThreadLocal 为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。</p></li></ul><p>从线程的角度看，目标变量就象是线程的本地变量，这也是类名中 “Local” 所要表达的意思。</p><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>ThreadLocal提供了线程本地变量，如果你创建了一个 ThreadLocal 变量，那么访问这个变量的每个线程都会有这个变量的一个本地副本。当多个线程操作这个变量时，实际操作的是自己本地内存里面的变量，从而避免了线程安全问题。<br><img src="https://img-blog.csdnimg.cn/da73098b996a4ca582c20451c3665a3c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>ThreadLocal 是线程本地存储，在每个线程中都创建了一个 ThreadLocalMap 对象，每个线程可以访问自己内部 ThreadLocalMap 对象内的 value。通过这种方式，避免资源在多线程间共享。</p><h2 id="set-和get-方法"><a href="#set-和get-方法" class="headerlink" title="set()和get()方法"></a>set()和get()方法</h2><p>set 方法是为了设置 ThreadLocal 变量，设置成功后，该变量只能够被当前线程访问，其他线程不可直接访问操作改变量。参数是泛型<br><img src="https://img-blog.csdnimg.cn/add11667446f4362b06ddd7dd0650846.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><p>get 方法是为了获取 ThreadLocal 变量的值，get 方法没有任何入参，直接调用即可获取。<br><img src="https://img-blog.csdnimg.cn/402c399592cb48ac9707f2629e92f9ca.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="remove-方法"><a href="#remove-方法" class="headerlink" title="remove() 方法"></a>remove() 方法</h2><p>remove 方法是为了清除 ThreadLocal 变量，清除成功后，该 ThreadLocal 中没有变量值。<br><img src="https://img-blog.csdnimg.cn/144cb735fb68441f9b4db94121c50f34.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="单线程使用案例"><a href="#单线程使用案例" class="headerlink" title="单线程使用案例"></a>单线程使用案例</h2><p><img src="https://img-blog.csdnimg.cn/d06fb2b2ea2e4d96a728e4cc6a93099f.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><h2 id="多线程下的-ThreadLocal使用案例"><a href="#多线程下的-ThreadLocal使用案例" class="headerlink" title="多线程下的 ThreadLocal使用案例"></a>多线程下的 ThreadLocal使用案例</h2><p>看个简单案例</p><ul><li>线程1设置了ThreadLocal（thread-1 local value）</li><li>线程2设置了ThreadLocal（thread-2 local value）</li><li>线程2remove变量ThreadLocal</li><li>看看线程1是否还能打印之前设置的ThreadLocal</li></ul><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>stream<span class="token punctuation">.</span>juc</span><span class="token punctuation">;</span><span class="token comment">/** * @author stream * @since 2021/9/15 16:11 */</span><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadLocalTest</span> <span class="token punctuation">&#123;</span>    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> local <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>        <span class="token class-name">Thread</span> threadOne <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>            <span class="token annotation punctuation">@Override</span>            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>                local<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"thread-1 local value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>                    <span class="token comment">// 等待5000毫秒，确保threadTwo 执行remove完成</span>                    <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                 <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                <span class="token punctuation">&#125;</span>                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>local<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>            <span class="token punctuation">&#125;</span>        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token class-name">Thread</span> threadTwo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>            <span class="token annotation punctuation">@Override</span>            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>                local<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"thread-2 local value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>local<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                local<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"thread-2 remove 变量local 操作完毕。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>            <span class="token punctuation">&#125;</span>        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                threadTwo<span class="token punctuation">.</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>        threadOne<span class="token punctuation">.</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>执行结果<br><img src="https://img-blog.csdnimg.cn/d9aa7d2f2fd4417babdb562ef719b084.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p><ul><li>从结果来看，在 threadTwo 执行完 remove 方法后，threadOne 仍然能够成功打印</li><li>从而证明了 ThreadLocal 的专属特性，线程独有，其他线程不可修改</li></ul><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul><li>ThreadLocal 是解决线程安全问题一个很好的思路，</li><li>它通过为每个线程提供一个独立的变量副本解决了变量并发访问的冲突问题。</li><li>ThreadLocal 比直接使用 synchronized 同步机制解决线程安全问题更简单，更方便，且程序拥有更高的并发性。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 多线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ThreadLocal </tag>
+            
+            <tag> 共享变量 </tag>
             
         </tags>
       
