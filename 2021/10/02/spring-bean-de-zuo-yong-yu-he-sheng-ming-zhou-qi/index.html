@@ -4,9 +4,16 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="select、poll和epoll的区别, stream blog">
-    <meta name="description" content="进程所能打开的最大连接数select单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是3232，同理64位机器上FD_ SETSIZE为3264) 
-tips：我们可以对进行修">
+    <meta name="keywords" content="Spring Bean的作用域和生命周期, stream blog">
+    <meta name="description" content="Spring Bean的作用域Spring 为Bean定义了5种作用域，分别为：
+
+singleton (单例)
+prototype (原型)
+request
+session 
+global session
+
+singleton-单例模式（">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +25,7 @@ tips：我们可以对进行修">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>select、poll和epoll的区别 | stream blog</title>
+    <title>Spring Bean的作用域和生命周期 | stream blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -266,12 +273,12 @@ tips：我们可以对进行修">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">select、poll和epoll的区别</h1>
+                    <h1 class="description center-align post-title">Spring Bean的作用域和生命周期</h1>
                 </div>
             </div>
         </div>
@@ -387,8 +394,8 @@ tips：我们可以对进行修">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/IO%E6%B5%81/">
-                                <span class="chip bg-color">IO流</span>
+                            <a href="/tags/Spring/">
+                                <span class="chip bg-color">Spring</span>
                             </a>
                         
                     </div>
@@ -399,8 +406,8 @@ tips：我们可以对进行修">
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                操作系统
+                            <a href="/categories/%E6%A1%86%E6%9E%B6/" class="post-category">
+                                框架
                             </a>
                         
                     </div>
@@ -412,7 +419,7 @@ tips：我们可以对进行修">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-07
+                    2021-10-02
                 </div>
                 
 
@@ -421,14 +428,14 @@ tips：我们可以对进行修">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.3k
+                    948
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    3 Min
                 </div>
                 
 
@@ -446,40 +453,60 @@ tips：我们可以对进行修">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="进程所能打开的最大连接数"><a href="#进程所能打开的最大连接数" class="headerlink" title="进程所能打开的最大连接数"></a>进程所能打开的最大连接数</h2><h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><p>单个进程所能打开的最大连接数有FD_ SETSIZE宏定义， 其大小是32个整数的大小(在32位的机器上，大小就是32<em>32，同理64位机器上FD_ SETSIZE为32</em>64) </p>
-<p>tips：我们可以对进行修改，然后重新编译内核，但是性能可能会受到影响，这需要进一步的测试。</p>
-<h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p>poll本质上和select没有区别，但是它没有最大连接数的限制，原因是它是基于链表来存储的</p>
-<h4 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h4><p>虽然连接数有上限，但是很大，1G内存的机器上可以打开10万左右的连接，2G内存的机器可以打开20万左右的连接</p>
-<h2 id="FD剧增后带来的IO效率问题"><a href="#FD剧增后带来的IO效率问题" class="headerlink" title="FD剧增后带来的IO效率问题"></a>FD剧增后带来的IO效率问题</h2><h4 id="select-1"><a href="#select-1" class="headerlink" title="select"></a>select</h4><p>因为每次调用时都会对连接进行线性遍历，所以随着FD的增加会造成遍历<br>速度慢的“线性下降性能问题”。</p>
-<h4 id="poll-1"><a href="#poll-1" class="headerlink" title="poll"></a>poll</h4><p>由于poll与select的本质是一样的，所有poll有着和select一样的问题</p>
-<h4 id="epoll-1"><a href="#epoll-1" class="headerlink" title="epoll"></a>epoll</h4><p>因为epoll内核中实现是根据每个fd上的callback函数来实现的，只有活跃的socket才会主动调用calback,所以在活跃socket较少的情况下，使用epoll没有前面两者的线性下降的性能问题，但是所有socket都很活跃的情况下，可能会有性能问题。</p>
-<h2 id="消息传递方式"><a href="#消息传递方式" class="headerlink" title="消息传递方式"></a>消息传递方式</h2><h4 id="select-2"><a href="#select-2" class="headerlink" title="select"></a>select</h4><p>内核需要将消息传递到用户空间，都需要内核拷贝动作</p>
-<h4 id="poll-2"><a href="#poll-2" class="headerlink" title="poll"></a>poll</h4><p>与select一样</p>
-<h4 id="epoll-2"><a href="#epoll-2" class="headerlink" title="epoll"></a>epoll</h4><p>epoll通过内核和用户空间共享一块内存来 实现的</p>
-<h2 id="select和epoll的区别。"><a href="#select和epoll的区别。" class="headerlink" title="select和epoll的区别。"></a>select和epoll的区别。</h2><p>select 函数监视的文件描述符分3类，分别是writefds、readfds、和exceptfds。调用后select函数会阻塞，直到有描述符就绪（有数据 可读、可写、或者有except），或者超时（timeout指定等待时间，如果立即返回设为null即可），函数返回。当select函数返回后，可以通过遍历fdset，来找到就绪的描述符。</p>
-<p>select目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select的一个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但是这样也会造成效率的降低。</p>
-<p>内核需要传递消息到用户空间，需要内存拷贝</p>
-<p>相对于select和poll来说，epoll更加灵活，没有描述符限制。epoll使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次。</p>
-<p>epoll能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）。</p>
-<p>效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。</p>
-<h2 id="epoll的两种模式"><a href="#epoll的两种模式" class="headerlink" title="epoll的两种模式"></a>epoll的两种模式</h2><p>epoll对文件描述符的操作有两种模式：</p>
+                <h2 id="Spring-Bean的作用域"><a href="#Spring-Bean的作用域" class="headerlink" title="Spring Bean的作用域"></a>Spring Bean的作用域</h2><p>Spring 为Bean定义了5种作用域，分别为：</p>
 <ul>
-<li>LT（level trigger）默认模式</li>
-<li>ET（edge trigger）</li>
+<li>singleton (单例)</li>
+<li>prototype (原型)</li>
+<li>request</li>
+<li>session </li>
+<li>global session</li>
 </ul>
-<h3 id="LT模式"><a href="#LT模式" class="headerlink" title="LT模式"></a>LT模式</h3><p>当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序可以不立即处理该事件。下次调用epoll_wait时，会再次响应应用程序并通知此事件。</p>
-<p>LT(level triggered)是缺省的工作方式，并且同时支持block和no-block socket。<br>在这种做法中，内核告诉你一个文件描述符是否就绪了，然后你可以对这个就绪的fd进行IO操作。如果你不作任何操作，内核还是会继续通知你的。</p>
-<h3 id="ET模式"><a href="#ET模式" class="headerlink" title="ET模式"></a>ET模式</h3><p>当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序必须立即处理该事件。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</p>
-<p>ET(edge-triggered)是高速工作方式，只支持no-block socket。</p>
-<p>在这种模式下，当描述符从未就绪变为就绪时，内核通过epoll告诉你然后它会假设你知道文件描述符已经就绪，并且不会再为那个文件描述符发送更多的就绪通知，直到你做了某些操作导致那个文件描述符不再为就绪状态了</p>
-<ul>
-<li>比如，你在发送，接收或者接收请求，或者发送接收的数据少于一定量时导致了一个EWOULDBLOCK 错误</li>
+<h3 id="singleton-单例模式（多线程下不安全）"><a href="#singleton-单例模式（多线程下不安全）" class="headerlink" title="singleton-单例模式（多线程下不安全）"></a>singleton-单例模式（多线程下不安全）</h3><ul>
+<li>Spring loC容器中只会存在一 个共享的Bean实例，无论有多少个Bean引用它，始终指向同一个对象。</li>
+<li>该模式在多线程下是不安全的。Singleton 作用域是Spring中的缺省作用域，也可以显示的将Bean定义为singleton模式</li>
 </ul>
-<p>如果一直不对这个fd作IO操作(从而导致它再次变成未就绪)，内核不会发送更多的通知(only once)。</p>
-<ul>
-<li>ET模式在很大程度上减少了epoll事件被重复触发的次数，因此效率要比LT模式高。</li>
-<li>epoll工作在ET模式的时候，必须使用非阻塞套接口，以避免由于一个文件句柄的阻塞读/阻塞写操作把处理多个文件描述符的任务饿死。</li>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>userDao<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span> <span class="token punctuation">"</span>com.ioc.UserDaolmpl<span class="token punctuation">"</span></span> <span class="token attr-name">scope</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span> <span class="token punctuation">"</span>singleton<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="prototype-原型模式（每次使用时创建）"><a href="#prototype-原型模式（每次使用时创建）" class="headerlink" title="prototype-原型模式（每次使用时创建）"></a>prototype-原型模式（每次使用时创建）</h3><ul>
+<li> 每次通过Spring容器获取prototype定义的bean时，容器都将创建一个新的Bean实例，每个Bean实例都有自己的属性和状态，而singleton全局只有一个对象。</li>
+<li>一般来说,对有状态的bean使用prototype作用域，而对无状态的bean使用singleton作用域。</li>
 </ul>
+<h3 id="Request-（一次-request-创建一个实例）"><a href="#Request-（一次-request-创建一个实例）" class="headerlink" title="Request （一次 request 创建一个实例）"></a>Request （一次 request 创建一个实例）</h3><ul>
+<li>在一次Http请求中，容器会返回该Bean的同一实例。 而对不同的Http请求则会产生新的Bean,而且该bean仅在当前Http Request 内有效</li>
+<li>当前Http请求结束，该bean实例也将会被销毁。</li>
+</ul>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span> <span class="token punctuation">"</span>loginAction<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.userLogin<span class="token punctuation">"</span></span> <span class="token attr-name">scope</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span> <span class="token punctuation">"</span>request<span class="token punctuation">'</span><span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="session"><a href="#session" class="headerlink" title="session"></a>session</h3><ul>
+<li>在一次Http Session中，容器会返回该Bean的同一实例。</li>
+<li>而对不同的Session请求则会创建新的实例，该bean实例仅在当前Session 内有效。</li>
+<li>同Http请求相同，每一次session请求创建新的实例，而不同的实例之间不共享属性，且实例仅在自己的session请求内有效，请求结束，则实例将被销毁。</li>
+</ul>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>bean</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span> userPreference<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span> com.ioc.UserPreference<span class="token punctuation">"</span></span> <span class="token attr-name">scope</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span> <span class="token punctuation">"</span>session<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="global-Session"><a href="#global-Session" class="headerlink" title="global Session"></a>global Session</h3><p>在一个全局的Http Session 中，容器会返回该Bean的同一个实例，仅在使用portlet context时有效。</p>
+<h2 id="Spring-Bean的生命周期"><a href="#Spring-Bean的生命周期" class="headerlink" title="Spring Bean的生命周期"></a>Spring Bean的生命周期</h2><ol>
+<li><p><strong>实例化</strong>一个Bean,也就是我们常说的new。</p>
+</li>
+<li><p><strong>IOC依赖注入</strong>，按照 Spring上下文对实例化的Bean进行配置，也就是IOC依赖注入。</p>
+</li>
+<li><p><strong>setBeanName实现</strong>，如果这个Bean已经实现了BeanNameAware接口，会调用它实现的setBeanName(String)方法，此处传递的就是Spring配置文件中Bean的id值</p>
+</li>
+<li><p><strong>BeanFactoryAware实现</strong>，如果这个Bean已经实现了BeanFactoryAware 接口，会调用它实现的setBeanFactory，setBeanFactory(BeanFactory)传递的是Spring工厂自身(可以用这个方式来获取其它Bean，只需在Spring配置文件中配置一个普通的Bean就可以)。</p>
+</li>
+</ol>
+<ol start="5">
+<li><p><strong>ApplicationContextAware实现</strong>，如果这个 Bean已经实现了ApplicationContextAware接口，会调用<br>setApplicationContext(ApplicationContext)方法,传入Spring.上下文(同样这个方式也可以实现步骤4的内容，但比4更好,因为ApplicationContext是BeanFactory的子接口，有更多的实现方法)</p>
+</li>
+<li><p><strong>postProcessBeforelnitialization接口实现初始化预处理</strong>，如果这个Bean关联了BeanPostProcessor接口，将会调用postProcessBeforelnitialization(Object obj, String s)方法，BeanPostProcessor 经常被用作是Bean内容的更改，并且由于这个是在Bean初始化结束时调用那个的方法，也可以被应用于内存或缓存技术。</p>
+</li>
+<li><p><strong>init-method</strong>，如果 Bean在Spring配置文件中配置了init-method属性会自动调用其配置的初始化方法。</p>
+</li>
+<li><p><strong>postProcessAfterlnitialization</strong>，如果这个 Bean关联了BeanPostProcessor 接口，将会调用<br>postProcessAfterlnitialization(Object obj, String s)方法。<br>注:以上工作完成以后就可以应用这个Bean了,那这个Bean是一个Singleton的，所以一<br>般情况下我们调用同一个id的Bean会是在内容地址相同的实例，当然在Spring配置文件中<br>也可以配置非Singleton。</p>
+</li>
+<li><p><strong>Destroy过期自动清理阶段</strong>，当Bean不再需要时，会经过清理阶段,如果Bean实现了DisposableBean这个接口，会调用那个其实现的destroy()方法;</p>
+</li>
+<li><p><strong>destroy-method自配置清理</strong>，最后，如果这个Bean的Spring配置中配置了destroy-method属性,会自动调用其配置的销毁方法。</p>
+</li>
+</ol>
 
                 
             </div>
@@ -506,7 +533,7 @@ tips：我们可以对进行修">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/2021/11/07/select-poll-he-epoll-de-qu-bie/">https://stream1080.github.io/2021/11/07/select-poll-he-epoll-de-qu-bie/</a>
+                    <a href="https://stream1080.github.io/2021/10/02/spring-bean-de-zuo-yong-yu-he-sheng-ming-zhou-qi/">https://stream1080.github.io/2021/10/02/spring-bean-de-zuo-yong-yu-he-sheng-ming-zhou-qi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -544,8 +571,8 @@ tips：我们可以对进行修">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/IO%E6%B5%81/">
-                                    <span class="chip bg-color">IO流</span>
+                                <a href="/tags/Spring/">
+                                    <span class="chip bg-color">Spring</span>
                                 </a>
                             
                         </div>
@@ -591,18 +618,17 @@ tips：我们可以对进行修">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/11/07/select-poll-he-epoll-de-qu-bie/">
+                <a href="/2021/10/03/java-de-io-liu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java的IO流">
                         
-                        <span class="card-title">select、poll和epoll的区别</span>
+                        <span class="card-title">Java的IO流</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -612,22 +638,21 @@ tips：我们可以对进行修">
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-03
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -646,13 +671,13 @@ tips：我们可以对进行修">
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/06/io-duo-lu-fu-yong/">
+                <a href="/2021/10/02/xian-liu-suan-fa-you-na-xie/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="IO多路复用">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="限流算法有哪些？">
                         
-                        <span class="card-title">IO多路复用</span>
+                        <span class="card-title">限流算法有哪些？</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -663,14 +688,14 @@ tips：我们可以对进行修">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-02
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
+                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
+                                    分布式微服务
                                 </a>
                             
                             
@@ -680,8 +705,12 @@ tips：我们可以对进行修">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/IO%E6%B5%81/">
-                        <span class="chip bg-color">IO流</span>
+                    <a href="/tags/%E9%99%90%E6%B5%81/">
+                        <span class="chip bg-color">限流</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">算法</span>
                     </a>
                     
                 </div>
