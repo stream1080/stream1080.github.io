@@ -1037,7 +1037,8 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
 
 <div class="progress-bar"></div>
 
-<script>
+
+<!-- <script>
     $(document).ready(function () {
 
         var int = setInterval(fixCount, 50);  // 50ms周期检测函数
@@ -1055,7 +1056,7 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
             }
         }
     });
-</script>
+</script> -->
 
     <!-- 搜索遮罩框 -->
 <div id="searchModal" class="modal">

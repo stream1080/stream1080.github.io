@@ -1073,7 +1073,8 @@
 
 <div class="progress-bar"></div>
 
-<script>
+
+<!-- <script>
     $(document).ready(function () {
 
         var int = setInterval(fixCount, 50);  // 50ms周期检测函数
@@ -1091,7 +1092,7 @@
             }
         }
     });
-</script>
+</script> -->
 
     <!-- 搜索遮罩框 -->
 <div id="searchModal" class="modal">
