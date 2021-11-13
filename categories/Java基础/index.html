@@ -553,8 +553,20 @@ HashMap(int initia
             
             
             
-            <!-- 
-             -->
+                
+            
+            
+                <span id="busuanzi_container_site_pv" style='display:none'>
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv" style='display:none'>
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
             <br>
 
             <!-- 运行天数提醒. -->
@@ -616,7 +628,7 @@ HashMap(int initia
             <br>
             
         </div>
-        <div class="col s12 m4 l4 social-link ">
+        <div class="col s12 m4 l4 social-link social-statis">
     <a href="https://github.com/stream1080" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
@@ -646,7 +658,7 @@ HashMap(int initia
 <div class="progress-bar"></div>
 
 
-<!-- <script>
+<script>
     $(document).ready(function () {
 
         var int = setInterval(fixCount, 50);  // 50ms周期检测函数
@@ -664,7 +676,10 @@ HashMap(int initia
             }
         }
     });
-</script> -->
+</script>
+
+
+
 
     <!-- 搜索遮罩框 -->
 <div id="searchModal" class="modal">
@@ -822,6 +837,8 @@ $(function () {
 </script>
 
     
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     

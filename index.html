@@ -486,6 +486,32 @@ tips：我们可以对进行修
         
             
             <div class="carousel-item amber white-text carousel-post bg-cover"
+                 style="background-image: url('/medias/featureimages/7.jpg');">
+                <div class="container">
+                    <div class="row">
+                        <div class="col s10 offset-s1">
+                            <div class="title center-align">分布式事务之三阶段提交</div>
+                            <div class="description center-align">
+                                
+                                    三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。
+流程询问阶段协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。
+准备阶段
+如果
+                                
+                            </div>
+                            <div class="cover-btns">
+                                <a href="/fen-bu-shi-shi-wu-zhi-san-jie-duan-ti-jiao.html" class="waves-effect waves-light btn"
+                                   target="_blank">
+                                    <i class="icon fa fa-eye fa-fw"></i>Read more
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            
+            <div class="carousel-item amber white-text carousel-post bg-cover"
                  style="background-image: url('/medias/featureimages/4.jpg');">
                 <div class="container">
                     <div class="row">
@@ -503,32 +529,6 @@ tips：我们可以对进行修
                             </div>
                             <div class="cover-btns">
                                 <a href="/fen-bu-shi-shi-wu-zhi-liang-jie-duan-ti-jiao.html" class="waves-effect waves-light btn"
-                                   target="_blank">
-                                    <i class="icon fa fa-eye fa-fw"></i>Read more
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
-            
-            <div class="carousel-item amber white-text carousel-post bg-cover"
-                 style="background-image: url('/medias/featureimages/7.jpg');">
-                <div class="container">
-                    <div class="row">
-                        <div class="col s10 offset-s1">
-                            <div class="title center-align">分布式事务之三阶段提交</div>
-                            <div class="description center-align">
-                                
-                                    三阶段提交协议是两阶段提交协议的改进版本，它通过超时机制解决了阻塞的问题，并且把两个阶段增加为三个阶段。
-流程询问阶段协调者询问参与者是否可以完成指令，协调者只需要回答是或不是，而不需要做真正的操作，这个阶段超时会导致中止。
-准备阶段
-如果
-                                
-                            </div>
-                            <div class="cover-btns">
-                                <a href="/fen-bu-shi-shi-wu-zhi-san-jie-duan-ti-jiao.html" class="waves-effect waves-light btn"
                                    target="_blank">
                                     <i class="icon fa fa-eye fa-fw"></i>Read more
                                 </a>
@@ -1404,8 +1404,20 @@ possible_k
             
             
             
-            <!-- 
-             -->
+                
+            
+            
+                <span id="busuanzi_container_site_pv" style='display:none'>
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv" style='display:none'>
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
             <br>
 
             <!-- 运行天数提醒. -->
@@ -1467,7 +1479,7 @@ possible_k
             <br>
             
         </div>
-        <div class="col s12 m4 l4 social-link ">
+        <div class="col s12 m4 l4 social-link social-statis">
     <a href="https://github.com/stream1080" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
@@ -1497,7 +1509,7 @@ possible_k
 <div class="progress-bar"></div>
 
 
-<!-- <script>
+<script>
     $(document).ready(function () {
 
         var int = setInterval(fixCount, 50);  // 50ms周期检测函数
@@ -1515,7 +1527,10 @@ possible_k
             }
         }
     });
-</script> -->
+</script>
+
+
+
 
     <!-- 搜索遮罩框 -->
 <div id="searchModal" class="modal">
@@ -1673,6 +1688,8 @@ $(function () {
 </script>
 
     
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
