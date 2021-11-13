@@ -5,7 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="RabbitMQ的死信队列, stream blog">
-    <meta name="description" content="RabbitMQ的死信队列 | stream blog">
+    <meta name="description" content="什么是死信在 RabbitMQ 中充当主角的就是消息，在不同场景下，消息会有不同地表现。死信就是消息在特定场景下的一种表现形式，这些场景包括：
+
+消息被拒绝访问，即 RabbitMQ返回 nack 的信号时
+消息的 TTL 过期时
+消息队列">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +388,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/RabbitMQ/">
+                                <span class="chip bg-color">RabbitMQ</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97/">
+                                <span class="chip bg-color">死信队列</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
+                                消息队列
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -407,14 +428,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    4 Min
                 </div>
                 
 
@@ -432,7 +453,70 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="什么是死信"><a href="#什么是死信" class="headerlink" title="什么是死信"></a>什么是死信</h2><p>在 RabbitMQ 中充当主角的就是消息，在不同场景下，消息会有不同地表现。<br>死信就是消息在特定场景下的一种表现形式，这些场景包括：</p>
+<ul>
+<li>消息被拒绝访问，即 RabbitMQ返回 nack 的信号时</li>
+<li>消息的 TTL 过期时</li>
+<li>消息队列达到最大长度</li>
+<li>消息不能入队时。</li>
+</ul>
+<p>上述场景经常产生死信，即消息在这些场景中时，被称为死信。</p>
+<h2 id="什么是死信队列"><a href="#什么是死信队列" class="headerlink" title="什么是死信队列"></a>什么是死信队列</h2><p>死信队列就是用于储存死信的消息队列，在死信队列中，有且只有死信构成，不会存在其余类型的消息。</p>
+<p>死信队列在 RabbitMQ 中并不会单独存在，往往死信队列都会绑定这一个普通的消息队列，当所绑定的消息队列中，有消息变成死信了，那么这个消息就会重新被交换机路由到指定的死信队列中去，我们可以通过对这个死信队列进行监听，从而手动的去对这一消息进行补偿。</p>
+<p>那么，我们到底如何来使用死信队列呢？</p>
+<h2 id="死信队列基本使用"><a href="#死信队列基本使用" class="headerlink" title="死信队列基本使用"></a>死信队列基本使用</h2><p>在 RabbitMQ 中，死信队列的标识为 x-dead-letter-exchange ，通过观察死信队列的标识，我们不难发现，其标识最后为 exchange ，即 RabbitMQ 中的交换机，RabbitMQ 中的死信队列就是由死信交换机而得出的。</p>
+<p>要想使用死信队列，我们需要首先声明一个普通的消息队列，并将死信队列的标识绑定到这个普通的消息队列上， 这个过程需要我们在生产端进行配置，代码如下所示：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 使用 ConnectionFactory 创建了一个客户端连接 RabbitMQ Server 的连接。</span>
+<span class="token class-name">ConnectionFactory</span> connectionFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConnectionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+connectionFactory<span class="token punctuation">.</span><span class="token function">setHost</span><span class="token punctuation">(</span><span class="token string">"xx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+connectionFactory<span class="token punctuation">.</span><span class="token function">setPort</span><span class="token punctuation">(</span><span class="token string">"5672"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+connectionFactory<span class="token punctuation">.</span><span class="token function">setVirtualHost</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">Connection</span> connection <span class="token operator">=</span> connectionFactory<span class="token punctuation">.</span><span class="token function">newConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 使用建立好的连接，来创建了一个频道 channel 。</span>
+<span class="token class-name">Channel</span> channel <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">createChanel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 声明了一个普通队列的额外参数的 Map ，</span>
+<span class="token comment">// 这个 Map 的 key 就是死信队列的标识，value 就是我们后续声明的真正的死信交换机的名称。</span>
+<span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> argumentsMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+argumentsMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"x-dead-letter-exchange"</span><span class="token punctuation">,</span> <span class="token string">"dlx_exchange"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*
+使用 channel 的 exchangeDeclare 方法和 queueDeclare 方法，
+分别声明了一个名为 dlx_common_exchange 的交换机和名为 dlx_common_queue 的普通消息队列，
+之所以名称中有 common ，是因为要对这个交换机和队列做一个标识，表示该交换机和队列是绑定了死信队列的。
+*/</span>
+channel<span class="token punctuation">.</span><span class="token function">exchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"dlx_common_exchange"</span><span class="token punctuation">,</span> <span class="token string">"direct"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+channel<span class="token punctuation">.</span><span class="token function">queueDeclare</span><span class="token punctuation">(</span><span class="token string">"dlx_common_queue"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> argumentsMap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*
+使用 channel 的 queueBind 方法来讲声明的普通交换机和消息队列进行绑定，并且制定了 routingKey ，
+这样消息就可以经 dlx_common_exchange 根据 routingKey 来路由到 dlx_common_queue 中。
+*/</span>
+channel<span class="token punctuation">.</span><span class="token function">queueBind</span><span class="token punctuation">(</span><span class="token string">"dlx_common_queue"</span><span class="token punctuation">,</span> <span class="token string">"dlx_common_exchange"</span><span class="token punctuation">,</span> routingKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>声明了要绑定死信队列的普通队列之后，最后我们需要声明真正的死信队列</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 使用 chanel 的 exchangeDeclare 方法来声明了一个名为 dlx_exchange 的交换机。</span>
+channel<span class="token punctuation">.</span><span class="token function">exchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"dlx_exchange"</span><span class="token punctuation">,</span> <span class="token string">"direct"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 使用 channel 的 queueDeclare 方法来声明了一个名为 dlx_queue 的队列。</span>
+channel<span class="token punctuation">.</span><span class="token function">queueDeclare</span><span class="token punctuation">(</span><span class="token string">"dlx_queue"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 使用 channel 的 queueBind 方法，来将 dlx_exchange 的交换机与 dlx_queue 队列进行了绑定。</span>
+channel<span class="token punctuation">.</span><span class="token function">queueBind</span><span class="token punctuation">(</span><span class="token string">"dlx_queue"</span><span class="token punctuation">,</span> <span class="token string">"dlx_exchange"</span><span class="token punctuation">,</span> routingKey<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="MQ处理消息失败了怎么办"><a href="#MQ处理消息失败了怎么办" class="headerlink" title="MQ处理消息失败了怎么办"></a>MQ处理消息失败了怎么办</h2><p>在生产环境中，使用MQ的时候设计两个队列：</p>
+<ul>
+<li>一个是业务队列，专门用来处理消息；</li>
+<li>一个是死信队列。用来处理异常情况。</li>
+</ul>
+<p>比如说消费消息的时候，数据库故障了，此时无法将数据落盘，那么消费者每次消费一条消息，尝试落盘持久化的时候，都会遇到数据库报错。此时消费者就可以把这条消息拒绝访问，或者标志位处理失败！</p>
+<ul>
+<li>一旦标志这条消息处理失败了之后，MQ就会把这条消息转入提前设置好的一个死信队列中。</li>
+<li>在数据库故障期间，所有消息全部处理失败，全部会转入死信队列。</li>
+<li>然后消费者会专门有一个后台线程，监控数据库是否正常，能否请求的，不停的监视。</li>
+<li>一旦发现对方恢复正常，这个后台线程就从死信队列消费出来处理失败的订单，重新处理逻辑</li>
+<li>死信队列的使用，其实就是MQ在生产实践中非常重要的一环，也就是架构设计必须要考虑的。<br><img src="https://img-blog.csdnimg.cn/8a20d6e5492041dd9a6e0b02a6aef248.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -495,7 +579,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/RabbitMQ/">
+                                    <span class="chip bg-color">RabbitMQ</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97/">
+                                    <span class="chip bg-color">死信队列</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -565,13 +657,29 @@
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
+                                    消息队列
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/RabbitMQ/">
+                        <span class="chip bg-color">RabbitMQ</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97/">
+                        <span class="chip bg-color">死信队列</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>

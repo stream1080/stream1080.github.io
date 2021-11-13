@@ -339,7 +339,7 @@
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">36</a></span>
+    <span class="count"><a href="/tags">37</a></span>
     <span class="name">Tags</span>
 </div>
 
@@ -369,7 +369,7 @@
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">36</a></span>
+    <span class="count"><a href="/tags">37</a></span>
     <span class="name">Tags</span>
 </div>
 
@@ -539,7 +539,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"Java基础","value":1},{"name":"操作系统","value":2},{"name":"多线程","value":8},{"name":"数据库","value":7},{"name":"消息队列","value":3},{"name":"缓存","value":3},{"name":"框架","value":1},{"name":"计算机网络","value":2},{"name":"分布式微服务","value":3},{"name":"数据结构","value":1}],
+                data: [{"name":"多线程","value":8},{"name":"Java基础","value":1},{"name":"操作系统","value":2},{"name":"数据库","value":7},{"name":"消息队列","value":4},{"name":"缓存","value":3},{"name":"框架","value":1},{"name":"计算机网络","value":2},{"name":"分布式微服务","value":3},{"name":"数据结构","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -563,7 +563,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["MySQL","IO流","执行计划","RabbitMQ","Redis","锁","索引","分布式锁","分布式事务","数据一致性"]
+                data: ["MySQL","RabbitMQ","IO流","执行计划","Redis","锁","索引","分布式锁","分布式事务","数据一致性"]
             }
         ],
         yAxis: [
@@ -576,7 +576,7 @@
                 type: 'bar',
                 color: ['#82d3f4'],
                 barWidth : 18,
-                data: [7,3,3,3,3,2,2,2,2,2],
+                data: [7,4,3,3,3,2,2,2,2,2],
                 markPoint: {
                     symbolSize: 45,
                     data: [{
@@ -746,6 +746,12 @@
         <div class="tag-chips center-align">
             
             
+            <a href="/tags/%E9%98%9F%E5%88%97/">
+                <span class="chip center-align waves-effect waves-light chip-default">队列</span>
+            </a>
+            
+            
+            
             <a href="/tags/HashMap/">
                 <span class="chip center-align waves-effect waves-light chip-default">HashMap</span>
             </a>
@@ -764,14 +770,14 @@
             
             
             
-            <a href="/tags/%E9%98%9F%E5%88%97/">
-                <span class="chip center-align waves-effect waves-light chip-default">队列</span>
+            <a href="/tags/%E9%94%81/">
+                <span class="chip center-align waves-effect waves-light chip-default">锁</span>
             </a>
             
             
             
-            <a href="/tags/%E9%94%81/">
-                <span class="chip center-align waves-effect waves-light chip-default">锁</span>
+            <a href="/tags/ACID/">
+                <span class="chip center-align waves-effect waves-light chip-default">ACID</span>
             </a>
             
             
@@ -788,20 +794,14 @@
             
             
             
-            <a href="/tags/ACID/">
-                <span class="chip center-align waves-effect waves-light chip-default">ACID</span>
+            <a href="/tags/%E7%B4%A2%E5%BC%95/">
+                <span class="chip center-align waves-effect waves-light chip-default">索引</span>
             </a>
             
             
             
             <a href="/tags/%E6%97%A5%E5%BF%97/">
                 <span class="chip center-align waves-effect waves-light chip-default">日志</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E7%B4%A2%E5%BC%95/">
-                <span class="chip center-align waves-effect waves-light chip-default">索引</span>
             </a>
             
             
@@ -818,14 +818,26 @@
             
             
             
-            <a href="/tags/%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9/">
-                <span class="chip center-align waves-effect waves-light chip-default">顺序消费</span>
+            <a href="/tags/%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97/">
+                <span class="chip center-align waves-effect waves-light chip-default">死信队列</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
+                <span class="chip center-align waves-effect waves-light chip-default">分布式锁</span>
             </a>
             
             
             
             <a href="/tags/Redis/">
                 <span class="chip center-align waves-effect waves-light chip-default">Redis</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E9%A1%BA%E5%BA%8F%E6%B6%88%E8%B4%B9/">
+                <span class="chip center-align waves-effect waves-light chip-default">顺序消费</span>
             </a>
             
             
@@ -842,26 +854,8 @@
             
             
             
-            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
-                <span class="chip center-align waves-effect waves-light chip-default">分布式锁</span>
-            </a>
-            
-            
-            
             <a href="/tags/Spring/">
                 <span class="chip center-align waves-effect waves-light chip-default">Spring</span>
-            </a>
-            
-            
-            
-            <a href="/tags/TCP-IP/">
-                <span class="chip center-align waves-effect waves-light chip-default">TCP/IP</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E7%B2%98%E5%8C%85%E6%8B%86%E5%8C%85/">
-                <span class="chip center-align waves-effect waves-light chip-default">粘包拆包</span>
             </a>
             
             
@@ -884,6 +878,18 @@
             
             
             
+            <a href="/tags/TCP-IP/">
+                <span class="chip center-align waves-effect waves-light chip-default">TCP/IP</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E7%B2%98%E5%8C%85%E6%8B%86%E5%8C%85/">
+                <span class="chip center-align waves-effect waves-light chip-default">粘包拆包</span>
+            </a>
+            
+            
+            
             <a href="/tags/ThreadLocal/">
                 <span class="chip center-align waves-effect waves-light chip-default">ThreadLocal</span>
             </a>
@@ -902,6 +908,12 @@
             
             
             
+            <a href="/tags/volatile/">
+                <span class="chip center-align waves-effect waves-light chip-default">volatile</span>
+            </a>
+            
+            
+            
             <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
                 <span class="chip center-align waves-effect waves-light chip-default">分布式事务</span>
             </a>
@@ -914,20 +926,8 @@
             
             
             
-            <a href="/tags/volatile/">
-                <span class="chip center-align waves-effect waves-light chip-default">volatile</span>
-            </a>
-            
-            
-            
             <a href="/tags/%E5%8F%AF%E9%9D%A0%E6%80%A7/">
                 <span class="chip center-align waves-effect waves-light chip-default">可靠性</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
-                <span class="chip center-align waves-effect waves-light chip-default">线程池</span>
             </a>
             
             
@@ -940,6 +940,12 @@
             
             <a href="/tags/%E4%B9%90%E8%A7%82%E9%94%81/">
                 <span class="chip center-align waves-effect waves-light chip-default">乐观锁</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+                <span class="chip center-align waves-effect waves-light chip-default">线程池</span>
             </a>
             
             
