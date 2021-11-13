@@ -4,8 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="红黑树是什么, 一江溪水">
-    <meta name="description" content="红黑树红黑树是一种接近平衡的二叉搜索树，它能够保证任意一个节点左右子树的高度差不会超过较低子树的高度，也就是两棵子树的高度比值不会超过 2 倍。这样我们可以使搜索的时间复杂度更接近 O (logN)。为了保证树的平衡，我们需要在添加或删除元">
+    <meta name="keywords" content="MySQL的日志文件, 一江溪水">
+    <meta name="description" content="二进制日志-binlog二进制日志-binlog，它是 MySQL 重要的日志模块，在 Server 层实现
+binlog 以二进制形式，将所有修改数据的 query 记录到日志文件中，包括：
+
+query 语句
+执行时间
+相关事务信息
+
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +24,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>红黑树是什么 | 一江溪水</title>
+    <title>MySQL的日志文件 | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -265,12 +272,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">红黑树是什么</h1>
+                    <h1 class="description center-align post-title">MySQL的日志文件</h1>
                 </div>
             </div>
         </div>
@@ -386,8 +393,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/">
-                                <span class="chip bg-color">红黑树</span>
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%97%A5%E5%BF%97/">
+                                <span class="chip bg-color">日志</span>
                             </a>
                         
                     </div>
@@ -398,8 +409,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-category">
-                                数据结构
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
                             </a>
                         
                     </div>
@@ -411,7 +422,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-13
+                    2021-10-04
                 </div>
                 
 
@@ -420,7 +431,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.3k
+                    1.2k
                 </div>
                 
 
@@ -445,122 +456,51 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p>红黑树是一种接近平衡的二叉搜索树，它能够保证任意一个节点左右子树的高度差不会超过较低子树的高度，也就是两棵子树的高度比值不会超过 2 倍。这样我们可以使搜索的时间复杂度更接近 O (logN)。为了保证树的平衡，我们需要在添加或删除元素的时候不断的调整树的结构，使每个节点的左右子树上的节点个数尽可能相等。</p>
-<h2 id="红黑树的性质"><a href="#红黑树的性质" class="headerlink" title="红黑树的性质"></a>红黑树的性质</h2><ul>
-<li>每个节点不是红色就是黑色；</li>
-<li>根节点永远是黑色；</li>
-<li>红色节点的子节点必须是黑色；</li>
-<li>任意一个节点到每个叶子节点的路径上都包含相同数量的黑色节点；</li>
-<li>每次添加新节点都默认为红色。</li>
-</ul>
-<h2 id="红黑树调整的方式"><a href="#红黑树调整的方式" class="headerlink" title="红黑树调整的方式"></a>红黑树调整的方式</h2><p>如果每次添加节点都设置为红色，当父节点已经是红色时，会违背上面的第 3 条性质，这时候我们需要按照一定的方法去调整树，调整的方式有三种：</p>
+                <h2 id="二进制日志-binlog"><a href="#二进制日志-binlog" class="headerlink" title="二进制日志-binlog"></a>二进制日志-binlog</h2><p>二进制日志-binlog，它是 MySQL 重要的日志模块，在 Server 层实现</p>
+<p>binlog 以二进制形式，将所有修改数据的 query 记录到日志文件中，包括：</p>
 <ul>
-<li>改变节点颜色</li>
-<li>左旋</li>
-<li>右旋。</li>
+<li>query 语句</li>
+<li>执行时间</li>
+<li>相关事务信息</li>
 </ul>
-<h4 id="变色"><a href="#变色" class="headerlink" title="变色"></a>变色</h4><p>改变节点颜色如下图，我们依次做了以下尝试：</p>
+<p>binlog 的开启，通过在配置文件 my.cnf 中，显式指定参数 log-bin=file_name</p>
 <ul>
-<li>①默认红色：违反性质 3；</li>
-<li>②默认黑色：违反性质 4；</li>
-<li>③默认红色，将父节点和父节点的兄弟节点改为黑色，满足全部 5 条性质。</li>
+<li>statement记录的是SQL语句，最后会有COMMIT。</li>
+<li>row记录的实际操作的数据记录，最后会有一个XID event。<h3 id="binlog的三种工作模式"><a href="#binlog的三种工作模式" class="headerlink" title="binlog的三种工作模式"></a>binlog的三种工作模式</h3><h4 id="Row-level："><a href="#Row-level：" class="headerlink" title="Row level："></a>Row level：</h4>日志中会记录每一行数据被修改的情况，然后在slave端对相同的数据进行修改。</li>
+<li>优点：能清楚的记录每一行数据修改的细节</li>
+<li>缺点：数据量太大<h4 id="Statement-level（默认）"><a href="#Statement-level（默认）" class="headerlink" title="Statement level（默认）"></a>Statement level（默认）</h4>每一条被修改数据的sql都会记录到master的bin-log中，slave在复制的时候sql进程会解析成和原来master端执行过的相同的sql再次执行。在主从同步中一般是不建议用statement模式的，因为会有些语句不支持，比如语句中包含UUID函数，以及LOAD DATA IN FILE语句等</li>
+<li>优点：解决了 Row level下的缺点，不需要记录每一行的数据变化，减少bin-log日志量，节约磁盘IO，提高新能</li>
+<li>缺点：容易出现主从复制不一致<h3 id="Mixed（混合模式）"><a href="#Mixed（混合模式）" class="headerlink" title="Mixed（混合模式）"></a>Mixed（混合模式）</h3>结合了Row level和Statement level的优点，但结构也更复杂。<h3 id="binlog的结构"><a href="#binlog的结构" class="headerlink" title="binlog的结构"></a>binlog的结构</h3></li>
+<li><strong>timestamp</strong> 事件开始的执行时间，固定4字节展示是新纪元(epoch time)以来的秒数</li>
+<li><strong>Event</strong> Type 指明该事件的类型</li>
+<li><strong>server_ id</strong> 服务器的server ID</li>
+<li><strong>Event size</strong> 该事件的长度</li>
+<li><strong>Next_ log pos</strong> 固定4字节下一个event的开始位置</li>
+<li><strong>Flag</strong>   固定2字节event flags</li>
+<li><strong>Fixed part</strong> 每种Event Type对应结构体固定的结构部分</li>
+<li><strong>Variable part</strong> 每种Event Type对应结构体可变的结构部分</li>
 </ul>
-<h4 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a>左旋</h4><p>拎起左旋节点的右子节点，使左旋节点向左下沉，成为右子节点的左子节点，右子节点上升成为其父节点。</p>
-<h4 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a>右旋</h4><p>拎起右旋节点的左子节点，使右旋节点向右下沉，成为左子节点的右子节点，左子节点上升成为其父节点。</p>
-<h2 id="红黑树的插入操作"><a href="#红黑树的插入操作" class="headerlink" title="红黑树的插入操作"></a>红黑树的插入操作</h2><p>插入元素会导致原本平衡的红黑树失去平衡，还会导致红黑树五大特性的不满足。因此插入后我们需要做调整，使其重新成为一个红黑树。</p>
-<h4 id="寻找插入位置"><a href="#寻找插入位置" class="headerlink" title="寻找插入位置"></a>寻找插入位置</h4><p>把元素插进红黑树的第一步是找到要插入的位置。寻找位置的方法其实也比较简单：</p>
+<h2 id="重做日志-redo-log"><a href="#重做日志-redo-log" class="headerlink" title="重做日志-redo log"></a>重做日志-redo log</h2><p>redo log是存储引擎 InnoDB 生成的日志，主要为了保证数据的可靠性。redo log 记录了 InnoDB 所做的所有物理变更和事务信息。<br>由两部分组成：</p>
 <ul>
-<li>①如果是空树，直接插入到跟节点；</li>
-<li>②如果与当前节点的 key 值相等，则更新当前节点的 value 值；</li>
-<li>③如果比当前节点的 key 值大，则继续寻找当前节点的右子节点；</li>
-<li>④如果比当前节点的 key 值小，则继续寻找当前节点的左子节点；</li>
-<li>⑤如果当前节点为 null（或 nil 节点），则插入在当前节点的父节点下。</li>
+<li>一是内存中的重做日志缓冲（redo log buffer），其是易失的；</li>
+<li>二是重做日志文件（redo log file），它是持久的</li>
 </ul>
-<h2 id="自平衡"><a href="#自平衡" class="headerlink" title="自平衡"></a>自平衡</h2><p>红黑树的自平衡较为复杂</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span> <span class="token class-name">TreeNode</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span> <span class="token function">balanceInsertion</span><span class="token punctuation">(</span><span class="token class-name">TreeNode</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span> root<span class="token punctuation">,</span> <span class="token class-name">TreeNode</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    x<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">TreeNode</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">K</span><span class="token punctuation">,</span><span class="token class-name">V</span><span class="token punctuation">></span></span> xp<span class="token punctuation">,</span> xpp<span class="token punctuation">,</span> xppl<span class="token punctuation">,</span> xppr<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">//false条件：当前节点存在父节点</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>xp <span class="token operator">=</span> x<span class="token punctuation">.</span>parent<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">//父节点为空，当前节点是根节点，直接设置根节点为黑色后返回</span>
-            x<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-            <span class="token keyword">return</span> x<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token comment">//false条件：且父节点是红色，且存在爷爷节点</span>
-        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>xp<span class="token punctuation">.</span>red <span class="token operator">||</span> <span class="token punctuation">(</span>xpp <span class="token operator">=</span> xp<span class="token punctuation">.</span>parent<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
-            <span class="token keyword">return</span> root<span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>xp <span class="token operator">==</span> <span class="token punctuation">(</span>xppl <span class="token operator">=</span> xpp<span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">//false条件：且叔叔节点为空，或者是黑色；</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>xppr <span class="token operator">=</span> xpp<span class="token punctuation">.</span>right<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> xppr<span class="token punctuation">.</span>red<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                xppr<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-                xp<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-                xpp<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-                x <span class="token operator">=</span> xpp<span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">//true条件：当前节点是其父节点的右子节点；</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">==</span> xp<span class="token punctuation">.</span>right<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                    <span class="token comment">// 左旋父节点</span>
-                    root <span class="token operator">=</span> <span class="token function">rotateLeft</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> x <span class="token operator">=</span> xp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token comment">// 爷爷节点不存在则结束，存在则将指针指向父节点</span>
-                    xpp <span class="token operator">=</span> <span class="token punctuation">(</span>xp <span class="token operator">=</span> x<span class="token punctuation">.</span>parent<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token keyword">null</span> <span class="token operator">:</span> xp<span class="token punctuation">.</span>parent<span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-                <span class="token comment">// true条件：父节点不为空</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>xp <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                    <span class="token comment">// 父节点变为黑色</span>
-                    xp<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-                    <span class="token comment">// true条件：祖父节点不为空</span>
-                    <span class="token keyword">if</span> <span class="token punctuation">(</span>xpp <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                        <span class="token comment">// 祖父节点变为红色</span>
-                        xpp<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-                        <span class="token comment">// 右旋祖父节点</span>
-                        root <span class="token operator">=</span> <span class="token function">rotateRight</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> xpp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token punctuation">&#125;</span>
-                <span class="token punctuation">&#125;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">//false条件：且叔叔节点为空，或者是黑色；</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>xppl <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> xppl<span class="token punctuation">.</span>red<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">// 当前节点的父节点以及左叔父节点都是红色 则颜色变为黑色</span>
-                xppl<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-                xp<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-                <span class="token comment">// 黑节点的父节点必须红色</span>
-                xpp<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-                x <span class="token operator">=</span> xpp<span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">//true条件：当前节点是其父节点的左子节点；</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">==</span> xp<span class="token punctuation">.</span>left<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                    <span class="token comment">// 右旋父节点</span>
-                    root <span class="token operator">=</span> <span class="token function">rotateRight</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> x <span class="token operator">=</span> xp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token comment">// 指针指向父节点</span>
-                    xpp <span class="token operator">=</span> <span class="token punctuation">(</span>xp <span class="token operator">=</span> x<span class="token punctuation">.</span>parent<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token keyword">null</span> <span class="token operator">:</span> xp<span class="token punctuation">.</span>parent<span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-                <span class="token comment">// true条件：父节点不为空</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>xp <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                    <span class="token comment">// 父节点变为黑色</span>
-                    xp<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-                    <span class="token comment">// true条件：祖父节点不为空</span>
-                    <span class="token keyword">if</span> <span class="token punctuation">(</span>xpp <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                        <span class="token comment">// 祖父节点变为红色</span>
-                        xpp<span class="token punctuation">.</span>red <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-                        <span class="token comment">//  右旋祖父节点</span>
-                        root <span class="token operator">=</span> <span class="token function">rotateLeft</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> xpp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token punctuation">&#125;</span>
-                <span class="token punctuation">&#125;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="binlog和redolog的区别"><a href="#binlog和redolog的区别" class="headerlink" title="binlog和redolog的区别"></a>binlog和redolog的区别</h2><ol>
+<li>redolog是在InnoDB存储引擎层产生，而binlog是MySQL数据库的上层服务层产生的。</li>
+<li>两种日志记录的内容形式不同。MySQL的binlog是逻辑日志，其记录是对应的SQL语句，对应的事务。而innodb存储引擎层面的重做日志是物理日志，是关于每个页（Page）的更改的物理情况。</li>
+<li>两种日志与记录写入磁盘的时间点不同，binlog日志只在事务提交完成后进行一次写入。而innodb存储引擎的重做日志在事务进行中不断地被写入，并日志不是随事务提交的顺序进行写入的。</li>
+<li>binlog不是循环使用，在写满或者重启之后，会生成新的binlog文件，redolog是循环使用。</li>
+<li>binlog可以作为恢复数据使用，主从复制搭建，redolog作为异常宕机或者介质故障后的数据恢复使用。</li>
+</ol>
+<h2 id="回滚日志-undo-log"><a href="#回滚日志-undo-log" class="headerlink" title="回滚日志-undo log"></a>回滚日志-undo log</h2><p>重做日志记录了事务的行为，可以很好地通过其对页进行“重做”操作。<br>但是事务有时还需要进行回滚操作，这时就需要undo。因此在对数据库进行修改时，InnoDB存储引擎不但会产生redo，还会产生一定量的undo。这样如果用户执行的事务或语句由于某种原因失败了，又或者用户用一条ROLLBACK语句请求回滚，就可以利用这些undo信息将数据回滚到修改之前的样子。</p>
+<p>redo存放在重做日志文件中，与redo不同，undo存放在数据库内部的一个特殊段（segment）中，这个段称为undo段（undo segment），undo段位于共享表空间内。</p>
+<h2 id="错误日志-error-log"><a href="#错误日志-error-log" class="headerlink" title="错误日志-error log"></a>错误日志-error log</h2><p>错误日志，记录 MySQL 每次启动关闭的详细信息，以及运行过程中比较严重的警告和错误信息。</p>
+<h2 id="慢查询日志-slow-query-log"><a href="#慢查询日志-slow-query-log" class="headerlink" title="慢查询日志-slow query log"></a>慢查询日志-slow query log</h2><p>慢查询日志，记录 MySQL 中执行时间较长的 query，包括执行时间、执行时长、执行用户、主机等信息。</p>
+<p>慢查询日志默认是关闭的，可以通过配置 slow_query_log 进行开启。慢查询的阈值和存储路径，通过配置参数 long_query_time 和 slow_query_log_file 实现。</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">slow_query_log = 1                              #开启慢查询
+long_query_time = 1                             #设置慢查询阈值为1s
+slow_query_log_file = /mysql/log/mysql-slow.log #设置慢查询日志存储路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="红黑树的删除操作"><a href="#红黑树的删除操作" class="headerlink" title="红黑树的删除操作"></a>红黑树的删除操作</h2><p>删除操作可能触发的情况分为有子节点和无子节点</p>
-<ul>
-<li>没有子节点的情况非常简单，直接删除后执行自平衡即可；</li>
-<li>有子节点的时候我们要先找到替换节点，如果只有一个子节点，这个节点就是替换节点；</li>
-<li>如果有两个子节点，要找到左子树的最大节点或右子树的最小节点作为替换节点。</li>
-</ul>
 
                 
             </div>
@@ -587,7 +527,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/shu-ju-jie-gou/undefined">https://stream1080.github.io/shu-ju-jie-gou/undefined</a>
+                    <a href="https://stream1080.github.io/mysql-de-ri-zhi-wen-jian.html">https://stream1080.github.io/mysql-de-ri-zhi-wen-jian.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -625,8 +565,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E7%BA%A2%E9%BB%91%E6%A0%91/">
-                                    <span class="chip bg-color">红黑树</span>
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%97%A5%E5%BF%97/">
+                                    <span class="chip bg-color">日志</span>
                                 </a>
                             
                         </div>
@@ -676,13 +620,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/xiao-xi-dui-lie/undefined">
+                <a href="/mysql-de-zhi-xing-ji-hua-yi.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="RabbitMQ的死信队列">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="MySQL的执行计划(一)">
                         
-                        <span class="card-title">RabbitMQ的死信队列</span>
+                        <span class="card-title">MySQL的执行计划(一)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -693,14 +637,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-13
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-05
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
-                                    消息队列
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
                                 </a>
                             
                             
@@ -710,12 +654,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/RabbitMQ/">
-                        <span class="chip bg-color">RabbitMQ</span>
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
                     </a>
                     
-                    <a href="/tags/%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97/">
-                        <span class="chip bg-color">死信队列</span>
+                    <a href="/tags/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">
+                        <span class="chip bg-color">执行计划</span>
                     </a>
                     
                 </div>
@@ -729,13 +673,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/cao-zuo-xi-tong/undefined">
+                <a href="/java-de-io-liu.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java的IO流">
                         
-                        <span class="card-title">select、poll和epoll的区别</span>
+                        <span class="card-title">Java的IO流</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -746,14 +690,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-03
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
@@ -963,26 +907,14 @@
                 <span id="year">2017-2021</span>
             
             <a href="/about" target="_blank">stream</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <!-- |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a> -->
             <br>
             
             
             
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
+            <!-- 
+             -->
             <br>
 
             <!-- 运行天数提醒. -->
@@ -1044,7 +976,7 @@
             <br>
             
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
+        <div class="col s12 m4 l4 social-link ">
     <a href="https://github.com/stream1080" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
@@ -1250,8 +1182,6 @@ $(function () {
 </script>
 
     
-    
-    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     

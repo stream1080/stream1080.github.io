@@ -4,10 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="ThreadLocal的使用, 一江溪水">
-    <meta name="description" content="概述ThreadLocal 为解决多线程程序的并发问题提供了一种新的思路，使用这个工具类可以很简洁地编写出优美的多线程程序。
+    <meta name="keywords" content="限流算法有哪些？, 一江溪水">
+    <meta name="description" content="在开发高并发系统时，有三把利器用来保护系统：
 
-ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地线程”。其实，ThreadLocal 并不">
+缓存
+降级
+限流
+
+那么何为限流呢？顾名思义，限流就是限制流量，那又有那些限流算法呢？
+计数器算法计数器限流算法，是指在指定的时间周期内累加访问次数,达到设定的需值时，触发限流策略。下一个时间">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +24,7 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>ThreadLocal的使用 | 一江溪水</title>
+    <title>限流算法有哪些？ | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -267,12 +272,12 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">ThreadLocal的使用</h1>
+                    <h1 class="description center-align post-title">限流算法有哪些？</h1>
                 </div>
             </div>
         </div>
@@ -388,12 +393,12 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/ThreadLocal/">
-                                <span class="chip bg-color">ThreadLocal</span>
+                            <a href="/tags/%E9%99%90%E6%B5%81/">
+                                <span class="chip bg-color">限流</span>
                             </a>
                         
-                            <a href="/tags/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F/">
-                                <span class="chip bg-color">共享变量</span>
+                            <a href="/tags/%E7%AE%97%E6%B3%95/">
+                                <span class="chip bg-color">算法</span>
                             </a>
                         
                     </div>
@@ -404,8 +409,8 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
-                                多线程
+                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
+                                分布式微服务
                             </a>
                         
                     </div>
@@ -417,7 +422,7 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-09-15
+                    2021-10-02
                 </div>
                 
 
@@ -426,14 +431,14 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    796
+                    1.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    3 Min
+                    5 Min
                 </div>
                 
 
@@ -451,76 +456,60 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ThreadLocal 为解决多线程程序的并发问题提供了一种新的思路，使用这个工具类可以很简洁地编写出优美的多线程程序。</p>
+                <p>在开发高并发系统时，有三把利器用来保护系统：</p>
 <ul>
-<li><p>ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地线程”。其实，ThreadLocal 并不是一个 Thread，而是 Thread 的局部变量，也许把它命名为 ThreadLocalVariable 更容易让人理解一些。</p>
-</li>
-<li><p>当使用 ThreadLocal 维护变量时，ThreadLocal 为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。</p>
-</li>
+<li>缓存</li>
+<li>降级</li>
+<li>限流</li>
 </ul>
-<p>从线程的角度看，目标变量就象是线程的本地变量，这也是类名中 “Local” 所要表达的意思。</p>
-<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>ThreadLocal提供了线程本地变量，如果你创建了一个 ThreadLocal 变量，那么访问这个变量的每个线程都会有这个变量的一个本地副本。当多个线程操作这个变量时，实际操作的是自己本地内存里面的变量，从而避免了线程安全问题。<br><img src="https://img-blog.csdnimg.cn/da73098b996a4ca582c20451c3665a3c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<p>ThreadLocal 是线程本地存储，在每个线程中都创建了一个 ThreadLocalMap 对象，每个线程可以访问自己内部 ThreadLocalMap 对象内的 value。通过这种方式，避免资源在多线程间共享。</p>
-<h2 id="set-和get-方法"><a href="#set-和get-方法" class="headerlink" title="set()和get()方法"></a>set()和get()方法</h2><p>set 方法是为了设置 ThreadLocal 变量，设置成功后，该变量只能够被当前线程访问，其他线程不可直接访问操作改变量。参数是泛型<br><img src="https://img-blog.csdnimg.cn/add11667446f4362b06ddd7dd0650846.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<p>get 方法是为了获取 ThreadLocal 变量的值，get 方法没有任何入参，直接调用即可获取。<br><img src="https://img-blog.csdnimg.cn/402c399592cb48ac9707f2629e92f9ca.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h2 id="remove-方法"><a href="#remove-方法" class="headerlink" title="remove() 方法"></a>remove() 方法</h2><p>remove 方法是为了清除 ThreadLocal 变量，清除成功后，该 ThreadLocal 中没有变量值。<br><img src="https://img-blog.csdnimg.cn/144cb735fb68441f9b4db94121c50f34.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h2 id="单线程使用案例"><a href="#单线程使用案例" class="headerlink" title="单线程使用案例"></a>单线程使用案例</h2><p><img src="https://img-blog.csdnimg.cn/d06fb2b2ea2e4d96a728e4cc6a93099f.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h2 id="多线程下的-ThreadLocal使用案例"><a href="#多线程下的-ThreadLocal使用案例" class="headerlink" title="多线程下的 ThreadLocal使用案例"></a>多线程下的 ThreadLocal使用案例</h2><p>看个简单案例</p>
+<p>那么何为限流呢？顾名思义，限流就是限制流量，那又有那些限流算法呢？</p>
+<h2 id="计数器算法"><a href="#计数器算法" class="headerlink" title="计数器算法"></a>计数器算法</h2><p>计数器限流算法，是指在指定的时间周期内累加访问次数,达到设定的需值时，触发限流策略。<br>下一个时间周期进行访问时，访问次数清零。此算法无论在单机还是分布式环境下实现都非常简单，使用redis的incr原子自增性,再结合key的过期时间，即可轻松实现。<br><img src="https://img-blog.csdnimg.cn/acd8164f89de46bfa67b8fff1149c755.png" alt="在这里插入图片描述"></p>
 <ul>
-<li>线程1设置了ThreadLocal（thread-1 local value）</li>
-<li>线程2设置了ThreadLocal（thread-2 local value）</li>
-<li>线程2remove变量ThreadLocal</li>
-<li>看看线程1是否还能打印之前设置的ThreadLocal</li>
+<li>设置一个计数器计数器，每当一个请求过来的时候，计数器就加1，如果计数器的值大于100并且该请求与第一个 请求的间隔时间还在1分钟之内，那么说明请求数过多；</li>
+<li>如果该请求与第一个请求的间隔时间大于1分钟，且计数器的值还在限流范围内，那么就重置 计数器</li>
 </ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>stream<span class="token punctuation">.</span>juc</span><span class="token punctuation">;</span>
-
-<span class="token comment">/**
- * @author stream
- * @since 2021/9/15 16:11
- */</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadLocalTest</span> <span class="token punctuation">&#123;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> local <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">Thread</span> threadOne <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                local<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"thread-1 local value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-                    <span class="token comment">// 等待5000毫秒，确保threadTwo 执行remove完成</span>
-                    <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
-                <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>local<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">Thread</span> threadTwo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                local<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"thread-2 local value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>local<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                local<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"thread-2 remove 变量local 操作完毕。"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        
-        threadTwo<span class="token punctuation">.</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        threadOne<span class="token punctuation">.</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>执行结果<br><img src="https://img-blog.csdnimg.cn/d9aa7d2f2fd4417babdb562ef719b084.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>这个算法实现简单，但是有一个十分致命的问题，那就是临界问题<br><img src="https://img-blog.csdnimg.cn/57e92cf031304c1a9d6a4644a9f0c322.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h3 id="临界问题"><a href="#临界问题" class="headerlink" title="临界问题"></a>临界问题</h3><p>在第一个时间周期结束前的一秒进来100个请求，在第二个时间周期开始后一秒，进来100个请求，那么这个系统在两秒之内处理了200个请求，没有达到我们要求的限流</p>
+<p>我们规定的是1分钟最多100个请求，也就是每秒大约1.7个请求，用户通过在时间窗口的重置节点处突发请求，可以瞬间超过我们的速率限制。用户有可能通过算法的这个漏洞，瞬间压垮我们的系统。</p>
+<h2 id="滑动时间窗口"><a href="#滑动时间窗口" class="headerlink" title="滑动时间窗口"></a>滑动时间窗口</h2><p>为了应对计数器算法的临界问题，人们想出来滑动窗口算法。</p>
 <ul>
-<li>从结果来看，在 threadTwo 执行完 remove 方法后，threadOne 仍然能够成功打印</li>
-<li>从而证明了 ThreadLocal 的专属特性，线程独有，其他线程不可修改</li>
+<li>在TCP网络通信协议中。就采用滑动时间窗口算法来解决网络拥堵问题。</li>
+<li>滑动时间官口是将计数箱算法中的实际周期切分成多个小的时间窗口，分别在每个小的时间官口中记录访问次数。</li>
+<li>然后根据时间将官口往前滑动并删吟过期的小时间会口。最终只需要统计滑动官口范围内的小时间离口的总的清求数即可。</li>
 </ul>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
-<li>ThreadLocal 是解决线程安全问题一个很好的思路，</li>
-<li>它通过为每个线程提供一个独立的变量副本解决了变量并发访问的冲突问题。</li>
-<li>ThreadLocal 比直接使用 synchronized 同步机制解决线程安全问题更简单，更方便，且程序拥有更高的并发性。</li>
+<p><img src="https://img-blog.csdnimg.cn/064eeb2427b244c2833f98a3370f9916.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>整个红色的矩形框表示一个时间窗口，一个时间窗口就是一分钟。然后我们将时间窗口进行划分</p>
+<ul>
+<li>比如图中，我们就将滑动窗口 划成了3格，所以每格代表的是20秒钟。</li>
+<li>每过20秒钟，我们的时间窗口就会往右滑动一格，每一个格子都有自己独立的计数器</li>
+<li>比如当一个请求 在0:12秒的时候到达，那么0:00~0:19对应的计数器就会加1。</li>
 </ul>
+<h3 id="滑动窗口是怎么解决计数器算法的临界问题的呢？"><a href="#滑动窗口是怎么解决计数器算法的临界问题的呢？" class="headerlink" title="滑动窗口是怎么解决计数器算法的临界问题的呢？"></a>滑动窗口是怎么解决计数器算法的临界问题的呢？</h3><p>还是刚才那个例子，0:59到达的100个请求会落在最后的黄色格子中，而1:00到达的请求会落在红色的格子中。当时间到达1:00时，我们的窗口会往右移动一格，那么此时时间周期窗口内的总请求数量一共是200个，超过了限定的一个周期100个，所以触发了限流。</p>
+<ul>
+<li>计数器算法和滑动窗口算法原理一致，滑动窗口算法就是计数器算法。只是计数器算法没有对时间窗口做进一步地划分，所以只有1格。</li>
+<li>当滑动窗口的格子划分的越多，那么滑动窗口的滚动就越平滑，限流的统计就会越精确。</li>
+</ul>
+<h2 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h2><p>漏桶算法的原理就像它的名字一样, 我们维持一个漏斗， 它有恒定的流出速度,不管水流流入的速度有多快，漏斗出水的速度始终保持不变,类似于消息中间件,不管消息的生产者请求量有多大,消息的处理能力取决于消费者<br><img src="https://img-blog.csdnimg.cn/3c18214711f2423fbe29a3454cb84121.png" alt="在这里插入图片描述"></p>
+<p>漏桶的容量=漏桶的流出速度*可接受的等待时长。</p>
+<ul>
+<li>在这个容量范围内的清求可以排队等待系统的处理，超过这个容量的清求，才会被抛弃。</li>
+</ul>
+<p>在漏桶限流算法中，存在下面几种情况:</p>
+<ol>
+<li>当清求速度大于漏桶的流出速度时，也就是清求量大于当前服务所能处理的最大极跟值时，触发限流策略.</li>
+<li>请求速度小于或等于漏桶的流出速度时，也就是服务的处理能力大于或等于请求量时，正常执行。</li>
+</ol>
+<p>漏桶算法有一个缺点:</p>
+<ul>
+<li>当系统在短时间内有突发的大流量时，漏桶算法处理不了，相当于桶装不了那么大水</li>
+</ul>
+<h2 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h2><p>令牌桶算法，是增加一个大小固定的容著,也就是令牌桶，系统以恒定的速率向令牌桶中放入令牌,如果有客户端来请求，先需要从令牌桶中拿一个令牌，拿到令牌，才有资格访问系统，这时令牌桶中少一个令牌。当令牌桶满的时候，再向令牌桶生成令牌时，令牌会被抛弃。<br><img src="https://img-blog.csdnimg.cn/b8fa455214134741bc3731fb991f7859.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>在令牌桶算法中，存在以下几种情况:</p>
+<ol>
+<li>请求速度大于令牌的生成速度：那么令牌桶中的令牌会被取完，后续再进来的清求，由于拿不到令牌，会被限流。</li>
+<li>清求速度等于令牌的生成速度：那么此时系统处于平稳状态。</li>
+<li>请求速度小于令牌的生成速度:那么此时系统的访问量远远低于系统的并发能力，请求可以被正常处理,令牌桶算法，由于有一个桶的存在，可以处理短时间大流量的场景，这是令牌桶和漏桶的一个区别。</li>
+</ol>
 
                 
             </div>
@@ -547,7 +536,7 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/duo-xian-cheng/undefined">https://stream1080.github.io/duo-xian-cheng/undefined</a>
+                    <a href="https://stream1080.github.io/xian-liu-suan-fa-you-na-xie.html">https://stream1080.github.io/xian-liu-suan-fa-you-na-xie.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -585,12 +574,12 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/ThreadLocal/">
-                                    <span class="chip bg-color">ThreadLocal</span>
+                                <a href="/tags/%E9%99%90%E6%B5%81/">
+                                    <span class="chip bg-color">限流</span>
                                 </a>
                             
-                                <a href="/tags/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F/">
-                                    <span class="chip bg-color">共享变量</span>
+                                <a href="/tags/%E7%AE%97%E6%B3%95/">
+                                    <span class="chip bg-color">算法</span>
                                 </a>
                             
                         </div>
@@ -640,13 +629,13 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/duo-xian-cheng/undefined">
+                <a href="/spring-bean-de-zuo-yong-yu-he-sheng-ming-zhou-qi.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="扩展线程池捕获线程异常">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Spring Bean的作用域和生命周期">
                         
-                        <span class="card-title">扩展线程池捕获线程异常</span>
+                        <span class="card-title">Spring Bean的作用域和生命周期</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -657,14 +646,14 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-02
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
-                                    多线程
+                            <a href="/categories/%E6%A1%86%E6%9E%B6/" class="post-category">
+                                    框架
                                 </a>
                             
                             
@@ -674,8 +663,8 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
-                        <span class="chip bg-color">线程池</span>
+                    <a href="/tags/Spring/">
+                        <span class="chip bg-color">Spring</span>
                     </a>
                     
                 </div>
@@ -689,13 +678,13 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/java-ji-chu/undefined">
+                <a href="/mysql-ru-he-bao-zheng-acid.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="HashMap的扩容">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="MySQL如何保证ACID">
                         
-                        <span class="card-title">HashMap的扩容</span>
+                        <span class="card-title">MySQL如何保证ACID</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -706,14 +695,14 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-12
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-01
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Java%E5%9F%BA%E7%A1%80/" class="post-category">
-                                    Java基础
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
                                 </a>
                             
                             
@@ -723,12 +712,12 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/HashMap/">
-                        <span class="chip bg-color">HashMap</span>
+                    <a href="/tags/ACID/">
+                        <span class="chip bg-color">ACID</span>
                     </a>
                     
-                    <a href="/tags/%E6%89%A9%E5%AE%B9/">
-                        <span class="chip bg-color">扩容</span>
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
                     </a>
                     
                 </div>
@@ -927,26 +916,14 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
                 <span id="year">2017-2021</span>
             
             <a href="/about" target="_blank">stream</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <!-- |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a> -->
             <br>
             
             
             
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
+            <!-- 
+             -->
             <br>
 
             <!-- 运行天数提醒. -->
@@ -1008,7 +985,7 @@ ThreadLocal 很容易让人望文生义，想当然地认为是一个 “本地�
             <br>
             
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
+        <div class="col s12 m4 l4 social-link ">
     <a href="https://github.com/stream1080" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
@@ -1214,8 +1191,6 @@ $(function () {
 </script>
 
     
-    
-    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     

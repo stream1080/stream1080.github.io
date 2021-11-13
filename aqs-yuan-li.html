@@ -4,14 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="IO多路复用, 一江溪水">
-    <meta name="description" content="概述IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄
+    <meta name="keywords" content="AQS原理, 一江溪水">
+    <meta name="description" content="概念AQS是AbstarctQueuedSynchronizer 的简称 ，是一个用于构建锁和同步容器的框架。
+juc并发 包内许多类都是基于 AQS 构建的
 
-一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；
-没有文件句柄就绪时会阻塞应用程序，交出cpu；
-多路是指网络连接，复用指的是同一个线程。
-
-三种实现方式s">
+ReentrantLock
+ReentrantReadWriteLock
+Fu">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -23,7 +22,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>IO多路复用 | 一江溪水</title>
+    <title>AQS原理 | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -271,12 +270,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">IO多路复用</h1>
+                    <h1 class="description center-align post-title">AQS原理</h1>
                 </div>
             </div>
         </div>
@@ -392,8 +391,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/IO%E6%B5%81/">
-                                <span class="chip bg-color">IO流</span>
+                            <a href="/tags/%E9%98%9F%E5%88%97/">
+                                <span class="chip bg-color">队列</span>
                             </a>
                         
                     </div>
@@ -404,8 +403,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                操作系统
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                多线程
                             </a>
                         
                     </div>
@@ -417,7 +416,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-06
+                    2021-09-22
                 </div>
                 
 
@@ -426,14 +425,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.1k
+                    788
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    2 Min
                 </div>
                 
 
@@ -451,85 +450,51 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>IO多路复用是一种同步IO模型，实现一个线程可以监视多个文件句柄</p>
+                <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>AQS是AbstarctQueuedSynchronizer 的简称 ，是一个用于构建锁和同步容器的框架。</p>
+<p>juc并发 包内许多类都是基于 AQS 构建的</p>
 <ul>
-<li>一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；</li>
-<li>没有文件句柄就绪时会阻塞应用程序，交出cpu；</li>
-<li>多路是指网络连接，复用指的是同一个线程。</li>
+<li>ReentrantLock</li>
+<li>ReentrantReadWriteLock</li>
+<li>FutureTask</li>
 </ul>
-<h2 id="三种实现方式"><a href="#三种实现方式" class="headerlink" title="三种实现方式"></a>三种实现方式</h2><h3 id="select"><a href="#select" class="headerlink" title="select"></a>select</h3><ul>
-<li>时间复杂度O(n)，它仅仅知道了，有I/O事件发生了，却并不知道是哪那几个流（可能有一个，多个，甚至全部），</li>
-<li>只能无差别轮询所有流，找出能读出数据，或者写入数据的流，对他们进行操作。</li>
-<li>所以select具有O(n)的无差别轮询复杂度，同时处理的流越多，无差别轮询时间就越长。<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> select <span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">,</span> fd_set <span class="token operator">*</span>readfds<span class="token punctuation">,</span> fd_set <span class="token operator">*</span>writefds<span class="token punctuation">,</span> 
-            fd_set <span class="token operator">*</span>exceptfds<span class="token punctuation">,</span> struct timeval <span class="token operator">*</span>timeout<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
-</ul>
-<p>select 函数监视的文件描述符分3类，分别是writefds、readfds、和exceptfds。<br>调用后select函数会阻塞，直到有：</p>
+<p>AQS 解决了在实现同步容器时大量的细节问题。<br><img src="https://img-blog.csdnimg.cn/d49c82af4c5a4687806b853b3dd7065e.png" alt="在这里插入图片描述"></p>
 <ul>
-<li>描述符就绪（有数据可读、可写、或者有except）</li>
-<li>超时（timeout指定等待时间，如果立即返回设为null即可）</li>
-<li>函数返回。</li>
+<li>AQS 使用一个 FIFO 队列表示排队等待锁的线程，队列头结点称作 “哨兵节点” ，它不与任何线程关联。</li>
+<li>其他的节点与等待线程关联，每个阶段维护一个等待状态 waitStatus。</li>
 </ul>
-<p>当select函数返回后，可以通过遍历fdset，来找到就绪的描述符。</p>
-<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><ul>
-<li>良好的跨平台支持，select目前几乎在所有的平台上支持。</li>
-<li>单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024可以修改限制，但是这样也会造成效率的降低。</li>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<li>独占锁：每次只能有一个线程持有锁， ReentrantLock 就是以独占方式实现的互斥锁；</li>
+<li>共享锁：允许多个线程同时获取锁，并发访问共享资源，比如 ReentrantReadWriteLock。</li>
 </ul>
-<h3 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h3><p>时间复杂度O(n)，poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态， </p>
+<h2 id="内部原理"><a href="#内部原理" class="headerlink" title="内部原理"></a>内部原理</h2><p>AQS 的实现依赖内部的同步队列，也就是 FIFO 的双向队列，如果当前线程竞争锁失败，那么 AQS 会把当前线程以及等待状态信息构造成一个 Node 加入到同步队列中，同时再阻塞该线程。当获取锁的线程释放锁以后，会从队列中唤醒一个阻塞的节点 (线程)。<br><img src="https://img-blog.csdnimg.cn/8695a8335e9a4807877d1af86fe1b3d2.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"><br>一个节点表示一个线程，它保存着线程的引用（thread）、状态（waitStatus）、前驱节点（prev）、后继节点（next），其实就是个双端双向链表</p>
 <ul>
-<li>没有最大连接数的限制，原因是它是基于链表来存储的。</li>
+<li>AQS 队列内部维护的是一个 FIFO 的双向链表，这种结构的特点是每个数据结构都有两个指针，分别指向直接的后继节点和直接前驱节点。</li>
+<li>双向链表可以从任意一个节点开始，很方便的访问前驱和后继。</li>
+<li>每个 Node 其实是由线程封装，当线程争抢锁失败后会封装成 Node 加入到 ASQ 队列中去。</li>
 </ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> poll <span class="token punctuation">(</span>struct pollfd <span class="token operator">*</span>fds<span class="token punctuation">,</span> unsigned <span class="token keyword">int</span> nfds<span class="token punctuation">,</span> <span class="token keyword">int</span> timeout<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h4><p>poll使用一个 pollfd的指针实现。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">struct pollfd <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> fd<span class="token punctuation">;</span>            <span class="token comment">/* file descriptor */</span>
-    <span class="token keyword">short</span> events<span class="token punctuation">;</span>      <span class="token comment">/* requested events to watch */</span>
-    <span class="token keyword">short</span> revents<span class="token punctuation">;</span>     <span class="token comment">/* returned events witnessed */</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h4><p>pollfd结构包含了要监视的event和发生的event，不再使用select“参数-值”传递的方式。</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><h4 id="添加线程"><a href="#添加线程" class="headerlink" title="添加线程"></a>添加线程</h4><p>当出现锁竞争以及释放锁的时候，AQS 同步队列中的节点会发生变化<br><img src="https://img-blog.csdnimg.cn/33188515e0eb44faa67106d48c0558ea.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
 <ul>
-<li>pollfd并没有最大数量限制（但是数量过大后性能也是会下降）</li>
-<li>和select函数一样，poll返回后，需要轮询pollfd来获取就绪的描述符。</li>
+<li>队列操作的变化：新的线程封装成 Node 节点追加到同步队列中，设置 prev 节点以及修改当前节点的前置节点的 next 节点指向自己；</li>
+<li>tail 指向变化：通过同步器将 tail 重新指向新的尾部节点。<h4 id="销毁线程"><a href="#销毁线程" class="headerlink" title="销毁线程"></a>销毁线程</h4>第一个 head 节点表示获取锁成功的节点，当头结点在释放同步状态时，会唤醒后继节点，如果后继节点获得锁成功，会把自己设置为头结点<br><img src="https://img-blog.csdnimg.cn/58333e8c7310454e819205749b8e93e9.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+<li>head 节点指向：修改 head 节点指向下一个获得锁的节点；</li>
+<li>新的获得锁的节点：第二个节点被 head 指向了，此时将 prev 的指针指向 null，因为它自己本身就是第一个首节点，所以 pre 指向 null。</li>
 </ul>
-<h3 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h3><p>时间复杂度O(1)，epoll可以理解为event poll，不同于忙轮询和无差别轮询，epoll会把哪个流发生了怎样的I/O事件通知我们。</p>
-<ul>
-<li>epoll实际上是事件驱动（每个事件关联上fd）的，此时对这些流的操作都是有意义的。</li>
-</ul>
-<h4 id="实现-2"><a href="#实现-2" class="headerlink" title="实现"></a>实现</h4><p>epoll操作过程需要三个接口，分别如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">epoll_create</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> <span class="token function">epoll_ctl</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> <span class="token keyword">int</span> op<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> <span class="token function">epoll_wait</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span> events<span class="token punctuation">,</span> 
-               <span class="token keyword">int</span> maxevents<span class="token punctuation">,</span> <span class="token keyword">int</span> timeout<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="AQS-与-ReentrantLock-的联系"><a href="#AQS-与-ReentrantLock-的联系" class="headerlink" title="AQS 与 ReentrantLock 的联系"></a>AQS 与 ReentrantLock 的联系</h2><p>ReentrantLock 是根据 AQS 实现的独占锁，提供了两个构造方法</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       sync <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">NonfairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token keyword">public</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> fair<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       sync <span class="token operator">=</span> fair <span class="token operator">?</span> <span class="token keyword">new</span> <span class="token class-name">FairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">NonfairSync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">epoll_create</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
+<p>ReentrantLock 有三个内部类：Sync，NonfairSync，FairSync<br><img src="https://img-blog.csdnimg.cn/52499b5bb0d5442c8c604837e047566c.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_13,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<p>这三个内部类都是基于 AQS 进行的实现，所以ReentrantLock 是基于 AQS 进行的实现。</p>
+<p>ReentrantLock 提供两种类型的锁：</p>
 <ul>
-<li>创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大，这个参数不同于select()中的第一个参数，给出最大监听的fd+1的值</li>
-<li>参数size并不是限制了epoll所能监听的描述符最大个数，只是对内核初始分配内部数据结构的一个建议。</li>
-<li>当创建好epoll句柄后，它就会占用一个fd值，在使用完epoll后，必须调用close()关闭，否则可能导致fd被耗尽。</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">epoll_ctl</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> <span class="token keyword">int</span> op<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span>event<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>函数是对指定描述符fd执行op操作。</p>
-<ul>
-<li>epfd：是epoll_create()的返回值。</li>
-<li>op：表示op操作，用三个宏来表示，分别添加、删除和修改对fd的监听事件。<ul>
-<li>添加EPOLL_CTL_ADD，</li>
-<li>删除EPOLL_CTL_DEL，</li>
-<li>修改EPOLL_CTL_MOD。</li>
-</ul>
-</li>
-<li>fd：是需要监听的fd（文件描述符）</li>
-<li>epoll_event：是告诉内核需要监听什么事，</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">int</span> <span class="token function">epoll_wait</span><span class="token punctuation">(</span><span class="token keyword">int</span> epfd<span class="token punctuation">,</span> struct epoll_event <span class="token operator">*</span> events<span class="token punctuation">,</span> 
-               <span class="token keyword">int</span> maxevents<span class="token punctuation">,</span> <span class="token keyword">int</span> timeout<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>等待epfd上的io事件，最多返回maxevents个事件。</p>
-<ul>
-<li>参数events用来从内核得到事件的集合</li>
-<li>maxevents告之内核这个events有多大，这个maxevents的值不能大于创建epoll_create()时的size，</li>
-<li>参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。</li>
+<li>公平锁-FairSync</li>
+<li>非公平锁-NonfairSync</li>
+<li>默认实现是 NonFairSync。</li>
 </ul>
 
                 
@@ -557,7 +522,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/cao-zuo-xi-tong/undefined">https://stream1080.github.io/cao-zuo-xi-tong/undefined</a>
+                    <a href="https://stream1080.github.io/aqs-yuan-li.html">https://stream1080.github.io/aqs-yuan-li.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -595,8 +560,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/IO%E6%B5%81/">
-                                    <span class="chip bg-color">IO流</span>
+                                <a href="/tags/%E9%98%9F%E5%88%97/">
+                                    <span class="chip bg-color">队列</span>
                                 </a>
                             
                         </div>
@@ -646,13 +611,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/cao-zuo-xi-tong/undefined">
+                <a href="/mysql-ru-he-bao-zheng-acid.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="select、poll和epoll的区别">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="MySQL如何保证ACID">
                         
-                        <span class="card-title">select、poll和epoll的区别</span>
+                        <span class="card-title">MySQL如何保证ACID</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -663,14 +628,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-07
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-01
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
                                 </a>
                             
                             
@@ -680,8 +645,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/IO%E6%B5%81/">
-                        <span class="chip bg-color">IO流</span>
+                    <a href="/tags/ACID/">
+                        <span class="chip bg-color">ACID</span>
+                    </a>
+                    
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
                     </a>
                     
                 </div>
@@ -695,13 +664,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/fen-bu-shi-wei-fu-wu/undefined">
+                <a href="/bi-jiao-jiao-huan-cas.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="分布式事务之两阶段提交">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="比较交换CAS">
                         
-                        <span class="card-title">分布式事务之两阶段提交</span>
+                        <span class="card-title">比较交换CAS</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -712,14 +681,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-21
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
-                                    分布式微服务
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
@@ -729,12 +698,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
-                        <span class="chip bg-color">分布式事务</span>
+                    <a href="/tags/CAS/">
+                        <span class="chip bg-color">CAS</span>
                     </a>
                     
-                    <a href="/tags/%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/">
-                        <span class="chip bg-color">数据一致性</span>
+                    <a href="/tags/%E4%B9%90%E8%A7%82%E9%94%81/">
+                        <span class="chip bg-color">乐观锁</span>
                     </a>
                     
                 </div>
@@ -933,26 +902,14 @@
                 <span id="year">2017-2021</span>
             
             <a href="/about" target="_blank">stream</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <!-- |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a> -->
             <br>
             
             
             
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
+            <!-- 
+             -->
             <br>
 
             <!-- 运行天数提醒. -->
@@ -1014,7 +971,7 @@
             <br>
             
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
+        <div class="col s12 m4 l4 social-link ">
     <a href="https://github.com/stream1080" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
@@ -1220,8 +1177,6 @@ $(function () {
 </script>
 
     
-    
-    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     

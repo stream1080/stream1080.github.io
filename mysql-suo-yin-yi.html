@@ -4,12 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="如何保证消息的可靠性传输, 一江溪水">
-    <meta name="description" content="在生产环境中，因为机器以及网络设备的不可靠，保证消息的可靠是待解决的问题。在特定场景下消息可能存在丢失风险
-消息发送流程我们可以将 RabbitMQ 消息处理的过程分为三个步骤：
+    <meta name="keywords" content="MySQL索引(一), 一江溪水">
+    <meta name="description" content="MySQL索引索引是什么索引是数据库中用来提高性能的常用工具，索引在 MySQL 中也叫“键（Key）”，是存储引擎用于快速查找记录的一种数据结构，这也是索引的基本功能。
 
-生产阶段：生产者生产消息并且发送到消息队列；
-储存阶段：消">
+索引对于良好的性能很关键，尤其是当表中数据量越来越大时，索引对性能">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>如何保证消息的可靠性传输 | 一江溪水</title>
+    <title>MySQL索引(一) | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -269,12 +267,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">如何保证消息的可靠性传输</h1>
+                    <h1 class="description center-align post-title">MySQL索引(一)</h1>
                 </div>
             </div>
         </div>
@@ -390,12 +388,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/RabbitMQ/">
-                                <span class="chip bg-color">RabbitMQ</span>
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
                             </a>
                         
-                            <a href="/tags/%E5%8F%AF%E9%9D%A0%E6%80%A7/">
-                                <span class="chip bg-color">可靠性</span>
+                            <a href="/tags/%E7%B4%A2%E5%BC%95/">
+                                <span class="chip bg-color">索引</span>
                             </a>
                         
                     </div>
@@ -406,8 +404,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
-                                消息队列
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
                             </a>
                         
                     </div>
@@ -419,7 +417,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-09-20
+                    2021-09-04
                 </div>
                 
 
@@ -428,14 +426,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.2k
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    5 Min
                 </div>
                 
 
@@ -453,56 +451,61 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在生产环境中，因为机器以及网络设备的不可靠，保证消息的可靠是待解决的问题。在特定场景下消息可能存在丢失风险</p>
-<h2 id="消息发送流程"><a href="#消息发送流程" class="headerlink" title="消息发送流程"></a>消息发送流程</h2><p>我们可以将 RabbitMQ 消息处理的过程分为三个步骤：</p>
+                <h1 id="MySQL索引"><a href="#MySQL索引" class="headerlink" title="MySQL索引"></a>MySQL索引</h1><h2 id="索引是什么"><a href="#索引是什么" class="headerlink" title="索引是什么"></a>索引是什么</h2><p>索引是数据库中用来提高性能的常用工具，索引在 MySQL 中也叫“键（Key）”，是存储引擎用于快速查找记录的一种数据结构，这也是索引的基本功能。</p>
 <ul>
-<li>生产阶段：生产者生产消息并且发送到消息队列；</li>
-<li>储存阶段：消息队列存储和处理消息；</li>
-<li>消费阶段：消息队列将消息转发到消费者。</li>
+<li>索引对于良好的性能很关键，尤其是当表中数据量越来越大时，索引对性能的影响愈发重要</li>
+<li>在数据量较小且负载较低时，不恰当的索引对性能的影响可能还不明显，但数据量逐渐增大时，性能会急剧下降。</li>
+<li>索引类似一本书的目录，如果要在一本书中找到特定的知识点，先通过目录找到对应的页码</li>
+<li>在 MySQL 中，存储引擎用类似的方法使用索引，先在索引找到对应值，再根据索引记录找到对应的数据行。</li>
+<li>索引就是为了提高数据查询的效率，跟一本书的目录一样。</li>
 </ul>
-<p>上述每个步骤都有可能出现消息丢失的风险；<br><img src="https://img-blog.csdnimg.cn/13d87d272eb54fddb92fcbd6d1faf0a1.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h2 id="生产者生产消息并且发送到消息队列"><a href="#生产者生产消息并且发送到消息队列" class="headerlink" title="生产者生产消息并且发送到消息队列"></a>生产者生产消息并且发送到消息队列</h2><h4 id="丢失场景"><a href="#丢失场景" class="headerlink" title="丢失场景"></a>丢失场景</h4><p>生产者将数据发送到 RabbitMQ 的时候，可能数据就在半路给搞丢了，比如：</p>
+<h2 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h2><p>在MySQL中，首先在索引中找到对应的值，然后根据匹配的索引记录找到对应的数据行。索引可以包括<br>一个或多个列的值，如果索引包含多个列，那么列的顺序也十分重要，因为MySQL只能使用索引的最<br>左前缀。</p>
 <ul>
-<li>网络故障。网络环境的不可靠导致消息发送失败，例如网络丢包、网络故障。</li>
-<li>数据在网络中传输会经过诸多网络设备，只要其中一个网络链接在数据抵达前已经流量满载，新到的数据将会阻塞一段时间段。</li>
+<li>索引大大减少了服务器需要扫描的数据量</li>
+<li>可以帮助服务器避免排序和临时表</li>
+<li>可以将随机IO变成顺序IO。</li>
+<li>但对于非常小的表，大部分情况下会采用全表扫描。这样更高效</li>
+<li>对于中到大型的表，索引就非常有效。但对于特大型的表，建立和使用索引的代价也随之增长</li>
 </ul>
-<h4 id="AMQP事务机制"><a href="#AMQP事务机制" class="headerlink" title="AMQP事务机制"></a>AMQP事务机制</h4><p>使用AMQP协议的事务机制。生产者在发出消息之后，消息是否到达RabbitMQ服务器是默认不可知的，在生产者发送消息之前，调用channel.txSelect 语句开启事务</p>
-<ul>
-<li>如果消息发送失败，那么调用channel.txRollback回滚事务，尝试重新发送一条消息；</li>
-<li>如果消息发送成功，那么调用channel.txCommit提交事务。</li>
+<h2 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h2><h4 id="哈希索引-1"><a href="#哈希索引-1" class="headerlink" title="哈希索引"></a>哈希索引</h4><ul>
+<li>哈希索引基于哈希表实现，只有精确匹配索引所有列的查询才有效。</li>
+<li>对于每一行数据, 存储引擎都会对所有的索引列计算一个哈希码，哈希码是一个较小的值， 并且不同键值的行计算出的哈希码也不一样。</li>
+<li>哈希索引将所有的哈希码存储在索引中，同时在哈希表中保存指向每个数据行的指针。</li>
+<li>只有Memory引擎显式支持哈希索引，这也是Memory引擎的默认索引类型。</li>
+<li>因为索引自身只需存储对应的哈希值，所以索引的结构十分紧凑，这让哈希索引的速度非常快</li>
 </ul>
-<p>采用事务的缺点是增加耗时，会降低RabbitMQ的吞吐性能。</p>
-<h4 id="Confirm机制"><a href="#Confirm机制" class="headerlink" title="Confirm机制"></a>Confirm机制</h4><p>RabbitMQ有一种性能改进方案，即Confirm机制</p>
-<ul>
-<li>生产者调用channel.confirmSelect将通信方式设置为confirm模式；</li>
-<li>生产者发送的所有消息都会被分配一个唯一 ID；</li>
-<li>当生产者发送的消息成功投递到队列之后，RabbitMQ会发送一个ack给生产者，生产者即得知这条消息已经成功发送。</li>
-<li>如果 RabbitMQ 没能处理这个消息，会回调你一个nack接口，告诉你这个消息接收失败，需要重试</li>
+<h4 id="哈希索引的限制"><a href="#哈希索引的限制" class="headerlink" title="哈希索引的限制"></a>哈希索引的限制</h4><ul>
+<li>哈希索引数据不是按照索引值顺序存储的，无法用于排序。</li>
+<li>哈希索引不支持部分索引列匹配查找，因为哈希索引始终是使用索引列的全部内容来计算哈希值<br>的。例如在数据列(a,b). 上建立哈希索引,如果查询的列只有a就无法使用该索引。</li>
+<li>哈希索引只支持等值比较查询，不支持任何范围查询。</li>
 </ul>
-<p>我们也可以结合这个机制在内存里维护每个消息 id 的状态，如果超过一定时间还没接收到这个消息的回调，那么就需要重新发送</p>
+<h2 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h2><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ul>
+<li>不同的存储引擎有不同是底层数据结构，在InnoDB中使用B+ Tree索引</li>
+<li>B-Tree通常意味着所有的值都是按顺序存储的，并且每个叶子页到根的距离相同</li>
+<li>B-Tree 索引能够加快访问数据的速度，因为存储引擎不再需要进行全表扫描来获取需要的数据，取而代之的是从索引的根节点开始进行搜索。</li>
+<li>根节点的槽中存放了指向子节点的指针,存储引擎根据这些指针向下层查找。通过比较节点页的值和要查找的值可以找到合适的指针进入下层子节点，这些指针实际上定义了子节点页中值的上限和下限。</li>
+<li>最终存储引擎要么找到对应的值，要么该记录不存在。叶子节点的指针指向的是被索引的数据，而不是其他的节点页。</li>
+</ul>
+<h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><p><img src="https://img-blog.csdnimg.cn/dc5c7e61c22748979fc3c3f673b148bd.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h4 id="B-Tree索引的限制"><a href="#B-Tree索引的限制" class="headerlink" title="B-Tree索引的限制"></a>B-Tree索引的限制</h4><ul>
+<li>如果不是按照索引的最左列开始查找,则无法使用索引。</li>
+<li>不能跳过索引中的列，例如索引为(id,name,sex), 不能只使用id和sex而跳过name。</li>
+<li>如果查询中有某个列的范围查询，则其右边的所有列都无法使用索引。</li>
+</ul>
+<h2 id="B-Tree索引-1"><a href="#B-Tree索引-1" class="headerlink" title="B+Tree索引"></a>B+Tree索引</h2><h4 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h4><p>B+Tree索引的结构与B-Tree索引类似<br><img src="https://img-blog.csdnimg.cn/e1487aa4d203421d9934c8b671f8044f.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
 <h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><ul>
-<li>事务机制是同步的，你提交一个事务之后会阻塞在那里</li>
-<li>confirm机制是异步的，发送消息之后就可以发送下一个消息，然后那个消息RabbitMQ 接收了之后会异步回调你一个接口通知你这个消息接收到了。</li>
+<li>B+Tree的非叶子节点不存储数据，所有data存储在叶子节点，导致查询查询时间复杂度为log</li>
+<li>而B-Tree的查询时间复杂度不固定，与关键字在树中的位置有关，最好为O(1)</li>
+<li>B+Tree的节点两两相连可大大增加区间访问性，可使用范围查询等</li>
+<li>而B-Tree每个节点关键字和data在一起，无法区间查找</li>
+<li>B+Tree更适合外部存储，由于内节点无data域，每个节点能索引的范围更大更精确</li>
 </ul>
-<h2 id="消息队列存储和处理消息"><a href="#消息队列存储和处理消息" class="headerlink" title="消息队列存储和处理消息"></a>消息队列存储和处理消息</h2><p>消息存储在 RabbitMQ 队列中，如果队列没有持久化，如果服务器宕机，RabbitMQ 服务器重启后会导致消息丢失。</p>
-<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>开启 RabbitMQ 的持久化，就是消息写入之后会持久化到磁盘，如果 RabbitMQ 自己宕机了，重启之后会自动读取之前存储的数据；</p>
-<p>也有可能RabbitMQ 还没持久化，就宕机了，这种情况发生的概率比较小</p>
-<p>持久化也可以跟生产者的confirm机制配合起来，只有消息被持久化到磁盘之后，才给生产者发送ack，所以哪怕是出现上面这种情况，RabbitMQ 宕机了，消息丢了，生产者收不到ack，还是回重发的。</p>
-<h4 id="消息队列持久化"><a href="#消息队列持久化" class="headerlink" title="消息队列持久化"></a>消息队列持久化</h4><ul>
-<li><p>Exchange 持久化：以 Direct 模式为例，将 durable 参数设置为 true。</p>
-</li>
-<li><p>Queue 持久化：将 durable 参数设置为 true，但是这样只能保证持久化 Queue 的元数据，但是不会持久化 Queue 里存储的消息。</p>
-</li>
-<li><p>消息持久化：发送消息的时候将deliveryMode设置为2，将消息设置为持久化的</p>
-</li>
-<li><p>SpringBoot中的rabbitTemplate默认设置消息是持久化，不需要手动配置</p>
-</li>
-</ul>
-<h2 id="消息队列将消息转发到消费者"><a href="#消息队列将消息转发到消费者" class="headerlink" title="消息队列将消息转发到消费者"></a>消息队列将消息转发到消费者</h2><p>消费者在收到消息之后，还没来得及处理消息的消费逻辑，所在机器就宕机了，导致内存中的消息丢失。</p>
-<h4 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h4><p>RabbitMQ 默认采用自动 ACK 机制，在没有处理业务逻辑之前，消费者就会告知消息队列已经成功收到消息，这种方式并不能解决这种问题</p>
-<ul>
-<li>我们可以关闭自动ACK模式，通过一个 调用API接口就行，消费完消息后，再返回ACK。这样的话，如果你还没处理完，就没有ACK</li>
-<li>这样 RabbitMQ 就认为你还没处理完，这个时候 RabbitMQ 会把这个消费分配给别的 consumer 去处理，消息是不会丢的。</li>
+<h2 id="InnoDB为什么选择B-树作为索引结构"><a href="#InnoDB为什么选择B-树作为索引结构" class="headerlink" title="InnoDB为什么选择B+树作为索引结构"></a>InnoDB为什么选择B+树作为索引结构</h2><h4 id="Hash索引"><a href="#Hash索引" class="headerlink" title="Hash索引"></a>Hash索引</h4><ul>
+<li>Hash索引底层是哈希表，哈希表是一种以key-value存储数据的结构，所以多个数据在存储关系上是完全没有任何顺序关系的，所以，对于区间查询是无法直接通过索引查询的，就需要全表扫描。所以，哈希索引只适用于等值查询的场景。而B+ 树是一种多路平衡查询树，所以他的节点是天然有序的（左子节点小于父节点、父节点小于右子节点），所以对于范围查询的时候不需要做全表扫描<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4></li>
+<li>解决了排序的基本问题，但是由于无法保证平衡，可能退化为链表。<h4 id="平衡二叉树"><a href="#平衡二叉树" class="headerlink" title="平衡二叉树"></a>平衡二叉树</h4></li>
+<li>通过旋转解决了平衡的问题，但是旋转操作效率太低。<h4 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h4></li>
+<li>通过舍弃严格的平衡和引入红黑节点，解决了AVL旋转效率过低的问题，但是在磁盘等场景下，树仍然太高，IO次数太多。<h4 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h4></li>
+<li>在B树的基础上，将非叶节点改造为不存储数据纯索引节点，进一步降低了树的高度；此外将叶节点使用指针连接成链表，范围查询更加高效。</li>
 </ul>
 
                 
@@ -530,7 +533,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/xiao-xi-dui-lie/undefined">https://stream1080.github.io/xiao-xi-dui-lie/undefined</a>
+                    <a href="https://stream1080.github.io/mysql-suo-yin-yi.html">https://stream1080.github.io/mysql-suo-yin-yi.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -568,12 +571,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/RabbitMQ/">
-                                    <span class="chip bg-color">RabbitMQ</span>
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
                                 </a>
                             
-                                <a href="/tags/%E5%8F%AF%E9%9D%A0%E6%80%A7/">
-                                    <span class="chip bg-color">可靠性</span>
+                                <a href="/tags/%E7%B4%A2%E5%BC%95/">
+                                    <span class="chip bg-color">索引</span>
                                 </a>
                             
                         </div>
@@ -623,13 +626,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/duo-xian-cheng/undefined">
+                <a href="/tcp-san-ci-wo-shou-he-si-ci-hui-shou.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="比较交换CAS">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="TCP三次握手和四次挥手">
                         
-                        <span class="card-title">比较交换CAS</span>
+                        <span class="card-title">TCP三次握手和四次挥手</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -640,14 +643,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-21
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-05
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
-                                    多线程
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    计算机网络
                                 </a>
                             
                             
@@ -657,12 +660,16 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/CAS/">
-                        <span class="chip bg-color">CAS</span>
+                    <a href="/tags/TCP/">
+                        <span class="chip bg-color">TCP</span>
                     </a>
                     
-                    <a href="/tags/%E4%B9%90%E8%A7%82%E9%94%81/">
-                        <span class="chip bg-color">乐观锁</span>
+                    <a href="/tags/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B/">
+                        <span class="chip bg-color">三次握手</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
+                        <span class="chip bg-color">四次挥手</span>
                     </a>
                     
                 </div>
@@ -673,16 +680,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/duo-xian-cheng/undefined">
+                <a href="/mysql-suo-yin-yi.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="volatile 关键字">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="MySQL索引(一)">
                         
-                        <span class="card-title">volatile 关键字</span>
+                        <span class="card-title">MySQL索引(一)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -693,25 +700,30 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-04
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
-                                    多线程
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/volatile/">
-                        <span class="chip bg-color">volatile</span>
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%B4%A2%E5%BC%95/">
+                        <span class="chip bg-color">索引</span>
                     </a>
                     
                 </div>
@@ -910,26 +922,14 @@
                 <span id="year">2017-2021</span>
             
             <a href="/about" target="_blank">stream</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <!-- |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a> -->
             <br>
             
             
             
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
+            <!-- 
+             -->
             <br>
 
             <!-- 运行天数提醒. -->
@@ -991,7 +991,7 @@
             <br>
             
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
+        <div class="col s12 m4 l4 social-link ">
     <a href="https://github.com/stream1080" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
@@ -1197,8 +1197,6 @@ $(function () {
 </script>
 
     
-    
-    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     

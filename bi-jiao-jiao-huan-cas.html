@@ -4,10 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="MySQL索引(一), 一江溪水">
-    <meta name="description" content="MySQL索引索引是什么索引是数据库中用来提高性能的常用工具，索引在 MySQL 中也叫“键（Key）”，是存储引擎用于快速查找记录的一种数据结构，这也是索引的基本功能。
+    <meta name="keywords" content="比较交换CAS, 一江溪水">
+    <meta name="description" content="概念CAS 是比较交换 CompareAndSwap 的简称，是一种用于在多线程环境下实现同步功能的机制。
+顾名思义就是比较并交换。简单来说，从某一内存上取值 V，和预期值 A 进行比较
 
-索引对于良好的性能很关键，尤其是当表中数据量越来越大时，索引对性能">
+如果内存值 V 和预期值 A 的结果相等，那么我们">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +20,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>MySQL索引(一) | 一江溪水</title>
+    <title>比较交换CAS | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -267,12 +268,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">MySQL索引(一)</h1>
+                    <h1 class="description center-align post-title">比较交换CAS</h1>
                 </div>
             </div>
         </div>
@@ -388,12 +389,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/MySQL/">
-                                <span class="chip bg-color">MySQL</span>
+                            <a href="/tags/CAS/">
+                                <span class="chip bg-color">CAS</span>
                             </a>
                         
-                            <a href="/tags/%E7%B4%A2%E5%BC%95/">
-                                <span class="chip bg-color">索引</span>
+                            <a href="/tags/%E4%B9%90%E8%A7%82%E9%94%81/">
+                                <span class="chip bg-color">乐观锁</span>
                             </a>
                         
                     </div>
@@ -404,8 +405,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                数据库
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                多线程
                             </a>
                         
                     </div>
@@ -417,7 +418,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-09-04
+                    2021-09-21
                 </div>
                 
 
@@ -426,14 +427,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.6k
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    5 Min
+                    3 Min
                 </div>
                 
 
@@ -451,61 +452,54 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="MySQL索引"><a href="#MySQL索引" class="headerlink" title="MySQL索引"></a>MySQL索引</h1><h2 id="索引是什么"><a href="#索引是什么" class="headerlink" title="索引是什么"></a>索引是什么</h2><p>索引是数据库中用来提高性能的常用工具，索引在 MySQL 中也叫“键（Key）”，是存储引擎用于快速查找记录的一种数据结构，这也是索引的基本功能。</p>
+                <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>CAS 是比较交换 CompareAndSwap 的简称，是一种用于在多线程环境下实现同步功能的机制。</p>
+<p>顾名思义就是比较并交换。简单来说，从某一内存上取值 V，和预期值 A 进行比较</p>
 <ul>
-<li>索引对于良好的性能很关键，尤其是当表中数据量越来越大时，索引对性能的影响愈发重要</li>
-<li>在数据量较小且负载较低时，不恰当的索引对性能的影响可能还不明显，但数据量逐渐增大时，性能会急剧下降。</li>
-<li>索引类似一本书的目录，如果要在一本书中找到特定的知识点，先通过目录找到对应的页码</li>
-<li>在 MySQL 中，存储引擎用类似的方法使用索引，先在索引找到对应值，再根据索引记录找到对应的数据行。</li>
-<li>索引就是为了提高数据查询的效率，跟一本书的目录一样。</li>
+<li>如果内存值 V 和预期值 A 的结果相等，那么我们就把新值 B 更新到内存；</li>
+<li>如果不相等，说明在这个过程中这个值被别的线程修改果，那么就重复上述操作直到成功为止。</li>
 </ul>
-<h2 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h2><p>在MySQL中，首先在索引中找到对应的值，然后根据匹配的索引记录找到对应的数据行。索引可以包括<br>一个或多个列的值，如果索引包含多个列，那么列的顺序也十分重要，因为MySQL只能使用索引的最<br>左前缀。</p>
+<h2 id="为什么要CAS"><a href="#为什么要CAS" class="headerlink" title="为什么要CAS"></a>为什么要CAS</h2><h4 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h4><ul>
+<li><p>在多线程中为了保持数据的准确性，避免多个线程同时操作某个变量，可以使用synchronized 实现同步锁。</p>
+</li>
+<li><p>使用 synchronized 关键字可以使操作的线程排队等待运行，可以说是一种悲观策略，认为线程会修改数据，所以开始就把持有锁的线程锁住，其他线程只能是挂起状态，等待锁的释放，所以同步锁带来了效率问题。</p>
+</li>
+</ul>
+<h4 id="synchronized-的效率问题"><a href="#synchronized-的效率问题" class="headerlink" title="synchronized 的效率问题"></a>synchronized 的效率问题</h4><ul>
+<li><p>在线程执行的时候，获得锁的线程在运行，其他被挂起的线程只能等待着持有锁的线程释放锁才有机会运行，时间浪费在阻塞等待上</p>
+</li>
+<li><p>在很多的线程切换的时候，由于有同步锁，就要涉及到锁的释放，加锁，这又是一个很大的时间开销。</p>
+</li>
+</ul>
+<h4 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h4><ul>
+<li><p>与阻塞机制相比有一种更有效地方法，即非阻塞机制，同步锁带来了线程执行时候之间的阻塞，而这种非阻塞机制在多个线程竞争同一个数据的时候不会发生阻塞的情况，效率大大提升</p>
+</li>
+<li><p>使用 volatile 不会造成阻塞，volatile 保证了线程之间的内存可见性和程序执行的有序性可以说已经很好的解决了上面的问题。</p>
+</li>
+<li><p>volatile存在原子操作问题，volatile 不能保证原子性，对于复合操作</p>
+</li>
+<li><p>例如 i++ 这样的程序包含三个原子操作：取值，自增，赋值。这个过程在多线程执行的时候就会有数据不一致的问题</p>
+</li>
+</ul>
+<h2 id="CAS的意义"><a href="#CAS的意义" class="headerlink" title="CAS的意义"></a>CAS的意义</h2><ul>
+<li>CAS（Compare And Swap 比较和交换）解决了 volatile 不能保证原子性的问题；</li>
+<li>CAS 操作即能够解决锁的效率问题，也能够保证操作的原子性。</li>
+</ul>
+<h2 id="CAS-操作原理"><a href="#CAS-操作原理" class="headerlink" title="CAS 操作原理"></a>CAS 操作原理</h2><p>CAS 主要包含三个操作数，内存位置 V，原值 A，和新值 B。</p>
 <ul>
-<li>索引大大减少了服务器需要扫描的数据量</li>
-<li>可以帮助服务器避免排序和临时表</li>
-<li>可以将随机IO变成顺序IO。</li>
-<li>但对于非常小的表，大部分情况下会采用全表扫描。这样更高效</li>
-<li>对于中到大型的表，索引就非常有效。但对于特大型的表，建立和使用索引的代价也随之增长</li>
+<li>当位置 V 的值与 A 相等时，CAS 才会通过原子方式用新值 B 来更新 V，</li>
+<li>否则不会进行任何操作。无论位置 V 的值是否等于 A，都将返回 V 原有的值。</li>
 </ul>
-<h2 id="哈希索引"><a href="#哈希索引" class="headerlink" title="哈希索引"></a>哈希索引</h2><h4 id="哈希索引-1"><a href="#哈希索引-1" class="headerlink" title="哈希索引"></a>哈希索引</h4><ul>
-<li>哈希索引基于哈希表实现，只有精确匹配索引所有列的查询才有效。</li>
-<li>对于每一行数据, 存储引擎都会对所有的索引列计算一个哈希码，哈希码是一个较小的值， 并且不同键值的行计算出的哈希码也不一样。</li>
-<li>哈希索引将所有的哈希码存储在索引中，同时在哈希表中保存指向每个数据行的指针。</li>
-<li>只有Memory引擎显式支持哈希索引，这也是Memory引擎的默认索引类型。</li>
-<li>因为索引自身只需存储对应的哈希值，所以索引的结构十分紧凑，这让哈希索引的速度非常快</li>
+<p>CAS 是一种乐观策略，每次都正常操作，不用担心其他线程会修改变量等数据，只在最后提交的时候验证数据是否被更改，如果其数据被更改，那么 CAS 会检测到并利用算法重新计算。</p>
+<ul>
+<li>CAS 也是同时允许一个线程修改变量，其他的线程试图修改都将失败；</li>
+<li>相比于同步锁，CAS 对于失败的线程不会将他们挂起，下次仍可以继续提交，参与竞争，这也就是非阻塞机制的特点。</li>
 </ul>
-<h4 id="哈希索引的限制"><a href="#哈希索引的限制" class="headerlink" title="哈希索引的限制"></a>哈希索引的限制</h4><ul>
-<li>哈希索引数据不是按照索引值顺序存储的，无法用于排序。</li>
-<li>哈希索引不支持部分索引列匹配查找，因为哈希索引始终是使用索引列的全部内容来计算哈希值<br>的。例如在数据列(a,b). 上建立哈希索引,如果查询的列只有a就无法使用该索引。</li>
-<li>哈希索引只支持等值比较查询，不支持任何范围查询。</li>
-</ul>
-<h2 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h2><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><ul>
-<li>不同的存储引擎有不同是底层数据结构，在InnoDB中使用B+ Tree索引</li>
-<li>B-Tree通常意味着所有的值都是按顺序存储的，并且每个叶子页到根的距离相同</li>
-<li>B-Tree 索引能够加快访问数据的速度，因为存储引擎不再需要进行全表扫描来获取需要的数据，取而代之的是从索引的根节点开始进行搜索。</li>
-<li>根节点的槽中存放了指向子节点的指针,存储引擎根据这些指针向下层查找。通过比较节点页的值和要查找的值可以找到合适的指针进入下层子节点，这些指针实际上定义了子节点页中值的上限和下限。</li>
-<li>最终存储引擎要么找到对应的值，要么该记录不存在。叶子节点的指针指向的是被索引的数据，而不是其他的节点页。</li>
-</ul>
-<h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><p><img src="https://img-blog.csdnimg.cn/dc5c7e61c22748979fc3c3f673b148bd.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h4 id="B-Tree索引的限制"><a href="#B-Tree索引的限制" class="headerlink" title="B-Tree索引的限制"></a>B-Tree索引的限制</h4><ul>
-<li>如果不是按照索引的最左列开始查找,则无法使用索引。</li>
-<li>不能跳过索引中的列，例如索引为(id,name,sex), 不能只使用id和sex而跳过name。</li>
-<li>如果查询中有某个列的范围查询，则其右边的所有列都无法使用索引。</li>
-</ul>
-<h2 id="B-Tree索引-1"><a href="#B-Tree索引-1" class="headerlink" title="B+Tree索引"></a>B+Tree索引</h2><h4 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h4><p>B+Tree索引的结构与B-Tree索引类似<br><img src="https://img-blog.csdnimg.cn/e1487aa4d203421d9934c8b671f8044f.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5LiA5rGf5rqq5rC0,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><ul>
-<li>B+Tree的非叶子节点不存储数据，所有data存储在叶子节点，导致查询查询时间复杂度为log</li>
-<li>而B-Tree的查询时间复杂度不固定，与关键字在树中的位置有关，最好为O(1)</li>
-<li>B+Tree的节点两两相连可大大增加区间访问性，可使用范围查询等</li>
-<li>而B-Tree每个节点关键字和data在一起，无法区间查找</li>
-<li>B+Tree更适合外部存储，由于内节点无data域，每个节点能索引的范围更大更精确</li>
-</ul>
-<h2 id="InnoDB为什么选择B-树作为索引结构"><a href="#InnoDB为什么选择B-树作为索引结构" class="headerlink" title="InnoDB为什么选择B+树作为索引结构"></a>InnoDB为什么选择B+树作为索引结构</h2><h4 id="Hash索引"><a href="#Hash索引" class="headerlink" title="Hash索引"></a>Hash索引</h4><ul>
-<li>Hash索引底层是哈希表，哈希表是一种以key-value存储数据的结构，所以多个数据在存储关系上是完全没有任何顺序关系的，所以，对于区间查询是无法直接通过索引查询的，就需要全表扫描。所以，哈希索引只适用于等值查询的场景。而B+ 树是一种多路平衡查询树，所以他的节点是天然有序的（左子节点小于父节点、父节点小于右子节点），所以对于范围查询的时候不需要做全表扫描<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4></li>
-<li>解决了排序的基本问题，但是由于无法保证平衡，可能退化为链表。<h4 id="平衡二叉树"><a href="#平衡二叉树" class="headerlink" title="平衡二叉树"></a>平衡二叉树</h4></li>
-<li>通过旋转解决了平衡的问题，但是旋转操作效率太低。<h4 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h4></li>
-<li>通过舍弃严格的平衡和引入红黑节点，解决了AVL旋转效率过低的问题，但是在磁盘等场景下，树仍然太高，IO次数太多。<h4 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h4></li>
-<li>在B树的基础上，将非叶节点改造为不存储数据纯索引节点，进一步降低了树的高度；此外将叶节点使用指针连接成链表，范围查询更加高效。</li>
+<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><h4 id="ABA-问题"><a href="#ABA-问题" class="headerlink" title="ABA 问题"></a>ABA 问题</h4><p>假设有两个线程，线程 1 和线程 2，线程 1 工作时间需要 6 秒，线程 2 工作需要 2 秒，主内存值为 A；</p>
+<ul>
+<li>第 1 秒，线程 1 和线程 2 都把 A 拿到自己的工作内存；</li>
+<li>第 2 秒，线程 2 开始执行，线程 2 工作完成把 A 改成了 B ；</li>
+<li>第 4 秒，线程 2 把 B 又改成了 A；</li>
+<li>第 6秒，线程 1 看到期望为 A ，和真实值也是 A， 认为没有线程修改过数据，其实 A 已经修改过了，后来又改了回去，然后线程 1 进行 CAS 操作。<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4>为了解决这个问题，在每次进行操作的时候加上一个版本号即可，要求这个版本号只能增加，不能减少</li>
 </ul>
 
                 
@@ -533,7 +527,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/shu-ju-ku/undefined">https://stream1080.github.io/shu-ju-ku/undefined</a>
+                    <a href="https://stream1080.github.io/bi-jiao-jiao-huan-cas.html">https://stream1080.github.io/bi-jiao-jiao-huan-cas.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -571,12 +565,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/MySQL/">
-                                    <span class="chip bg-color">MySQL</span>
+                                <a href="/tags/CAS/">
+                                    <span class="chip bg-color">CAS</span>
                                 </a>
                             
-                                <a href="/tags/%E7%B4%A2%E5%BC%95/">
-                                    <span class="chip bg-color">索引</span>
+                                <a href="/tags/%E4%B9%90%E8%A7%82%E9%94%81/">
+                                    <span class="chip bg-color">乐观锁</span>
                                 </a>
                             
                         </div>
@@ -626,13 +620,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/ji-suan-ji-wang-luo/undefined">
+                <a href="/aqs-yuan-li.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="TCP三次握手和四次挥手">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="AQS原理">
                         
-                        <span class="card-title">TCP三次握手和四次挥手</span>
+                        <span class="card-title">AQS原理</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -643,14 +637,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-05
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-22
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
-                                    计算机网络
+                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
                                 </a>
                             
                             
@@ -660,16 +654,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/TCP/">
-                        <span class="chip bg-color">TCP</span>
-                    </a>
-                    
-                    <a href="/tags/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B/">
-                        <span class="chip bg-color">三次握手</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
-                        <span class="chip bg-color">四次挥手</span>
+                    <a href="/tags/%E9%98%9F%E5%88%97/">
+                        <span class="chip bg-color">队列</span>
                     </a>
                     
                 </div>
@@ -680,16 +666,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="far fa-dot-circle"></i>
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/shu-ju-ku/undefined">
+                <a href="/ru-he-bao-zheng-xiao-xi-de-ke-kao-xing-chuan-shu.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="MySQL索引(一)">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="如何保证消息的可靠性传输">
                         
-                        <span class="card-title">MySQL索引(一)</span>
+                        <span class="card-title">如何保证消息的可靠性传输</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -700,30 +686,29 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-04
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                    数据库
+                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
+                                    消息队列
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MySQL/">
-                        <span class="chip bg-color">MySQL</span>
+                    <a href="/tags/RabbitMQ/">
+                        <span class="chip bg-color">RabbitMQ</span>
                     </a>
                     
-                    <a href="/tags/%E7%B4%A2%E5%BC%95/">
-                        <span class="chip bg-color">索引</span>
+                    <a href="/tags/%E5%8F%AF%E9%9D%A0%E6%80%A7/">
+                        <span class="chip bg-color">可靠性</span>
                     </a>
                     
                 </div>
@@ -922,26 +907,14 @@
                 <span id="year">2017-2021</span>
             
             <a href="/about" target="_blank">stream</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <!-- |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a> -->
             <br>
             
             
             
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
+            <!-- 
+             -->
             <br>
 
             <!-- 运行天数提醒. -->
@@ -1003,7 +976,7 @@
             <br>
             
         </div>
-        <div class="col s12 m4 l4 social-link social-statis">
+        <div class="col s12 m4 l4 social-link ">
     <a href="https://github.com/stream1080" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
@@ -1209,8 +1182,6 @@ $(function () {
 </script>
 
     
-    
-    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
 
     
