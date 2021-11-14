@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="MySQL的存储引擎, 一江溪水">
-    <meta name="description" content="MySQL的存储引擎 | 一江溪水">
+    <meta name="description" content="MySQL存储引擎MySQL 提供不同的技术存储数据，这些技术使用不同的数据存储机制、索引建立方式、锁方式来完成数据的构建，这些技术统称为存储引擎。
+MySQL 至少支持 9 种存储引擎，目前最受关注的是 InnoDB 和 MyISAM 存">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +385,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
+                                <span class="chip bg-color">存储引擎</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +416,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-14
+                    2021-08-24
                 </div>
                 
 
@@ -407,7 +425,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    493
                 </div>
                 
 
@@ -432,7 +450,43 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="MySQL存储引擎"><a href="#MySQL存储引擎" class="headerlink" title="MySQL存储引擎"></a>MySQL存储引擎</h1><p>MySQL 提供不同的技术存储数据，这些技术使用不同的数据存储机制、索引建立方式、锁方式来完成数据的构建，这些技术统称为存储引擎。</p>
+<p>MySQL 至少支持 9 种存储引擎，目前最受关注的是 InnoDB 和 MyISAM 存储引擎</p>
+<h2 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h2><ul>
+<li><p>MySQL5.5版之前的默认数据库引擎，性能不错，而且提供了大量的特性，包括全文索引、压缩、空间函数等</p>
+</li>
+<li><p>但MyISAM不支持事务和行级锁， 而且崩溃后无法安全恢复。</p>
+<h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2></li>
+<li><p>由于MyISAM的不足，MySQL引入了InnoDB (事务性数据库引擎)</p>
+</li>
+<li><p>MySQL 5. 5版本后默认的存储引擎为InnoDB，我们使用的基本都是InnoDB 存储引擎</p>
+</li>
+<li><p>但是在某些情况下使用MyISAM 也是合适的比如读操作非常频繁的情况下。</p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2></li>
+<li><p>是否支持行级锁: MyISAM 只有表级锁, 而InnoDB 支持行级锁和表级锁 ，默认为行级锁。</p>
+</li>
+<li><p>是否支持事务和崩溃后的安全恢复: MyISAM 强调的是性能，每次查询具有原子性，其执行速度比InnoDB更快，但是不提供事务支持。</p>
+</li>
+<li><p>InnoDB提供事务支持事务，外部键等高级数据库功能。具有事务、回滚和崩溃修复能力的事务安全表。</p>
+</li>
+<li><p>是否支持外键: MyISAM不支持，而InnoDB支持。</p>
+</li>
+<li><p>是否支持MVCC :InnoDB支持，MyISAM不支持。应对高并发事务，MVCC比单纯的加锁更高效;</p>
+</li>
+<li><p>MVCC只在 读取已提交和可重复读两个隔离级别下工作;</p>
+</li>
+<li><p>MVCC可以使用乐观锁 和悲观锁来实现</p>
+</li>
+</ul>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
+<li><p>MyISAM 对于不支持事务并且存在大量 SELECT 的读场景比较合适；</p>
+</li>
+<li><p>如果业务代码中要支持事务，必须选择 InnoDB 存储引擎；</p>
+</li>
+<li><p>如果业务代码中要支持外键，必须选择 InnoDB 存储引擎；</p>
+</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -495,7 +549,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">
+                                    <span class="chip bg-color">存储引擎</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -539,18 +601,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/23763.html">
+                <a href="/posts/36094.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="MySQL的存储引擎">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="MySQL索引(一)">
                         
-                        <span class="card-title">MySQL的存储引擎</span>
+                        <span class="card-title">MySQL索引(一)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,18 +621,33 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-14
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-09-04
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                    数据库
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%B4%A2%E5%BC%95/">
+                        <span class="chip bg-color">索引</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -582,13 +658,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/39079.html">
+                <a href="/posts/35870.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="MySQL如何避免幻读">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="一条SQL更新语句是如何执行的">
                         
-                        <span class="card-title">MySQL如何避免幻读</span>
+                        <span class="card-title">一条SQL更新语句是如何执行的</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -599,7 +675,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-23
                             </span>
                         <span class="publish-author">
                             
@@ -616,16 +692,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%B9%BB%E8%AF%BB/">
-                        <span class="chip bg-color">幻读</span>
-                    </a>
-                    
-                    <a href="/tags/MVCC/">
-                        <span class="chip bg-color">MVCC</span>
-                    </a>
-                    
-                    <a href="/tags/next-key/">
-                        <span class="chip bg-color">next-key</span>
+                    <a href="/tags/%E6%9B%B4%E6%96%B0%E8%AF%AD%E5%8F%A5/">
+                        <span class="chip bg-color">更新语句</span>
                     </a>
                     
                 </div>
