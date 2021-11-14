@@ -2,12 +2,13 @@
 title: Spring Bean的作用域和生命周期
 cover: false
 top: false
-date: 2021-10-02 20:51:21
-summary:
 categories:
   - 框架
 tags:
   - Spring
+abbrlink: 48887
+date: 2021-10-02 20:51:21
+summary:
 ---
 
 ## Spring Bean的作用域

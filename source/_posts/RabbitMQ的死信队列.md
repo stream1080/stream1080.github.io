@@ -2,13 +2,14 @@
 title: RabbitMQ的死信队列
 cover: false
 top: false
-date: 2021-11-13 15:00:33
-summary:
 categories:
   - 消息队列
 tags:
   - RabbitMQ
   - 死信队列
+abbrlink: 37640
+date: 2021-11-13 15:00:33
+summary:
 ---
 
 ## 什么是死信

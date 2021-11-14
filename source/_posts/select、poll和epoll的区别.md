@@ -1,12 +1,13 @@
 ---
 title: select、poll和epoll的区别
-date: 2021-11-07 16:03:16
 cover: true
 categories:
   - 操作系统
-tags: 
+tags:
   - IO流
 top: false
+abbrlink: 51404
+date: 2021-11-07 16:03:16
 ---
 
 ## 进程所能打开的最大连接数

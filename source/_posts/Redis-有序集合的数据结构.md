@@ -2,14 +2,15 @@
 title: Redis-有序集合的数据结构
 cover: false
 top: false
-date: 2021-10-06 23:36:03
-summary:
 categories:
   - 缓存
 tags:
   - Redis
   - 有序集合
   - 跳表
+abbrlink: 22919
+date: 2021-10-06 23:36:03
+summary:
 ---
 
 ## 集合概念

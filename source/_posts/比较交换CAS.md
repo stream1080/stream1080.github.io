@@ -2,13 +2,14 @@
 title: 比较交换CAS
 cover: false
 top: false
-date: 2021-09-21 20:58:47
-summary:
 categories:
   - 多线程
 tags:
   - CAS
   - 乐观锁
+abbrlink: 509
+date: 2021-09-21 20:58:47
+summary:
 ---
 
 ## 概念

@@ -2,13 +2,14 @@
 title: TCP的粘包和拆包
 cover: false
 top: false
-date: 2021-10-13 19:13:27
-summary:
 categories:
   - 计算机网络
 tags:
   - TCP/IP
   - 粘包拆包
+abbrlink: 7157
+date: 2021-10-13 19:13:27
+summary:
 ---
 
 ## 什么是粘包和拆包

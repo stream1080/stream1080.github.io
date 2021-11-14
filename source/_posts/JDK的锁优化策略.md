@@ -2,12 +2,13 @@
 title: JDK的锁优化策略
 cover: false
 top: false
-date: 2021-09-19 21:02:07
-summary:
 categories:
   - 多线程
 tags:
   - 锁
+abbrlink: 64859
+date: 2021-09-19 21:02:07
+summary:
 ---
 
 ## 锁的优化策略

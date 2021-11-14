@@ -2,13 +2,14 @@
 title: MySQL的执行计划(一)
 cover: false
 top: false
-date: 2021-10-05 22:37:17
-summary:
 categories:
   - 数据库
 tags:
   - MySQL
   - 执行计划
+abbrlink: 53351
+date: 2021-10-05 22:37:17
+summary:
 ---
 ## 什么是执行计划
 执行计划，就是一条SQL语句，在数据库中实际执行的时候，一步步的分别都做了什么事情

@@ -2,13 +2,14 @@
 title: RabbitMQ 如何保证消息不会被重复消费
 cover: true
 top: false
-date: 2021-10-30 19:04:04
-summary:
 categories:
   - 消息队列
 tags:
   - RabbitMQ
   - 重复消费
+abbrlink: 13025
+date: 2021-10-30 19:04:04
+summary:
 ---
 
 

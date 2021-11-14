@@ -2,13 +2,14 @@
 title: MySQL的日志文件
 cover: false
 top: false
-date: 2021-10-04 20:44:52
-summary:
 categories:
   - 数据库
 tags:
   - MySQL
   - 日志
+abbrlink: 37943
+date: 2021-10-04 20:44:52
+summary:
 ---
 
 ## 二进制日志-binlog

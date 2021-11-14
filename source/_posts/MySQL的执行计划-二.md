@@ -2,13 +2,14 @@
 title: MySQL的执行计划(二)
 cover: false
 top: false
-date: 2021-10-06 22:37:23
-summary:
 categories:
   - 数据库
 tags:
   - MySQL
   - 执行计划
+abbrlink: 4291
+date: 2021-10-06 22:37:23
+summary:
 ---
 书接上回：[MySQL执行计划(一)](https://blog.csdn.net/upstream480/article/details/120615005)
 

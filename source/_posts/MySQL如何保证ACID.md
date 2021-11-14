@@ -2,13 +2,14 @@
 title: MySQL如何保证ACID
 cover: false
 top: false
-date: 2021-10-01 20:54:10
-summary:
 categories:
   - 数据库
 tags:
   - ACID
   - MySQL
+abbrlink: 43102
+date: 2021-10-01 20:54:10
+summary:
 ---
 
 ## ACID

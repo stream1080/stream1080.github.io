@@ -2,13 +2,14 @@
 title: MySQL索引(一)
 cover: false
 top: false
-date: 2021-09-04 21:18:49
-summary:
 categories:
   - 数据库
 tags:
   - MySQL
   - 索引
+abbrlink: 36094
+date: 2021-09-04 21:18:49
+summary:
 ---
 # MySQL索引
 ## 索引是什么

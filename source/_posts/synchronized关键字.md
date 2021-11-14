@@ -2,13 +2,14 @@
 title: synchronized关键字
 cover: false
 top: false
-date: 2021-09-17 21:05:57
-summary:
 categories:
   - 多线程
 tags:
   - synchronized
   - 锁
+abbrlink: 27249
+date: 2021-09-17 21:05:57
+summary:
 ---
 
 ## 概念

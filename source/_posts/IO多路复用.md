@@ -1,12 +1,13 @@
 ---
 title: IO多路复用
-date: 2021-11-06 16:03:21
 cover: true
 categories:
   - 操作系统
-tags: 
+tags:
   - IO流
 top: false
+abbrlink: 36405
+date: 2021-11-06 16:03:21
 ---
 
 ## 概述

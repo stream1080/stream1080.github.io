@@ -2,13 +2,14 @@
 title: HashMap的扩容
 cover: false
 top: false
-date: 2021-09-12 21:13:19
-summary:
 categories:
   - Java基础
 tags:
   - HashMap
   - 扩容
+abbrlink: 61579
+date: 2021-09-12 21:13:19
+summary:
 ---
 
 ## HashMap初始化

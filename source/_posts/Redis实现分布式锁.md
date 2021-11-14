@@ -2,13 +2,14 @@
 title: Redis实现分布式锁
 cover: false
 top: false
-date: 2021-10-10 23:35:46
-summary:
 categories:
   - 缓存
 tags:
   - 分布式锁
   - Redis
+abbrlink: 2566
+date: 2021-10-10 23:35:46
+summary:
 ---
 
 ## 什么是分布式锁

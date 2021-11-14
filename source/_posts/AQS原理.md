@@ -2,12 +2,13 @@
 title: AQS原理
 cover: false
 top: false
-date: 2021-09-22 20:56:37
-summary:
 categories:
   - 多线程
 tags:
   - 队列
+abbrlink: 3478
+date: 2021-09-22 20:56:37
+summary:
 ---
 
 ## 概念

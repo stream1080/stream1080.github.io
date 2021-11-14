@@ -2,13 +2,14 @@
 title: ThreadLocal的使用
 cover: false
 top: false
-date: 2021-09-15 21:11:04
-summary:
 categories:
   - 多线程
 tags:
   - ThreadLocal
   - 共享变量
+abbrlink: 22538
+date: 2021-09-15 21:11:04
+summary:
 ---
 
 ## 概述

@@ -2,13 +2,14 @@
 title: 基于RedLock的分布式锁
 cover: false
 top: false
-date: 2021-10-12 23:35:21
-summary:
 categories:
   - 缓存
 tags:
   - 分布式锁
   - Redis
+abbrlink: 38691
+date: 2021-10-12 23:35:21
+summary:
 ---
 
 

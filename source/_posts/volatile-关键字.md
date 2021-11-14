@@ -2,12 +2,13 @@
 title: volatile 关键字
 cover: false
 top: false
-date: 2021-09-19 21:03:41
-summary:
 categories:
   - 多线程
 tags:
   - volatile
+abbrlink: 38250
+date: 2021-09-19 21:03:41
+summary:
 ---
 
 ## volatile 关键字

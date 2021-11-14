@@ -2,14 +2,15 @@
 title: TCP三次握手和四次挥手
 cover: false
 top: false
-date: 2021-09-05 21:15:34
-summary:
 categories:
   - 计算机网络
 tags:
   - TCP
   - 三次握手
   - 四次挥手
+abbrlink: 37932
+date: 2021-09-05 21:15:34
+summary:
 ---
 
 ## 概念

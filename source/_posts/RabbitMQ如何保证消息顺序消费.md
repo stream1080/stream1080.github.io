@@ -2,13 +2,14 @@
 title: RabbitMQ如何保证消息顺序消费
 cover: false
 top: false
-date: 2021-10-29 19:08:55
-summary:
 categories:
   - 消息队列
 tags:
   - RabbitMQ
   - 顺序消费
+abbrlink: 56438
+date: 2021-10-29 19:08:55
+summary:
 ---
 
 ## 为什么要顺序消费
