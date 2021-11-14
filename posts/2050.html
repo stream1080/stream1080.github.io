@@ -4,10 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Redis缓存过期与内存淘汰, 一江溪水">
-    <meta name="description" content="Redis缓存过期与内存淘汰
-Redis中有个设置时间过期的功能，即对存储在redis 数据库中的值可以设置一个过期时间，到了过期时间，key会被删除
-如果内存空间满了，再往Redis里面插入数据，就会触发缓存淘汰机制 缓存过期策略作为一个">
+    <meta name="keywords" content="Redis的持久化方式, 一江溪水">
+    <meta name="description" content="Redis的持久化方式Redis 缓存的优势是提供快速的查询和存储能力，所以所有的数据都被存储在内存中。相对于硬盘，内存中的数据是半持久化存储，当遇到不可抗阻力，例如断电或者硬件损坏导致的服务器宕机时，内存中的数据会完全丢失。为了防止 Re">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +17,7 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Redis缓存过期与内存淘汰 | 一江溪水</title>
+    <title>Redis的持久化方式 | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -267,12 +265,12 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Redis缓存过期与内存淘汰</h1>
+                    <h1 class="description center-align post-title">Redis的持久化方式</h1>
                 </div>
             </div>
         </div>
@@ -388,12 +386,12 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E7%BC%93%E5%AD%98%E8%BF%87%E6%9C%9F/">
-                                <span class="chip bg-color">缓存过期</span>
+                            <a href="/tags/Redis/">
+                                <span class="chip bg-color">Redis</span>
                             </a>
                         
-                            <a href="/tags/%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0/">
-                                <span class="chip bg-color">内存淘汰</span>
+                            <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
+                                <span class="chip bg-color">持久化</span>
                             </a>
                         
                     </div>
@@ -417,7 +415,7 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-08-20
+                    2021-08-19
                 </div>
                 
 
@@ -426,14 +424,14 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.2k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    5 Min
                 </div>
                 
 
@@ -451,48 +449,81 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Redis缓存过期与内存淘汰"><a href="#Redis缓存过期与内存淘汰" class="headerlink" title="Redis缓存过期与内存淘汰"></a>Redis缓存过期与内存淘汰</h1><ul>
-<li>Redis中有个设置时间过期的功能，即对存储在redis 数据库中的值可以设置一个过期时间，到了过期时间，key会被删除</li>
-<li>如果内存空间满了，再往Redis里面插入数据，就会触发缓存淘汰机制 <h2 id="缓存过期策略"><a href="#缓存过期策略" class="headerlink" title="缓存过期策略"></a>缓存过期策略</h2>作为一个缓存数据库，这是非常实用的。我们set key的时候，都可以给一个expire_time, 就是过期时间，通过过期时间我们可以指定这个key可以存活的时间。</li>
-</ul>
-<p>那么，到了过期时间后，这些key是怎么被删除的呢？</p>
+                <h1 id="Redis的持久化方式"><a href="#Redis的持久化方式" class="headerlink" title="Redis的持久化方式"></a>Redis的持久化方式</h1><p>Redis 缓存的优势是提供快速的查询和存储能力，所以所有的数据都被存储在内存中。相对于硬盘，内存中的数据是半持久化存储，当遇到不可抗阻力，例如断电或者硬件损坏导致的服务器宕机时，内存中的数据会完全丢失。为了防止 Redis 中的数据丢失，需要将数据持久化存储到硬盘。</p>
+<h4 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h4><p>持久化就是把 Redis 数据从内存同步到硬盘的过程。Redis中提供了两种持久化方案</p>
 <ul>
-<li>缓存过期是在 Key 超过 expire_time 后，从内存中删除，减少内存空间的占用</li>
-<li>不同策略的定义、优点和缺点都是不同的。Redis 的过期策略主要有三种实现方式：</li>
+<li>RDB 持久化：将 Redis 的数据定时 dump 到硬盘；</li>
+<li>AOF 持久化：将 Redis 的操作日志追加写入硬盘文件。</li>
 </ul>
-<h3 id="定时删除："><a href="#定时删除：" class="headerlink" title="定时删除："></a>定时删除：</h3><p>对于每一个有过期时间的 Key，创建一个定时器，到过期时间后立即删除；</p>
+<h2 id="RDB方式"><a href="#RDB方式" class="headerlink" title="RDB方式"></a>RDB方式</h2><p>RDB方式也叫快照持久化</p>
 <ul>
-<li>优点：保存内存可以尽快释放，减少过期 Key 对内存空间的占用；</li>
-<li>缺点：占用大量的 CPU 资源去处理定时器，影响缓存的吞吐量，这和 Redis 设计追求性能的设定不符，所以一般不会采用这种策略。<h3 id="惰性删除："><a href="#惰性删除：" class="headerlink" title="惰性删除："></a>惰性删除：</h3>过期的 Key 不做处理，只有当访问这个 Key 时才会判断是否过期，过期则删除；</li>
-<li>优点：删除操作只有在访存的时候才可能执行，对 CPU 的占用做到了最小。</li>
-<li>缺点：如果内存中大量的 Key 均过期，且一段时间内没有被访问，会占用大量内存。<h3 id="定期删除："><a href="#定期删除：" class="headerlink" title="定期删除："></a>定期删除：</h3>每隔一段时间(默认100ms)全量扫描设置了过期时间的 Key，如果失效则从内存中删除，否则不做处理；</li>
-<li>优点：通过限制定时的频率，来减少对 CPU 的占用和对内存的占用；</li>
-<li>缺点：作为一种折中的方案，在内存友好方面，不如定时删除策略；在 CPU 友好方面，不如惰性删除。使用时的表现非常依赖配置的定期频率。<h2 id="内存淘汰机制"><a href="#内存淘汰机制" class="headerlink" title="内存淘汰机制"></a>内存淘汰机制</h2>但是仅仅通过设置过期时间还是有问题的。如果定期删除漏掉了很多过期key,然后你也<br>没及时去查，也就没走惰性删除，此时会有大量过期key堆积在内存里，导致redis内存耗<br>尽了<br>redis内存淘汰机制就横空出世了，缓存过期策略和内存淘汰机制是非常容易混淆的两个概念，两者的目的是不同的。</li>
-<li>缓存过期策略：针对过期 Key ，从内存中移除的方式。</li>
-<li>内存淘汰机制：针对 Redis 内存不足时，业务还在继续往 Redis 追加内容，如何处理已有的内容。</li>
+<li>Redis可以通过创建快照来获得存储在内存里面的数据在某个时间点上的副本。</li>
+<li>Redis创建快照之后，可以对快照进行备份，可以将快照复制到其他服务器从而创建具有相同数据的服务器副本(Redis主从结构，主要用来提高Redis性能)</li>
+<li>还可以将快 照留在原地以便重启服务器的时候使用。</li>
 </ul>
-<h3 id="八种淘汰策略"><a href="#八种淘汰策略" class="headerlink" title="八种淘汰策略"></a>八种淘汰策略</h3><ul>
-<li>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的 key；</li>
-<li>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的 key；</li>
-<li>volatile-lfu：当内存不足以容纳新写入数据时，在过期密集的键中，使用 LFU 算法进行删除 key；</li>
-<li>allkeys-lfu：当内存不足以容纳新写入数据时，对所有的 key 执行 LFU 算法筛选过期；</li>
-<li>volatile-random：当内存不足以容纳新写入数据时，在设置了过期的键中，随机删除一个 key；</li>
-<li>allkeys-random：当内存不足以容纳新写入数据时，随机删除一个或者多个 key；</li>
-<li>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的 key 优先移除；</li>
-<li>noeviction：当内存不足以容纳新写入数据时，新写入操作直接报错，无法写入。</li>
-</ul>
-<p>上述算法按照特性可以分为几类：LRU/LFU 算法、随机删除算法、优先淘汰历史数据算法、报错处理算法。目前主流是使用 LRU 算法</p>
+<p>快照持久化是Redis默认采用的持久化方式，在redis.conf配置文件中默认有此下配置</p>
+<pre class="line-numbers language-none"><code class="language-none">save 900 1    
+# 在900秒(15分钟)之后，如果至少有1个key发生变化，Redis就会自动触发BGSAVE命令创建快照。
+
+save 300 10
+# 在300秒(5分钟)之后，如果至少有10个key发生变化，Redis就会自动触发BGSAVE命令创建快照。
+
+save 60 10000
+# 在60秒(1分钟)之后，如果至少有10000个key发生变化，Redis就会自动触发BGSAVE命令创建快照。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="RDB过程"><a href="#RDB过程" class="headerlink" title="RDB过程"></a>RDB过程</h4><p>RDB 持久化方式的步骤是：</p>
 <ul>
-<li>Redis 用作持久化数据库，不配置缓存过期时间，采用 allkeys-lru ；</li>
-<li>Redis 作为缓存数据库，配置了 Key 过期时间，采用 volatile-lru 算法。</li>
+<li>定时从 Redis 主进程 fork 一个 Redis 子进程；</li>
+<li>Redis 子进程生成内存的数据快照，并且写入 RDB 临时文件；</li>
+<li>临时文件写入成功后，生成 RDB 最终文件。<br><img src="https://img-blog.csdnimg.cn/ad270ae5e9504d578e59ad3990fea4ef.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h4 id="触发机制"><a href="#触发机制" class="headerlink" title="触发机制"></a>触发机制</h4>RDB 同步有三种触发机制：save 指令、bgsave 指令、自动化指令</li>
+<li>save 指令：命令会阻塞当前 Redis 服务器，导致 Redis 暂时不可用；</li>
+<li>bgsave 指令：命令在后台异步执行操作，Redis 服务器同时也能响应客户端请求，阻塞只发生在 fork 时间段，时间很短。</li>
+<li>自动化指令：在 redis.conf 文件配置，例如数据在经过 m 次修改后自动触发 bgsave 命令(上面说的哪种)</li>
 </ul>
-<h2 id="LRU算法"><a href="#LRU算法" class="headerlink" title="LRU算法"></a>LRU算法</h2><p>LRU（Least Recently Used，最近最少使用算法）是最常见的缓存淘汰算法，核心思想是 “如果数据最近被访问过，那么将来被访问的可能性也更高”。</p>
-<h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><ul>
-<li>新数据直接插入到链表头部；</li>
-<li>每当缓存命中（即缓存数据被访问），则将被命中的数据移到链表头部；</li>
-<li>当链表满的时候，将链表尾部的数据丢弃。<br><img src="https://img-blog.csdnimg.cn/113099241a5047b495e01ae2d1472d8e.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<p>简单来说，因为 save 指令会在整个过程中阻塞服务器，所以线上生产环境都是使用 bgsave 指令。</p>
+<h2 id="AOF方式"><a href="#AOF方式" class="headerlink" title="AOF方式"></a>AOF方式</h2><p>AOF 持久化方式以日志形式记录 Redis 服务器的每一个插入、修改、删除操作，以文本的形式异步保存。</p>
+<ul>
+<li>AOF 持久化与快照持久化相比，AOF持久化的实时性更好，因此已成为主流的持久化方案。</li>
+<li>默认情况下Redis没有开启AOF (append only file)方式的持久化</li>
+<li>可以通过配置文件的appendonly参数开启:appendonly yes</li>
 </ul>
-<p>总结，越靠近链表头部的数据越是不容易被淘汰，越靠近链表尾部的数据越是容易淘汰。</p>
+<h4 id="AOF过程"><a href="#AOF过程" class="headerlink" title="AOF过程"></a>AOF过程</h4><p>开启AOF持久化后每执行条会更改Redi s中的数据的命令 ，Redis就会将该命令写入硬盘中的AOF 文件。<br>AOF文件的保存位置和RDB文件的位置相同，都是通过dir参数设置的，默认的文件名是appendonly.aof。<br><img src="https://img-blog.csdnimg.cn/6d34b532eb754841b4253afb583812ee.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>在Redis的配置文件中存在三种不同的AOF持久化方式，它们分别是:</p>
+<pre class="line-numbers language-none"><code class="language-none">appendfsync always     # 每次有数据修改发生时都会写入AOF文件,这样会严重降低Redis的速度
+appendfsync everysec   # 每秒钟同步一次，显示地将多个写命令同步到硬盘
+appendfsync no         # 让操作系统决定何时进行同步<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>为了兼顾数据和写入性能，一般采用appendfsync everysec选项 ；</li>
+<li>让Redis每秒同步一 次AOF文件，Redis性能几乎没受到任何影响；</li>
+<li>而且这样即使出现系统崩溃，用户最多只会丢失一秒之内产生的数据；</li>
+<li>当硬盘忙于执行写入操作的时候，Redis还会优雅的放慢自己的速度以便适应硬盘的最大写入速度。</li>
+</ul>
+<h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><h4 id="RDB-的优点："><a href="#RDB-的优点：" class="headerlink" title="RDB 的优点："></a>RDB 的优点：</h4><ul>
+<li>性能较高：在开始持久化时，只需要 fork 出一个子进程，子进程负责持久化的工作，避免主线程的 IO 操作；</li>
+<li>启动效率高：相对于 AOF 方式，如果数据集非常大， 启动速度更快。</li>
+</ul>
+<h4 id="RDB-的缺点："><a href="#RDB-的缺点：" class="headerlink" title="RDB 的缺点："></a>RDB 的缺点：</h4><ul>
+<li>如果服务器在定时持久化之前宕机，那么 Redis 中没来得及写入的数据都会丢失。</li>
+</ul>
+<h4 id="AOF-的优点："><a href="#AOF-的优点：" class="headerlink" title="AOF 的优点："></a>AOF 的优点：</h4><ul>
+<li>数据安全：每次修改都会同时追加到日志文件，就算服务器宕机，数据也能在日志文件中找回；</li>
+<li>方便重建：日志文件同 MySQL 的 binlog 功能相同，我们所有的写操作都能从日志文件中获取。</li>
+</ul>
+<h4 id="AOF-的缺点："><a href="#AOF-的缺点：" class="headerlink" title="AOF 的缺点："></a>AOF 的缺点：</h4><ul>
+<li>运行效率低：AOF 方式本质上是牺牲缓存的性能，来换去缓存的一致性；</li>
+<li>占用文件更大：AOF 的日志文件相对 RDB 同步的文件，通常要更大，所以在恢复时速度更慢。</li>
+</ul>
+<h2 id="混合持久化"><a href="#混合持久化" class="headerlink" title="混合持久化"></a>混合持久化</h2><ul>
+<li>Redis 4.0开始支持RDB和AOF的混合持久化</li>
+<li>默认关闭，可以通过配置项aof-use-rdb-preamble开启</li>
+</ul>
+<p>在混合持久化下，AOF重写的时候就直接把RDB 的内容写到AOF文件开头。这样做的好处是可<br>以结合RDB和AOF的优点，快速加载同时避免丢失过多的数据。当然缺点也是有的，AOF 里面的<br>RDB部分是压缩格式不再是AOF格式，可读性较差。</p>
+<h4 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h4><ul>
+<li>AOF重写可以产生一个新的AOF文件，这个新的AOF文件和原有的AOF文件所保存的数据库状态一样，但体积更小。</li>
+<li>AOF重写是通过读取数据库中的键值对来实现的，程序无须对现有AOF文件进行任何读入、分析或者写入操作。</li>
+<li>在执行BGREWRITEAOF 命令时，Redis 服务器会维护一个AOF 重写缓冲区，该缓冲区会在子进程创建<br>新AOF文件期间，记录服务器执行的所有写命令。</li>
+<li>当子进程完成创建新AOF文件的工作之后，服务器会将重写缓冲区中的所有内容追加到新AOF文件的末尾，使得新旧两个AOF文件所保存的数据库状态一致。</li>
+<li>最后，服务器用新的A0F文件替换旧的AOF文件，以此来完成AOF文件重写操作</li>
+</ul>
 
                 
             </div>
@@ -519,7 +550,7 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/posts/26947.html">https://stream1080.github.io/posts/26947.html</a>
+                    <a href="https://stream1080.github.io/posts/2050.html">https://stream1080.github.io/posts/2050.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -557,12 +588,12 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E7%BC%93%E5%AD%98%E8%BF%87%E6%9C%9F/">
-                                    <span class="chip bg-color">缓存过期</span>
+                                <a href="/tags/Redis/">
+                                    <span class="chip bg-color">Redis</span>
                                 </a>
                             
-                                <a href="/tags/%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0/">
-                                    <span class="chip bg-color">内存淘汰</span>
+                                <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
+                                    <span class="chip bg-color">持久化</span>
                                 </a>
                             
                         </div>
@@ -612,13 +643,13 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/30653.html">
+                <a href="/posts/26947.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="MySQL事务和隔离级别">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Redis缓存过期与内存淘汰">
                         
-                        <span class="card-title">MySQL事务和隔离级别</span>
+                        <span class="card-title">Redis缓存过期与内存淘汰</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -629,14 +660,14 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-21
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-20
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                    数据库
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                    缓存
                                 </a>
                             
                             
@@ -646,12 +677,12 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E4%BA%8B%E5%8A%A1/">
-                        <span class="chip bg-color">事务</span>
+                    <a href="/tags/%E7%BC%93%E5%AD%98%E8%BF%87%E6%9C%9F/">
+                        <span class="chip bg-color">缓存过期</span>
                     </a>
                     
-                    <a href="/tags/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">
-                        <span class="chip bg-color">隔离级别</span>
+                    <a href="/tags/%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0/">
+                        <span class="chip bg-color">内存淘汰</span>
                     </a>
                     
                 </div>
@@ -662,7 +693,7 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
                 <a href="/posts/2050.html">
@@ -696,6 +727,7 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
