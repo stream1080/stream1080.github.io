@@ -4,13 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="JVM运行时数据区(一), 一江溪水">
-    <meta name="description" content="JVM运行时数据区Java运行时数据区可以细分为五个模块：栈，堆，寄存器，方法区和本地方法栈在Java8之后，方法区改成了元空间，有一些区域是线程私有的，有一些是线程共享的
-线程私有
-程序计数器
-Java 虚拟机栈
-本地方法栈线程共享
-Ja">
+    <meta name="keywords" content="Java类加载机制, 一江溪水">
+    <meta name="description" content="类加载过程Java类加载过程为：加载-链接-初始链接的过程包括验证，准备，解析
+加载把编译后的class字节码文件通过类加载器装载入内存中，并将这些数据转换成方法区中的运行时数据（静态变量、静态代码块、常量池等），在堆中生成一个Class类">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -22,7 +18,7 @@ Ja">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>JVM运行时数据区(一) | 一江溪水</title>
+    <title>Java类加载机制 | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -270,12 +266,12 @@ Ja">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">JVM运行时数据区(一)</h1>
+                    <h1 class="description center-align post-title">Java类加载机制</h1>
                 </div>
             </div>
         </div>
@@ -391,8 +387,12 @@ Ja">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/">
-                                <span class="chip bg-color">内存区域</span>
+                            <a href="/tags/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/">
+                                <span class="chip bg-color">双亲委派</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">
+                                <span class="chip bg-color">类加载</span>
                             </a>
                         
                     </div>
@@ -416,7 +416,7 @@ Ja">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-08-14
+                    2021-08-06
                 </div>
                 
 
@@ -425,14 +425,14 @@ Ja">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.5k
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    5 Min
+                    6 Min
                 </div>
                 
 
@@ -450,64 +450,91 @@ Ja">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="JVM运行时数据区"><a href="#JVM运行时数据区" class="headerlink" title="JVM运行时数据区"></a>JVM运行时数据区</h1><p>Java运行时数据区可以细分为五个模块：栈，堆，寄存器，方法区和本地方法栈<br><img src="https://img-blog.csdnimg.cn/3d562e1c5a984eada6a1a10ed2057605.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>在Java8之后，方法区改成了元空间，有一些区域是线程私有的，有一些是线程共享的</p>
-<h4 id="线程私有"><a href="#线程私有" class="headerlink" title="线程私有"></a>线程私有</h4><ul>
-<li>程序计数器</li>
-<li>Java 虚拟机栈</li>
-<li>本地方法栈<h4 id="线程共享"><a href="#线程共享" class="headerlink" title="线程共享"></a>线程共享</h4></li>
-<li>Java 堆</li>
-<li>方法区</li>
-</ul>
-<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>程序计数器也叫寄存器，每个线程启动的时候，都会创建一个 PC（Program Counter，程序计数器）寄存器。PC 寄存器里保存有当前正在执行的 JVM 指令的地址。</p>
+                <h2 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h2><p>Java类加载过程为：加载-链接-初始<br>链接的过程包括验证，准备，解析<br><img src="https://img-blog.csdnimg.cn/14b229396a0d48d686a01c6f18e1d702.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h4><p>把编译后的class字节码文件通过类加载器装载入内存中，并将这些数据转换成方法区中的运行时数据（静态变量、静态代码块、常量池等），在堆中生成一个Class类对象代表这个类（反射原理），作为方法区类数据的访问入口。</p>
 <ul>
-<li>程序计数器是一块比较小的内存空间，是当前线程所执行的字节码的行号指示器；</li>
-<li>字节码解释器工作时通过改变这个计数器的值来选取下一条需要执行的字节码指令；</li>
-<li>比如分支、循环、跳转、异常处理、线程恢复等功能都需要依赖这个计数器来完。</li>
-<li>程序计数器是一个在虚拟机中没有规定内存溢出的区域，他的生命周期随着线程的创建而创建，随着线程的结束而死亡<h3 id="主要作用"><a href="#主要作用" class="headerlink" title="主要作用"></a>主要作用</h3></li>
-<li>字节码解释器通过改变程序计数器来依次读取指令，从而实现代码的流程控制</li>
-<li>在多线程的情况下，程序计数器用于记录当前线程执行的位置，当线程被切换回来的时候能<br>恢复上次执行的位置</li>
+<li>通过全类名获取定义此类的二进制字节流</li>
+<li>将字节流所代表的静态存储结构转换为方法区的运行时数据结构</li>
+<li>在内存中生成一个代表该类的Class 对象，作为方法区这些数据的访问入口</li>
 </ul>
-<h2 id="Java-虚拟机栈"><a href="#Java-虚拟机栈" class="headerlink" title="Java 虚拟机栈"></a>Java 虚拟机栈</h2><p>Java虚拟机栈来描述Java方法的内存模型。每当有新线程创建时就会分配一个栈空间，线程结束后栈<br>空间被回收，栈与线程拥有相同的生命周期。</p>
-<h3 id="虚拟机栈异常"><a href="#虚拟机栈异常" class="headerlink" title="虚拟机栈异常"></a>虚拟机栈异常</h3><ul>
-<li><p>线程请求的栈深度大于虚拟机允许的深度抛出StackOverflowError。</p>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><p>保证加载进来的字节流符合虚拟机规范，不会造成安全错误</p>
+<ul>
+<li><p>对文件格式的验证，比如常量中是否有不被支持的常量？文件中是否有不规范的或者附加的其他信息？</p>
 </li>
-<li><p>如果JVM栈容量可以动态扩展，栈扩展无法申请足够内存抛出OutOfMemoryError </p>
-<h3 id="虚拟机栈特点"><a href="#虚拟机栈特点" class="headerlink" title="虚拟机栈特点"></a>虚拟机栈特点</h3></li>
-<li><p>Java 虚拟机栈是线程私有的，它的生命周期与线程相同（随线程而生，随线程而灭）；</p>
+<li><p>对元数据的验证，比如该类是否继承了被final修饰的类？类中的字段，方法是否与父类冲突？是否出现了不合理的重载？</p>
 </li>
-<li><p>如果线程请求的栈深度大于虚拟机所允许的深度，将抛出 StackOverflowError 异常；</p>
+<li><p>对字节码的验证，保证程序语义的合理性，比如要保证类型转换的合理性。</p>
 </li>
-<li><p>如果虚拟机栈可以动态扩展，如果扩展时无法申请到足够的内存，就会抛出 OutOfMemoryError 异常；</p>
+<li><p>对符号引用的验证，比如校验符号引用中通过全限定名是否能够找到对应的类？校验符号引用中的访问性（private，public等）是否可被当前类访问？</p>
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4></li>
+<li><p>为类变量（不是实例变量）分配内存，并且赋予初值。</p>
 </li>
-<li><p>Java 虚拟机栈描述的是 Java 方法执行的内存模型：每个方法执行的同时会创建一个栈帧。对于我们来说，主要关注的栈内存，就是虚拟机栈中局部变量表部分。</p>
-<h3 id="栈帧"><a href="#栈帧" class="headerlink" title="栈帧"></a>栈帧</h3></li>
-<li><p>在虚拟机栈中的元素用于支持虚拟机进行方法调用，每个方法在执行时都会创建一个栈帧存储方法的局部变量表、操作栈、动态链接和方法出口等信息。每个方法从调用到执行完成，就是栈帧从入栈到出栈的过程。</p>
+<li><p>初值并不是代码中写的初始化的值，而是Java虚拟机根据不同变量类型的默认初始值。</p>
 </li>
-<li><p>栈帧（Stack Frame）是用于支持虚拟机进行方法调用和方法执行的数据结构。它是虚拟机运行时数据区中的 java 虚拟机栈的栈元素</p>
-<h4 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h4><p>局部变量表用于存放方法参数和方法内部定义的局部变量。</p>
+<li><p>比如8种基本类型的初值，默认为0；引用类型的初值则为null；</p>
 </li>
-<li><p>局部变量表的容量以变量槽（Variable Slot）为最小单位；</p>
+<li><p>常量的初值即为代码中设置的值，final static num= 456， 那么该阶段num的初值就是456</p>
+<h4 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h4><p>将常量池内的符号引用替换为直接引用的过程；<br>在解析阶段，虚拟机会把所有的类名，方法名，字段名这些符号引用替换为具体的内存地址或偏移量，也就是直接引用。</p>
 </li>
-<li><p>在方法执行过程中，Java 虚拟机是使用局部变量表完成参数值到参数变量列表的传递过程；</p>
+<li><p>符号引用：一个字符串给出了一些能够唯一性识别一个方法，一个变量，一个类的相关信息。</p>
+</li>
+<li><p>直接引用：一个内存地址或者偏移量。比如类方法，类变量的直接引用是指向方法区的指针；</p>
+</li>
+<li><p>而实例方法，实例变量的直接引用则是从实例的头指针开始算起到这个实例变量位置的偏移量</p>
 </li>
 </ul>
-<h4 id="操作栈"><a href="#操作栈" class="headerlink" title="操作栈"></a>操作栈</h4><ul>
-<li>操作数栈是一个后入先出（Last In First Out）栈，方法的执行操作在操作数栈中完成，每一个字节码指令往操作数栈进行写入和提取的过程，就是入栈和出栈的过程；</li>
-<li>操作数栈的每一个元素可以是任意的 Java 数据类型，32 位数据类型所占的栈容量为 1，64 位数据类型所占的栈容量为 2；</li>
-<li>当一个方法刚刚执行的时候，这个方法的操作数栈是空的，在方法执行的过程中，通过一些字节码指令从局部变量表或者对象实例字段中复制常量或者变量值到操作数栈中。<h4 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h4></li>
-<li>每个栈帧都包含一个指向运行时常量池（JVM 运行时数据区域）中该栈帧所属方法属性的引用；</li>
-<li>持有这个引用是为了支持方法调用过程中的动态链接。<h4 id="方法出口信息"><a href="#方法出口信息" class="headerlink" title="方法出口信息"></a>方法出口信息</h4>方法出口信息代表的是方法执行结束，方法执行结束有两种方式</li>
-<li>一种方式是执行引擎遇到任意一个方法返回的字节码指令（例如：return），这时候可能会有返回值传递给上层的方法调用者，这种退出方法的方式称为正常完成出口</li>
-<li>另外一种退出方式是，在方法执行过程中遇到了异常，并且这个异常没有在方法体内得到处理，无论是 Java 虚拟机内部产生的异常，还是代码中使用 throw 字节码指令产生的异常，只要在本方法的异常处理器表中没有搜索到匹配的异常处理器，就会导致方法退出，这种退出方法的方式称为异常完成出口</li>
-<li>不管哪种方式，栈帧都会被弹出</li>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><ul>
+<li>对类变量初始化，是执行类构造器的过程。</li>
+<li>只对static修饰的变量或语句进行初始化。</li>
+<li>如果初始化一个类的时候，其父类尚未初始化，则优先初始化其父类。</li>
+<li>如果同时包含多个静态变量和静态代码块，则按照自上而下的顺序依次执行。</li>
+<li>虚拟机会保证一个类的<clinit>()方法在多线程环境中被正确加锁和同步。</li>
 </ul>
-<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><ul>
-<li>本地方法栈与虚拟机栈作用相似；</li>
-<li>区别虚拟机栈为虚拟机执行Java方法服务，本地方法栈为虚本地方法服务；</li>
-<li>调用本地方法时虚拟机栈保持不变,动态链接并直接调用指定本地方法；</li>
-<li>本地方法被执行的时候，在本地方法栈也会创建一个栈帧， 用于存放该本地方法的局部变量表、操作数<br>栈、动态链接、出口信息。</li>
-<li>本地方法栈在栈深度异常和栈扩展失败时分别抛出StackOverflowError和OutOfMemoryError。</li>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><p><img src="https://img-blog.csdnimg.cn/c111bacbdc15478db391e81c6be73d5f.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="启动类加载器（bootstrap-class-loader）"><a href="#启动类加载器（bootstrap-class-loader）" class="headerlink" title="启动类加载器（bootstrap class loader）"></a>启动类加载器（bootstrap class loader）</h4><ul>
+<li>用来加载 Java 的核心库(JAVA_HOME/jre/lib/rt.jar,sun.boot.class.path路径下的内容)，是用原生代码C++来实现的，并不继承自 java.lang.ClassLoader。</li>
+<li>加载扩展类和应用程序类加载器。并指定他们的父类加载器。</li>
 </ul>
+<h4 id="扩展类加载器（extensions-class-loader）"><a href="#扩展类加载器（extensions-class-loader）" class="headerlink" title="扩展类加载器（extensions class loader）"></a>扩展类加载器（extensions class loader）</h4><ul>
+<li>用来加载 Java 的扩展库(JAVA_HOME/jre/ext/*.jar，或java.ext.dirs路径下的内容) 。Java 虚拟机的实现会提供一个扩展库目录。该类加载器在此目录里面查找并加载 Java类。</li>
+<li>由sun.misc.Launcher$ExtClassLoader实现。</li>
+</ul>
+<h4 id="应用程序类加载器（application-class-loader）"><a href="#应用程序类加载器（application-class-loader）" class="headerlink" title="应用程序类加载器（application class loader）"></a>应用程序类加载器（application class loader）</h4><ul>
+<li>它根据 Java 应用的类路径（classpath，java.class.path 路径下的内容）来加载 Java 类</li>
+<li>一般来说，Java 应用的类都是由它来完成加载的</li>
+<li>由sun.misc.Launcher$AppClassLoader实现</li>
+</ul>
+<h4 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h4><ul>
+<li><p>开发人员可以通过继承 java.lang.ClassLoader类的方式实现自己的类加载器，满足一些特殊的需求。</p>
+<h2 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h2><p>其实这里的双亲很容易让人误解，大家都觉得双亲表示父母的意思，其实这里的双亲是父类的意思，<br>每一个类都有它自己的类加载器。系统中的ClassLoder 在协同工作的时候会默认使用双亲委派<br>模型。</p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4></li>
+<li><p>向上委托：如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器。如果父类加载器可以完成类加载任务，就成功返回；</p>
+</li>
+<li><p>向下委派：倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，一直向下委派加载，这就是双亲委派模式。如果都不能加载，则会报错。<br><img src="https://img-blog.csdnimg.cn/5f3e0d23e0d44ed6aede34fd3c482d2a.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>在类加载的时候，系统会首先判断当前类是否被加载过。</p>
+</li>
+<li><p>已经被加载的类会直接返回，否则才会尝试加载。</p>
+</li>
+<li><p>加载的时候，首先会把该请求委派该父类加载器来处理， 因此所有的请求最终都应该传送到顶层的启动类加载器BootstrapClassLoader 中。</p>
+</li>
+<li><p>当父类加载器无法处理时，才由自己来处理。当父类加载器为null时，会使用启动类加载器BootstrapClassLoader 作为父类加载器。</p>
+</li>
+</ul>
+<h2 id="为什么要打破双亲委派"><a href="#为什么要打破双亲委派" class="headerlink" title="为什么要打破双亲委派"></a>为什么要打破双亲委派</h2><p>Tomcat作为一个Web容器，会包含各种Web应用程序，为了使各个应用程序不互相干扰，至少需要达到以下要求：</p>
+<ul>
+<li>部署在同一个Web容器上的两个Web应用程序所使用的Java类库可以实现相互隔离</li>
+<li>部署在同一个Web容器上的两个Web应用程序所使用的Java类库可以相互共享</li>
+<li>Web容器需要保证自身的安全不受Web应用程序所影响</li>
+</ul>
+<p>tomcat 为了实现隔离性，没有遵守双亲委派模型，所以在Tomcat中，类的加载不能使用简单的ClassLoader来加载，而是需要自定义分级的ClassLoader。</p>
+<h4 id="Tomcat类加载过程"><a href="#Tomcat类加载过程" class="headerlink" title="Tomcat类加载过程"></a>Tomcat类加载过程</h4><ol>
+<li>先在本地缓存中查看是否已经加载过该类，如果已经加载过就返回</li>
+<li>否则就让系统类加载器(AppClassLoader)尝试加载该类</li>
+<li>这一步主要是为了防止一些基础类会被web中的类覆盖，如果加载到即返回</li>
+<li>前两步均没加载到目标类，那么web应用的类加载器将自行加载，如果加载到则返回，否则继续下一步。</li>
+<li>最后还是加载不到的话，则委托父类加载器去加载。</li>
+</ol>
 
                 
             </div>
@@ -534,7 +561,7 @@ Ja">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/posts/23582.html">https://stream1080.github.io/posts/23582.html</a>
+                    <a href="https://stream1080.github.io/posts/48192.html">https://stream1080.github.io/posts/48192.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -572,8 +599,12 @@ Ja">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/">
-                                    <span class="chip bg-color">内存区域</span>
+                                <a href="/tags/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE/">
+                                    <span class="chip bg-color">双亲委派</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%B1%BB%E5%8A%A0%E8%BD%BD/">
+                                    <span class="chip bg-color">类加载</span>
                                 </a>
                             
                         </div>
@@ -623,13 +654,13 @@ Ja">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/40122.html">
+                <a href="/posts/23582.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="JVM运行时数据区(二)">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="JVM运行时数据区(一)">
                         
-                        <span class="card-title">JVM运行时数据区(二)</span>
+                        <span class="card-title">JVM运行时数据区(一)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -640,7 +671,7 @@ Ja">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-14
                         </span>
                         <span class="publish-author">
                             
@@ -669,7 +700,7 @@ Ja">
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
                 <a href="/posts/48192.html">
@@ -703,6 +734,7 @@ Ja">
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
