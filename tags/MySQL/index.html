@@ -301,7 +301,8 @@
 
 <script>
     // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+    // var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+    var bannerUrl = "/medias/banner/" + 7 + '.jpg';
     $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
 </script>
 
@@ -322,10 +323,19 @@
             <div class="tag-chips">
                 
                 
+                <a href="/tags/%E9%98%9F%E5%88%97/" title="队列: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="队列" style="background-color: #F9EBEA;">队列
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
                 <a href="/tags/HashMap/" title="HashMap: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="HashMap" style="background-color: #F9EBEA;">HashMap
+                            data-tagname="HashMap" style="background-color: #F5EEF8;">HashMap
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -334,16 +344,7 @@
                 <a href="/tags/%E6%89%A9%E5%AE%B9/" title="扩容: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="扩容" style="background-color: #F5EEF8;">扩容
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/%E9%98%9F%E5%88%97/" title="队列: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="队列" style="background-color: #D5F5E3;">队列
+                            data-tagname="扩容" style="background-color: #D5F5E3;">扩容
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -367,20 +368,20 @@
                 </a>
                 
                 
-                <a href="/tags/%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" title="内存区域: 2">
+                <a href="/tags/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" title="垃圾收集器: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="内存区域" style="background-color: #F8F9F9;">内存区域
-                        <span class="tag-length">2</span>
+                            data-tagname="垃圾收集器" style="background-color: #F8F9F9;">垃圾收集器
+                        <span class="tag-length">1</span>
                     </span>
                 </a>
                 
                 
-                <a href="/tags/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" title="垃圾收集器: 1">
+                <a href="/tags/%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" title="内存区域: 2">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="垃圾收集器" style="background-color: #82E0AA;">垃圾收集器
-                        <span class="tag-length">1</span>
+                            data-tagname="内存区域" style="background-color: #82E0AA;">内存区域
+                        <span class="tag-length">2</span>
                     </span>
                 </a>
                 
@@ -421,10 +422,28 @@
                 </a>
                 
                 
+                <a href="/tags/ACID/" title="ACID: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="ACID" style="background-color: #F9E79F;">ACID
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/MySQL/" title="MySQL: 8">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-active "
+                            data-tagname="MySQL" style="background-color: #F9EBEA;">MySQL
+                        <span class="tag-length">8</span>
+                    </span>
+                </a>
+                
+                
                 <a href="/tags/%E5%B9%BB%E8%AF%BB/" title="幻读: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="幻读" style="background-color: #F9E79F;">幻读
+                            data-tagname="幻读" style="background-color: #E8F8F5;">幻读
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -444,24 +463,6 @@
                              chip-default "
                             data-tagname="next-key" style="background-color: #F9EBEA;">next-key
                         <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/ACID/" title="ACID: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="ACID" style="background-color: #D5F5E3;">ACID
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/MySQL/" title="MySQL: 8">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-active "
-                            data-tagname="MySQL" style="background-color: #F9EBEA;">MySQL
-                        <span class="tag-length">8</span>
                     </span>
                 </a>
                 
@@ -673,24 +674,6 @@
                 </a>
                 
                 
-                <a href="/tags/ThreadLocal/" title="ThreadLocal: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="ThreadLocal" style="background-color: #F9E79F;">ThreadLocal
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F/" title="共享变量: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="共享变量" style="background-color: #85C1E9;">共享变量
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
                 <a href="/tags/TCP-IP/" title="TCP/IP: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
@@ -704,6 +687,24 @@
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
                             data-tagname="粘包拆包" style="background-color: #85C1E9;">粘包拆包
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/ThreadLocal/" title="ThreadLocal: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="ThreadLocal" style="background-color: #F9E79F;">ThreadLocal
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F/" title="共享变量: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="共享变量" style="background-color: #85C1E9;">共享变量
                         <span class="tag-length">1</span>
                     </span>
                 </a>
