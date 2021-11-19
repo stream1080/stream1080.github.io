@@ -1,6 +1,6 @@
 ---
 title: RabbitMQ 如何保证消息不会被重复消费
-cover: true
+cover: false
 top: false
 categories:
   - 消息队列

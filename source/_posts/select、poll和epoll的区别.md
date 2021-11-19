@@ -1,6 +1,6 @@
 ---
 title: select、poll和epoll的区别
-cover: true
+cover: false
 categories:
   - 操作系统
 tags:

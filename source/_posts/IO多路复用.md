@@ -1,6 +1,6 @@
 ---
 title: IO多路复用
-cover: true
+cover: false
 categories:
   - 操作系统
 tags:
