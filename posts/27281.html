@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="一致性哈希算法, 一江溪水">
-    <meta name="description" content="一致性哈希算法 | 一江溪水">
+    <meta name="description" content="什么是一致性哈希算法一致性哈希算法在1997年由麻省理工学院提出的一种分布式哈希（DHT）实现算法，设计目标是为了解决因特网中的热点(Hot spot)问题，初衷和CARP十分类似。
+一致性哈希修正了CARP使用的简 单哈希算法带来的问题，">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +385,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%93%88%E5%B8%8C/">
+                                <span class="chip bg-color">哈希</span>
+                            </a>
+                        
+                            <a href="/tags/%E9%9B%86%E7%BE%A4/">
+                                <span class="chip bg-color">集群</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
+                                分布式微服务
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -407,14 +425,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    3 Min
                 </div>
                 
 
@@ -432,7 +450,35 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="什么是一致性哈希算法"><a href="#什么是一致性哈希算法" class="headerlink" title="什么是一致性哈希算法"></a>什么是一致性哈希算法</h2><p>一致性哈希算法在1997年由麻省理工学院提出的一种分布式哈希（DHT）实现算法，设计目标是为了解决因特网中的热点(Hot spot)问题，初衷和CARP十分类似。</p>
+<p>一致性哈希修正了CARP使用的简 单哈希算法带来的问题，使得分布式哈希（DHT）可以在P2P环境中真正得到应用。</p>
+<p>一致性hash算法提出了在动态变化的Cache环境中，判定哈希算法好坏的四个定义：</p>
+<ul>
+<li>平衡性(Balance)</li>
+<li>单调性(Monotonicity)</li>
+<li>分散性(Spread)</li>
+<li>负载(Load)</li>
+</ul>
+<h2 id="实现机制"><a href="#实现机制" class="headerlink" title="实现机制"></a>实现机制</h2><p>一致哈希是一种特殊的哈希算法。在使用一致哈希算法后，哈希表槽位数（大小）的改变平均只需要对 K/n 个关键字重新映射，其中K是关键字的数量， n是槽位数量。</p>
+<p>然而在传统的哈希表中，添加或删除一个槽位的几乎需要对所有关键字进行重新映射。</p>
+<p>一致性哈希是将整个哈希值空间组织成一个虚拟的圆环，如假设哈希函数H的值空间为0-2^32-1（哈希值是32位无符号整形），整个哈希空间环如下：<br><img src="https://img-blog.csdnimg.cn/7958afb12f8d4876987917da477e3ae7.png" alt="在这里插入图片描述"><br>整个圆形按顺时针方向组织，0和2^32-1在零点中方向重合。把服务器按照IP或主机名作为关键字进行哈希，这样就能确定其在哈希环的位置。<br><img src="https://img-blog.csdnimg.cn/aad9c57c736645fc837bc5b63e072678.png" alt="在这里插入图片描述"><br>我们就可以使用哈希函数H计算值为key的数据在哈希环的具体位置h，根据h确定在环中的具体位置，从此位置沿顺时针滚动，遇到的第一台服务器就是其定位到的服务器。</p>
+<p>例如我们有1、2、3、4四个数据对象，经过哈希计算后，落到环空间上的位置，再顺时针滚动即可定位到服务器位置</p>
+<p><img src="https://img-blog.csdnimg.cn/755c37355a284d0ea67890c043ae6270.png" alt="在这里插入图片描述"></p>
+<h2 id="容错和扩展"><a href="#容错和扩展" class="headerlink" title="容错和扩展"></a>容错和扩展</h2><p>一致性哈希算法对于节点的增减都只需重定位换空间的一小部分即可，具有较好的容错性和可扩展性</p>
+<h3 id="容错性"><a href="#容错性" class="headerlink" title="容错性"></a>容错性</h3><p>如果某个节点宕机了，比如A节点宕机了，那么，数据1对应的节点保存到B中<br>所以，某个节点宕机后，干扰的只有前面的数据（原数据被保存到顺时针的下一个服务器），而不会干扰到其他的数据。<br><img src="https://img-blog.csdnimg.cn/a35a4d79bfa04671802f10ee14a679d4.png" alt="在这里插入图片描述"></p>
+<h3 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h3><p>假如增加一台服务器D，原本数据2是保存到B中，但由于增加了D节点，数据2被保存到D中。干扰的也只有B而已，其他数据不会受到影响。</p>
+<p><img src="https://img-blog.csdnimg.cn/cc978523b30a4c9d86ffa2f498264b2a.png" alt="在这里插入图片描述"></p>
+<h2 id="虚拟节点"><a href="#虚拟节点" class="headerlink" title="虚拟节点"></a>虚拟节点</h2><p>上面讲述的是节点较多和节点分布较为均衡的情况，如果节点较少就会出现节点分布不均衡造成数据倾斜问题。<br><img src="https://img-blog.csdnimg.cn/f34538edd4a940f4bd496ff7521c5201.png" alt="在这里插入图片描述"><br>这样大多数数据都会落到节点A上面，造成倾斜问题</p>
+<p>为了解决这种数据存储不平衡的问题，一致性哈希算法引入了虚拟节点机制，即对每个节点计算多个哈希值，每个计算结果位置都放置在对应节点中，这些节点称为虚拟节点。</p>
+<p>具体做法可以在服务器IP或主机名的后面增加编号来实现，例如上面的情况，可以为每个服务节点增加4个虚拟节点，于是可以分为 </p>
+<ul>
+<li>C#D，映射到D节点的虚拟节点</li>
+<li>B#A，映射到A节点的虚拟节点</li>
+<li>E#D，映射到D节点的虚拟节点</li>
+<li>F#A，映射到A节点的虚拟节点</li>
+</ul>
+<p>这样就可以保证各个节点的数据比较均匀了，例如，数据7保存到虚拟节点C#D，实际上数据保存到D中。这样，就能解决服务节点少时数据不平均的问题。<br><img src="https://img-blog.csdnimg.cn/fb707441265c4120adeae19768b0d878.png" alt="在这里插入图片描述"><br>在实际应用中，通常将虚拟节点数设置为32甚至更大，因此即使很少的服务节点也能做到相对均匀的数据分布。</p>
+
                 
             </div>
             <hr/>
@@ -495,7 +541,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/%E5%93%88%E5%B8%8C/">
+                                    <span class="chip bg-color">哈希</span>
+                                </a>
+                            
+                                <a href="/tags/%E9%9B%86%E7%BE%A4/">
+                                    <span class="chip bg-color">集群</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -565,13 +619,29 @@
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
+                                    分布式微服务
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%93%88%E5%B8%8C/">
+                        <span class="chip bg-color">哈希</span>
+                    </a>
+                    
+                    <a href="/tags/%E9%9B%86%E7%BE%A4/">
+                        <span class="chip bg-color">集群</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
