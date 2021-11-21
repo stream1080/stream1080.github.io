@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring Boot是如何实现自动装配的, 一江溪水">
-    <meta name="description" content="什么是自动装配？自动装配就是通过注解或者一些简单的配置就能在 Spring Boot 的帮助下实现某块功能。
-Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启动时会扫描外部引用 jar 包中的META-I">
+    <meta name="keywords" content="Spring两大特性:IOC和AOP, 一江溪水">
+    <meta name="description" content="IOC（Inverse of Control）控制反转说起控制反转，首先要了解一下软件设计的一个重要思想：依赖倒置
+依赖倒置原则假如现在要造一台手机，先设计处理器，然后根据处理器的规格设计主板，接着根据主板设计机身，最后根据机身设计好整个手">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spring Boot是如何实现自动装配的 | 一江溪水</title>
+    <title>Spring两大特性:IOC和AOP | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -266,12 +266,12 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring Boot是如何实现自动装配的</h1>
+                    <h1 class="description center-align post-title">Spring两大特性:IOC和AOP</h1>
                 </div>
             </div>
         </div>
@@ -387,12 +387,16 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Spring-Boot/">
-                                <span class="chip bg-color">Spring Boot</span>
+                            <a href="/tags/Spring/">
+                                <span class="chip bg-color">Spring</span>
                             </a>
                         
-                            <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
-                                <span class="chip bg-color">自动装配</span>
+                            <a href="/tags/IOC/">
+                                <span class="chip bg-color">IOC</span>
+                            </a>
+                        
+                            <a href="/tags/AOP/">
+                                <span class="chip bg-color">AOP</span>
                             </a>
                         
                     </div>
@@ -416,7 +420,7 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-21
+                    2021-07-20
                 </div>
                 
 
@@ -425,14 +429,14 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.1k
+                    1.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    5 Min
                 </div>
                 
 
@@ -450,106 +454,48 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="什么是自动装配？"><a href="#什么是自动装配？" class="headerlink" title="什么是自动装配？"></a>什么是自动装配？</h2><p>自动装配就是通过注解或者一些简单的配置就能在 Spring Boot 的帮助下实现某块功能。</p>
-<p>Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启动时会扫描外部引用 jar 包中的META-INF/spring.factories文件，将文件中配置的类型信息加载到 Spring 容器，并执行类中定义的各种操作。</p>
-<p>对于外部 jar 来说，只需要按照 Spring Boot 定义的标准，就能将自己的功能装置进 Spring Boot。</p>
-<p>在Spring Boot 中，如果我们需要引入第三方依赖，我们直接引入一个 starter 即可。比如想要在项目中使用 redis 的话，直接在项目中引入对应的 starter 即可。</p>
-<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>引入 starter 之后，通过少量注解和一些简单的配置就能使用第三方组件提供的功能了。</p>
-<h2 id="如何实现自动装配"><a href="#如何实现自动装配" class="headerlink" title="如何实现自动装配"></a>如何实现自动装配</h2><p> SpringBoot 的核心注解是 SpringBootApplication。<br>@SpringBootApplication注解包含</p>
-<ul>
-<li>@Configuration：允许在上下文中注册额外的 bean 或导入其他配置类</li>
-<li>@EnableAutoConfiguration：启用 SpringBoot 的自动配置机制</li>
-<li>@ComponentScan：扫描被@Component (@Service,@Controller)注解的 bean，注解默认会扫描启动类所在的包下所有的类 ，可以自定义不扫描某些 bean</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>TYPE<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Documented</span>
-<span class="token annotation punctuation">@Inherited</span>
-<span class="token annotation punctuation">@SpringBootConfiguration</span>
-<span class="token annotation punctuation">@ComponentScan</span>
-<span class="token annotation punctuation">@EnableAutoConfiguration</span>
-<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">SpringBootApplication</span> <span class="token punctuation">&#123;</span>
-
-<span class="token punctuation">&#125;</span>
-
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>TYPE<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Documented</span>
-<span class="token annotation punctuation">@Configuration</span> 
-<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">SpringBootConfiguration</span> <span class="token punctuation">&#123;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<p>从源码中可以知道，最关键的注解是</p>
-<ul>
-<li><p>@Import(EnableAutoConfigurationImportSelector.class)，借助EnableAutoConfigurationImportSelector，@EnableAutoConfiguration可以帮助Spring Boot应用将所有符合条件的@Configuration配置都加载到当前SpringBoot创建并使用的IoC容器。</p>
+                <h1 id="IOC（Inverse-of-Control）控制反转"><a href="#IOC（Inverse-of-Control）控制反转" class="headerlink" title="IOC（Inverse of Control）控制反转"></a>IOC（Inverse of Control）控制反转</h1><p>说起控制反转，首先要了解一下软件设计的一个重要思想：依赖倒置</p>
+<h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>假如现在要造一台手机，先设计处理器，然后根据处理器的规格设计主板，接着根据主板设计机身，最后根据机身设计好整个手机。<br>“依赖”关系：手机依赖机身，机身依赖主板，主板依赖处理器。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210720150809684.png" alt="在这里插入图片描述"><br>这种设计方案下，一旦有某个零部件需要调整规格，<br>比如处理器需要升级，那么主板是按照处理器设计的，就要修改主板规格，修改主板规格后，机身是按照主板设计的，所以机身也需要修改，那么整个设计方案都需要改动，非常麻烦；<br>如果将依赖倒置，就会是这样的：<br><img src="https://img-blog.csdnimg.cn/20210720151324299.png" alt="在这里插入图片描述"><br>我们先设计手机的轮廓，然后根据手机的轮廓来设计机身，根据机身来设计主板，最后根据主板来设计处理器。<br>依赖关系就反转过来了：处理器依赖主板， 主板依赖机身， 机身依赖手机。</p>
+<h2 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h2><p>上层决定需要做什么，下层去实现这样的需求，但是上层并不用管下层是怎么实现的。这样就不会出现前面的“牵一发动全身”的情况。依赖注入（Dependency Injection），就是来实现控制反转的。所谓依赖注入，就是把底层类作为参数传入上层类，实现上层类对下层类的“控制”。</p>
+<p>把有依赖关系的类放到容器中，解析出这些类的实例，就是依赖注入。目的是实现类的解耦。</p>
+<h2 id="IOC容器"><a href="#IOC容器" class="headerlink" title="IOC容器"></a>IOC容器</h2><ul>
+<li><p>IOC容器可以自动对你的类进行初始化，你只需要维护一个Configuration，而不用每次初始化一辆车都要亲手去写那一大段初始化的代码。</p>
 </li>
-<li><p>同时借助于Spring框架原有的一个工具类：SpringFactoriesLoader，@EnableAutoConfiguration就可以实现智能的自动配置。</p>
+<li><p>我们在创建实例的时候不需要了解其中的细节。</p>
 </li>
-<li><p>SpringFactoriesLoader中加载配置,SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要功能就是从指定的配置文件META-INF/spring.factories加载配置,</p>
+<li><p>IoC容器实际上就是个Map (key, value) ， Map中存放的是各种对象。</p>
 </li>
-<li><p>即根据@EnableAutoConfiguration的完整类名org.springframework.boot.autoconfigure.EnableAutoConfiguration作为查找的Key,获取对应的一组@Configuration类</p>
+<li><p>将对象之间的相互依赖关系交给IoC 容器来管理，并由IoC 容器完成对象的注入。这样可以很大程度上简化应用的开发，把应用从复杂的依赖关系中解放出来。</p>
+</li>
+<li><p>IoC 容器就像是一个工厂一样，当我们需要创建一个对象的时候，只需要配置好配置文件/注解即可，完全不用考虑对象是如何被创建出来的。</p>
+</li>
+<li><p>在实际的开发过程中一个Service类可能有几百甚至上千个类作为它的底层，假如我们需要实例化这个Service,你可能要每次都要搞清这个Service所有底层类的构造函数，这可能会把人逼疯。如果利用IoC的话，你只需要配置好，然后在需要的地方引用就行了，这大大增加了项目的可维护性且降低了开发难度。</p>
+</li>
+<li><p>我们需要的控制反转（IoC），就是上层控制下层，而不是下层控制着上层</p>
+</li>
+<li><p>IoC是一种设计思想， 就是将原本在程序中手动创建对象的控制权，交由Spring框架中的IOC容器来管理 </p>
 </li>
 </ul>
-<p>@EnableAutoConfiguration作用就是从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。</p>
-<p>这些功能配置类要生效的话，会去classpath中找是否有该类的依赖类（也就是pom.xml必须有对应功能的jar包才行）并且配置类里面注入了默认属性值类，功能类可以引用并赋默认值。</p>
-<p>生成功能类的原则是自定义优先，没有自定义时才会使用自动装配类。</p>
-<p>生效需要的条件：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021072015195877.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>IOC的思想最核心的地方在于，资源不由使用资源的双方管理，而由不使用资源的第三方管理，这可以带来很多好处。</p>
 <ul>
-<li>spring.factories里面有这个类的配置类（一个配置类可以创建多个围绕该功能的依赖类）</li>
-<li>pom.xml里面需要有对应的jar包</li>
+<li>资源集中管理，实现资源的可配置和易管理</li>
+<li>降低了使用资源双方耦合度<h2 id="IOC初始化过程"><a href="#IOC初始化过程" class="headerlink" title="IOC初始化过程"></a>IOC初始化过程</h2><img src="https://img-blog.csdnimg.cn/20210720153933500.png" alt="在这里插入图片描述"></li>
 </ul>
-<h2 id="案例-Redis"><a href="#案例-Redis" class="headerlink" title="案例 - Redis"></a>案例 - Redis</h2><p>1、从spring-boot-autoconfigure.jar/META-INF/spring.factories中获取redis的相关配置类全限定名（有120多个的配置类）RedisAutoConfiguration，一般一个功能配置类围绕该功能，负责管理创建多个相关的功能类，比如RedisAutoConfiguration负责：JedisConnectionFactory、RedisTemplate、StringRedisTemplate这3个功能类的创建</p>
-<p><img src="https://img-blog.csdnimg.cn/38b0ee1058104232a1aaa885ec5bd9f3.png" alt="在这里插入图片描述"></p>
-<p>2、RedisAutoConfiguration配置类生效的一个条件是在classpath路径下有RedisOperations类存在，因此springboot的自动装配机制会会去classpath下去查找对应的class文件。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
-<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">RedisOperations</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">RedisProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Import</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">LettuceConnectionConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">JedisConnectionConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisAutoConfiguration</span> <span class="token punctuation">&#123;</span>
-
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>3、pom.xml中有对应的jar包,就能匹配到对应依赖class，</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token generics"><span class="token punctuation">&lt;</span>dependency<span class="token punctuation">></span></span>
-	<span class="token generics"><span class="token punctuation">&lt;</span>groupId<span class="token punctuation">></span></span>org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
-	<span class="token generics"><span class="token punctuation">&lt;</span>artifactId<span class="token punctuation">></span></span>spring<span class="token operator">-</span>boot<span class="token operator">-</span>starter<span class="token operator">-</span>data<span class="token operator">-</span>redis<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
-<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>4、匹配成功，这个功能配置类才会生效，同时会注入默认的属性配置类@EnableConfigurationProperties(RedisProperties.class)<br><img src="https://img-blog.csdnimg.cn/4c06c2d7589f4efea3bb2d4e6fb3e2d0.png" alt="在这里插入图片描述"></p>
-<p>5、Redis功能配置里面会根据条件生成最终的<br>JedisConnectionFactory、RedisTemplate,并提供了默认的配置形式<br>@ConditionalOnMissingBean(name = “redisTemplate”)</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
-<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">RedisOperations</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">RedisProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Import</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">LettuceConnectionConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">JedisConnectionConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisAutoConfiguration</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token class-name">RedisAutoConfiguration</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token punctuation">&#125;</span>
-
-    <span class="token annotation punctuation">@Bean</span>
-    <span class="token annotation punctuation">@ConditionalOnMissingBean</span><span class="token punctuation">(</span>
-        name <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">"redisTemplate"</span><span class="token punctuation">&#125;</span>
-    <span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">redisTemplate</span><span class="token punctuation">(</span><span class="token class-name">RedisConnectionFactory</span> redisConnectionFactory<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">UnknownHostException</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> template <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RedisTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        template<span class="token punctuation">.</span><span class="token function">setConnectionFactory</span><span class="token punctuation">(</span>redisConnectionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> template<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-
-    <span class="token annotation punctuation">@Bean</span>
-    <span class="token annotation punctuation">@ConditionalOnMissingBean</span>
-    <span class="token keyword">public</span> <span class="token class-name">StringRedisTemplate</span> <span class="token function">stringRedisTemplate</span><span class="token punctuation">(</span><span class="token class-name">RedisConnectionFactory</span> redisConnectionFactory<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">UnknownHostException</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">StringRedisTemplate</span> template <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringRedisTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        template<span class="token punctuation">.</span><span class="token function">setConnectionFactory</span><span class="token punctuation">(</span>redisConnectionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> template<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>6、最终创建好的默认装配类，会通过功能配置类里面的 @Bean注解，注入到IOC当中</p>
-<p>7、用户使用，当用户在配置文件中自定义时候就会覆盖默认的配置@ConditionalOnMissingBean(name = “redisTemplate”)</p>
+<h1 id="AOP-Aspect-Or-iented-Programming-面向切面编程"><a href="#AOP-Aspect-Or-iented-Programming-面向切面编程" class="headerlink" title="AOP(Aspect-Or iented Programming) 面向切面编程"></a>AOP(Aspect-Or iented Programming) 面向切面编程</h1><p>AOP能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任(例如事务处理、日志管理、权限控制等)封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。</p>
+<p>Spring AOP就是基于动态代理的，如果要代理的对象，实现了某个接口，那么Spring AOP会使用JDK Proxy,去创建代理对象，而对于没有实现接口的对象，就无法使用JDK Proxy 去进行代理了，这时候Spring AOP会 使用Cglib，这时候Spring AOP会使用Cglib 生成一个被代理 对象的子类来作为代理，</p>
+<p>使用AOP之后我们可以把一些通用功能抽象出来，在需要用到的地方直接使用即可，这样大大简化了代码量。我们需要增加新功能时也方便，这样也提高了系统扩展性。日志功能、事务管理等等场景都用到了AOP</p>
+<h1 id="Spring中Bean的作用域"><a href="#Spring中Bean的作用域" class="headerlink" title="Spring中Bean的作用域"></a>Spring中Bean的作用域</h1><ul>
+<li>singleton :唯一bean实例，Spring 中的bean 默认都是单例的</li>
+<li>prototype :每次请求都会创建个新的 bean 实例</li>
+<li>request :每次HTTP请求都会产生一个 新的bean,该bean仅在 当前HTTP request内有效</li>
+<li>session :每一次HTTP请求都会产生一个新的bean, 该bean仅在当前HTTP session内有效</li>
+<li>global -session:全 局session作用域，仅仅在基于portlet的web应用中才有意义，Spring5已经没有了</li>
+<li>Portlet是 能够生成语义代码(例如: HTML) 片段的小型Java Web插件。它们基于</li>
+<li>portlet容器，可以像servlet- 样处理HTTP请求。但是，与servlet 不同，每个portlet都有<br>不同的会话<h1 id="Spring中Bean的线程安全"><a href="#Spring中Bean的线程安全" class="headerlink" title="Spring中Bean的线程安全"></a>Spring中Bean的线程安全</h1>单例bean存在线程问题，主要是因为当多个线程操作同一个对象的时候，对这个对象的非静态成员变量的写操作会存在线程<h2 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h2></li>
+<li>在Bean对象中尽量避免定义可变的成员变量</li>
+<li>在类中定义一个ThreadLocal成员变量，将需要的可变成员变量保存在ThreadLocal中</li>
+</ul>
 
                 
             </div>
@@ -576,7 +522,7 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/posts/1513.html">https://stream1080.github.io/posts/1513.html</a>
+                    <a href="https://stream1080.github.io/posts/9268.html">https://stream1080.github.io/posts/9268.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,12 +560,16 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Spring-Boot/">
-                                    <span class="chip bg-color">Spring Boot</span>
+                                <a href="/tags/Spring/">
+                                    <span class="chip bg-color">Spring</span>
                                 </a>
                             
-                                <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
-                                    <span class="chip bg-color">自动装配</span>
+                                <a href="/tags/IOC/">
+                                    <span class="chip bg-color">IOC</span>
+                                </a>
+                            
+                                <a href="/tags/AOP/">
+                                    <span class="chip bg-color">AOP</span>
                                 </a>
                             
                         </div>
@@ -669,13 +619,13 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/60692.html">
+                <a href="/posts/23133.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java集合之HashMap(三)">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="消息队列基础">
                         
-                        <span class="card-title">Java集合之HashMap(三)</span>
+                        <span class="card-title">消息队列基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -686,15 +636,27 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-27
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
+                                    消息队列
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/RabbitMQ/">
+                        <span class="chip bg-color">RabbitMQ</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -703,16 +665,16 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
+                Current&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/posts/27281.html">
+                <a href="/posts/9268.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="一致性哈希算法">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Spring两大特性:IOC和AOP">
                         
-                        <span class="card-title">一致性哈希算法</span>
+                        <span class="card-title">Spring两大特性:IOC和AOP</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -723,29 +685,34 @@ Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-20
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
-                                    分布式微服务
+                            <a href="/categories/%E6%A1%86%E6%9E%B6/" class="post-category">
+                                    框架
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%93%88%E5%B8%8C/">
-                        <span class="chip bg-color">哈希</span>
+                    <a href="/tags/Spring/">
+                        <span class="chip bg-color">Spring</span>
                     </a>
                     
-                    <a href="/tags/%E9%9B%86%E7%BE%A4/">
-                        <span class="chip bg-color">集群</span>
+                    <a href="/tags/IOC/">
+                        <span class="chip bg-color">IOC</span>
+                    </a>
+                    
+                    <a href="/tags/AOP/">
+                        <span class="chip bg-color">AOP</span>
                     </a>
                     
                 </div>
