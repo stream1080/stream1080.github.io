@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="一致性哈希算法, 一江溪水">
-    <meta name="description" content="什么是一致性哈希算法一致性哈希算法在1997年由麻省理工学院提出的一种分布式哈希（DHT）实现算法，设计目标是为了解决因特网中的热点(Hot spot)问题，初衷和CARP十分类似。
-一致性哈希修正了CARP使用的简 单哈希算法带来的问题，">
+    <meta name="keywords" content="Spring Boot是如何实现自动装配的, 一江溪水">
+    <meta name="description" content="什么是自动装配？自动装配就是通过注解或者一些简单的配置就能在 Spring Boot 的帮助下实现某块功能。
+Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启动时会扫描外部引用 jar 包中的META-I">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>一致性哈希算法 | 一江溪水</title>
+    <title>Spring Boot是如何实现自动装配的 | 一江溪水</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -266,12 +266,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">一致性哈希算法</h1>
+                    <h1 class="description center-align post-title">Spring Boot是如何实现自动装配的</h1>
                 </div>
             </div>
         </div>
@@ -387,12 +387,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%93%88%E5%B8%8C/">
-                                <span class="chip bg-color">哈希</span>
+                            <a href="/tags/Spring-Boot/">
+                                <span class="chip bg-color">Spring Boot</span>
                             </a>
                         
-                            <a href="/tags/%E9%9B%86%E7%BE%A4/">
-                                <span class="chip bg-color">集群</span>
+                            <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
+                                <span class="chip bg-color">自动装配</span>
                             </a>
                         
                     </div>
@@ -403,8 +403,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
-                                分布式微服务
+                            <a href="/categories/%E6%A1%86%E6%9E%B6/" class="post-category">
+                                框架
                             </a>
                         
                     </div>
@@ -416,7 +416,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-20
+                    2021-11-21
                 </div>
                 
 
@@ -432,7 +432,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    3 Min
+                    4 Min
                 </div>
                 
 
@@ -450,34 +450,106 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="什么是一致性哈希算法"><a href="#什么是一致性哈希算法" class="headerlink" title="什么是一致性哈希算法"></a>什么是一致性哈希算法</h2><p>一致性哈希算法在1997年由麻省理工学院提出的一种分布式哈希（DHT）实现算法，设计目标是为了解决因特网中的热点(Hot spot)问题，初衷和CARP十分类似。</p>
-<p>一致性哈希修正了CARP使用的简 单哈希算法带来的问题，使得分布式哈希（DHT）可以在P2P环境中真正得到应用。</p>
-<p>一致性hash算法提出了在动态变化的Cache环境中，判定哈希算法好坏的四个定义：</p>
+                <h2 id="什么是自动装配？"><a href="#什么是自动装配？" class="headerlink" title="什么是自动装配？"></a>什么是自动装配？</h2><p>自动装配就是通过注解或者一些简单的配置就能在 Spring Boot 的帮助下实现某块功能。</p>
+<p>Spring Boot 定义了一套接口规范，这套规范规定：SpringBoot 在启动时会扫描外部引用 jar 包中的META-INF/spring.factories文件，将文件中配置的类型信息加载到 Spring 容器，并执行类中定义的各种操作。</p>
+<p>对于外部 jar 来说，只需要按照 Spring Boot 定义的标准，就能将自己的功能装置进 Spring Boot。</p>
+<p>在Spring Boot 中，如果我们需要引入第三方依赖，我们直接引入一个 starter 即可。比如想要在项目中使用 redis 的话，直接在项目中引入对应的 starter 即可。</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-data-redis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>引入 starter 之后，通过少量注解和一些简单的配置就能使用第三方组件提供的功能了。</p>
+<h2 id="如何实现自动装配"><a href="#如何实现自动装配" class="headerlink" title="如何实现自动装配"></a>如何实现自动装配</h2><p> SpringBoot 的核心注解是 SpringBootApplication。<br>@SpringBootApplication注解包含</p>
 <ul>
-<li>平衡性(Balance)</li>
-<li>单调性(Monotonicity)</li>
-<li>分散性(Spread)</li>
-<li>负载(Load)</li>
+<li>@Configuration：允许在上下文中注册额外的 bean 或导入其他配置类</li>
+<li>@EnableAutoConfiguration：启用 SpringBoot 的自动配置机制</li>
+<li>@ComponentScan：扫描被@Component (@Service,@Controller)注解的 bean，注解默认会扫描启动类所在的包下所有的类 ，可以自定义不扫描某些 bean</li>
 </ul>
-<h2 id="实现机制"><a href="#实现机制" class="headerlink" title="实现机制"></a>实现机制</h2><p>一致哈希是一种特殊的哈希算法。在使用一致哈希算法后，哈希表槽位数（大小）的改变平均只需要对 K/n 个关键字重新映射，其中K是关键字的数量， n是槽位数量。</p>
-<p>然而在传统的哈希表中，添加或删除一个槽位的几乎需要对所有关键字进行重新映射。</p>
-<p>一致性哈希是将整个哈希值空间组织成一个虚拟的圆环，如假设哈希函数H的值空间为0-2^32-1（哈希值是32位无符号整形），整个哈希空间环如下：<br><img src="https://img-blog.csdnimg.cn/7958afb12f8d4876987917da477e3ae7.png" alt="在这里插入图片描述"><br>整个圆形按顺时针方向组织，0和2^32-1在零点中方向重合。把服务器按照IP或主机名作为关键字进行哈希，这样就能确定其在哈希环的位置。<br><img src="https://img-blog.csdnimg.cn/aad9c57c736645fc837bc5b63e072678.png" alt="在这里插入图片描述"><br>我们就可以使用哈希函数H计算值为key的数据在哈希环的具体位置h，根据h确定在环中的具体位置，从此位置沿顺时针滚动，遇到的第一台服务器就是其定位到的服务器。</p>
-<p>例如我们有1、2、3、4四个数据对象，经过哈希计算后，落到环空间上的位置，再顺时针滚动即可定位到服务器位置</p>
-<p><img src="https://img-blog.csdnimg.cn/755c37355a284d0ea67890c043ae6270.png" alt="在这里插入图片描述"></p>
-<h2 id="容错和扩展"><a href="#容错和扩展" class="headerlink" title="容错和扩展"></a>容错和扩展</h2><p>一致性哈希算法对于节点的增减都只需重定位换空间的一小部分即可，具有较好的容错性和可扩展性</p>
-<h3 id="容错性"><a href="#容错性" class="headerlink" title="容错性"></a>容错性</h3><p>如果某个节点宕机了，比如A节点宕机了，那么，数据1对应的节点保存到B中<br>所以，某个节点宕机后，干扰的只有前面的数据（原数据被保存到顺时针的下一个服务器），而不会干扰到其他的数据。<br><img src="https://img-blog.csdnimg.cn/a35a4d79bfa04671802f10ee14a679d4.png" alt="在这里插入图片描述"></p>
-<h3 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h3><p>假如增加一台服务器D，原本数据2是保存到B中，但由于增加了D节点，数据2被保存到D中。干扰的也只有B而已，其他数据不会受到影响。</p>
-<p><img src="https://img-blog.csdnimg.cn/cc978523b30a4c9d86ffa2f498264b2a.png" alt="在这里插入图片描述"></p>
-<h2 id="虚拟节点"><a href="#虚拟节点" class="headerlink" title="虚拟节点"></a>虚拟节点</h2><p>上面讲述的是节点较多和节点分布较为均衡的情况，如果节点较少就会出现节点分布不均衡造成数据倾斜问题。<br><img src="https://img-blog.csdnimg.cn/f34538edd4a940f4bd496ff7521c5201.png" alt="在这里插入图片描述"><br>这样大多数数据都会落到节点A上面，造成倾斜问题</p>
-<p>为了解决这种数据存储不平衡的问题，一致性哈希算法引入了虚拟节点机制，即对每个节点计算多个哈希值，每个计算结果位置都放置在对应节点中，这些节点称为虚拟节点。</p>
-<p>具体做法可以在服务器IP或主机名的后面增加编号来实现，例如上面的情况，可以为每个服务节点增加4个虚拟节点，于是可以分为 </p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>TYPE<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Documented</span>
+<span class="token annotation punctuation">@Inherited</span>
+<span class="token annotation punctuation">@SpringBootConfiguration</span>
+<span class="token annotation punctuation">@ComponentScan</span>
+<span class="token annotation punctuation">@EnableAutoConfiguration</span>
+<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">SpringBootApplication</span> <span class="token punctuation">&#123;</span>
+
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>TYPE<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Documented</span>
+<span class="token annotation punctuation">@Configuration</span> 
+<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">SpringBootConfiguration</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p>从源码中可以知道，最关键的注解是</p>
 <ul>
-<li>C#D，映射到D节点的虚拟节点</li>
-<li>B#A，映射到A节点的虚拟节点</li>
-<li>E#D，映射到D节点的虚拟节点</li>
-<li>F#A，映射到A节点的虚拟节点</li>
+<li><p>@Import(EnableAutoConfigurationImportSelector.class)，借助EnableAutoConfigurationImportSelector，@EnableAutoConfiguration可以帮助Spring Boot应用将所有符合条件的@Configuration配置都加载到当前SpringBoot创建并使用的IoC容器。</p>
+</li>
+<li><p>同时借助于Spring框架原有的一个工具类：SpringFactoriesLoader，@EnableAutoConfiguration就可以实现智能的自动配置。</p>
+</li>
+<li><p>SpringFactoriesLoader中加载配置,SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要功能就是从指定的配置文件META-INF/spring.factories加载配置,</p>
+</li>
+<li><p>即根据@EnableAutoConfiguration的完整类名org.springframework.boot.autoconfigure.EnableAutoConfiguration作为查找的Key,获取对应的一组@Configuration类</p>
+</li>
 </ul>
-<p>这样就可以保证各个节点的数据比较均匀了，例如，数据7保存到虚拟节点C#D，实际上数据保存到D中。这样，就能解决服务节点少时数据不平均的问题。<br><img src="https://img-blog.csdnimg.cn/fb707441265c4120adeae19768b0d878.png" alt="在这里插入图片描述"><br>在实际应用中，通常将虚拟节点数设置为32甚至更大，因此即使很少的服务节点也能做到相对均匀的数据分布。</p>
+<p>@EnableAutoConfiguration作用就是从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。</p>
+<p>这些功能配置类要生效的话，会去classpath中找是否有该类的依赖类（也就是pom.xml必须有对应功能的jar包才行）并且配置类里面注入了默认属性值类，功能类可以引用并赋默认值。</p>
+<p>生成功能类的原则是自定义优先，没有自定义时才会使用自动装配类。</p>
+<p>生效需要的条件：</p>
+<ul>
+<li>spring.factories里面有这个类的配置类（一个配置类可以创建多个围绕该功能的依赖类）</li>
+<li>pom.xml里面需要有对应的jar包</li>
+</ul>
+<h2 id="案例-Redis"><a href="#案例-Redis" class="headerlink" title="案例 - Redis"></a>案例 - Redis</h2><p>1、从spring-boot-autoconfigure.jar/META-INF/spring.factories中获取redis的相关配置类全限定名（有120多个的配置类）RedisAutoConfiguration，一般一个功能配置类围绕该功能，负责管理创建多个相关的功能类，比如RedisAutoConfiguration负责：JedisConnectionFactory、RedisTemplate、StringRedisTemplate这3个功能类的创建</p>
+<p><img src="https://img-blog.csdnimg.cn/38b0ee1058104232a1aaa885ec5bd9f3.png" alt="在这里插入图片描述"></p>
+<p>2、RedisAutoConfiguration配置类生效的一个条件是在classpath路径下有RedisOperations类存在，因此springboot的自动装配机制会会去classpath下去查找对应的class文件。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">RedisOperations</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">RedisProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Import</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">LettuceConnectionConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">JedisConnectionConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>3、pom.xml中有对应的jar包,就能匹配到对应依赖class，</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token generics"><span class="token punctuation">&lt;</span>dependency<span class="token punctuation">></span></span>
+	<span class="token generics"><span class="token punctuation">&lt;</span>groupId<span class="token punctuation">></span></span>org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+	<span class="token generics"><span class="token punctuation">&lt;</span>artifactId<span class="token punctuation">></span></span>spring<span class="token operator">-</span>boot<span class="token operator">-</span>starter<span class="token operator">-</span>data<span class="token operator">-</span>redis<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4、匹配成功，这个功能配置类才会生效，同时会注入默认的属性配置类@EnableConfigurationProperties(RedisProperties.class)<br><img src="https://img-blog.csdnimg.cn/4c06c2d7589f4efea3bb2d4e6fb3e2d0.png" alt="在这里插入图片描述"></p>
+<p>5、Redis功能配置里面会根据条件生成最终的<br>JedisConnectionFactory、RedisTemplate,并提供了默认的配置形式<br>@ConditionalOnMissingBean(name = “redisTemplate”)</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@ConditionalOnClass</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">RedisOperations</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">RedisProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Import</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">LettuceConnectionConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token class-name">JedisConnectionConfiguration</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisAutoConfiguration</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token class-name">RedisAutoConfiguration</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token annotation punctuation">@ConditionalOnMissingBean</span><span class="token punctuation">(</span>
+        name <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">"redisTemplate"</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">redisTemplate</span><span class="token punctuation">(</span><span class="token class-name">RedisConnectionFactory</span> redisConnectionFactory<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">UnknownHostException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> template <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RedisTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        template<span class="token punctuation">.</span><span class="token function">setConnectionFactory</span><span class="token punctuation">(</span>redisConnectionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> template<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token annotation punctuation">@ConditionalOnMissingBean</span>
+    <span class="token keyword">public</span> <span class="token class-name">StringRedisTemplate</span> <span class="token function">stringRedisTemplate</span><span class="token punctuation">(</span><span class="token class-name">RedisConnectionFactory</span> redisConnectionFactory<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">UnknownHostException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">StringRedisTemplate</span> template <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringRedisTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        template<span class="token punctuation">.</span><span class="token function">setConnectionFactory</span><span class="token punctuation">(</span>redisConnectionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> template<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>6、最终创建好的默认装配类，会通过功能配置类里面的 @Bean注解，注入到IOC当中</p>
+<p>7、用户使用，当用户在配置文件中自定义时候就会覆盖默认的配置@ConditionalOnMissingBean(name = “redisTemplate”)</p>
 
                 
             </div>
@@ -504,7 +576,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://stream1080.github.io/posts/27281.html">https://stream1080.github.io/posts/27281.html</a>
+                    <a href="https://stream1080.github.io/posts/1513.html">https://stream1080.github.io/posts/1513.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -542,12 +614,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%93%88%E5%B8%8C/">
-                                    <span class="chip bg-color">哈希</span>
+                                <a href="/tags/Spring-Boot/">
+                                    <span class="chip bg-color">Spring Boot</span>
                                 </a>
                             
-                                <a href="/tags/%E9%9B%86%E7%BE%A4/">
-                                    <span class="chip bg-color">集群</span>
+                                <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
+                                    <span class="chip bg-color">自动装配</span>
                                 </a>
                             
                         </div>
@@ -593,9 +665,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/posts/1513.html">
                     <div class="card-image">
@@ -613,9 +686,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -628,6 +701,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -650,13 +724,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/60936.html">
+                <a href="/posts/27281.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="生产者-消费者模型">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="一致性哈希算法">
                         
-                        <span class="card-title">生产者-消费者模型</span>
+                        <span class="card-title">一致性哈希算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -673,8 +747,8 @@
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
-                                    多线程
+                            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="post-category">
+                                    分布式微服务
                                 </a>
                             
                             
@@ -684,12 +758,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%94%9F%E4%BA%A7%E8%80%85/">
-                        <span class="chip bg-color">生产者</span>
+                    <a href="/tags/%E5%93%88%E5%B8%8C/">
+                        <span class="chip bg-color">哈希</span>
                     </a>
                     
-                    <a href="/tags/%E6%B6%88%E8%B4%B9%E8%80%85/">
-                        <span class="chip bg-color">消费者</span>
+                    <a href="/tags/%E9%9B%86%E7%BE%A4/">
+                        <span class="chip bg-color">集群</span>
                     </a>
                     
                 </div>
