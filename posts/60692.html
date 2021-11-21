@@ -5,7 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Java集合之HashMap(三), 一江溪水">
-    <meta name="description" content="Java集合之HashMap(三) | 一江溪水">
+    <meta name="description" content="线程安全在多线程，高并发的场景下，HashMap存在线程安全问题
+
+主要原因在于并发下的rehash会造成元素之间会形成一个循环链表。
+jdk 1.8 后解决了这个问题，但是还是不应该在多线程下使用HashMap ，因为多线程下使用Hash">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +387,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/HashMap/">
+                                <span class="chip bg-color">HashMap</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Java%E5%9F%BA%E7%A1%80/" class="post-category">
+                                Java基础
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +414,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-21
+                    2021-07-23
                 </div>
                 
 
@@ -407,14 +423,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    937
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    3 Min
                 </div>
                 
 
@@ -432,7 +448,46 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>在多线程，高并发的场景下，HashMap存在线程安全问题</p>
+<ul>
+<li>主要原因在于并发下的rehash会造成元素之间会形成一个循环链表。</li>
+<li>jdk 1.8 后解决了这个问题，但是还是不应该在多线程下使用HashMap ，因为多线程下使用HashMap 还是会存在其他问题比如数据丢失。</li>
+<li>并发环境下推荐使用Concur rentHashMap</li>
+</ul>
+<h2 id="ConcurrentHashMap和HashMap的区别"><a href="#ConcurrentHashMap和HashMap的区别" class="headerlink" title="ConcurrentHashMap和HashMap的区别"></a>ConcurrentHashMap和HashMap的区别</h2><p>Concur rentHashMap和Hashtable 的区别主要体现在实现线程安全的方式上不同。</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><ul>
+<li>Java8以前的ConcurrentHashMap采用分段的数组+链表实现</li>
+<li>Java8以后采用的数据结构跟HashMap1.8的结构一样，数组+链表/红黑二叉树。</li>
+<li>HashMap 和ConcurrentHashMap的底层数据结构类似都是采用数组+链表的形式</li>
+<li>数组是HashMap 的主体，链表则是主要为了解决哈希冲突而存在的;<h4 id="java8前"><a href="#java8前" class="headerlink" title="java8前"></a>java8前</h4><img src="https://img-blog.csdnimg.cn/813a80c60f4d4ec4b22098c8f98c5e1c.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h4 id="Java8后"><a href="#Java8后" class="headerlink" title="Java8后"></a>Java8后</h4><img src="https://img-blog.csdnimg.cn/eafa20c43aa14a999185c67c3b5bd3bd.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ul>
+<h3 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式:"></a>实现方式:</h3><ul>
+<li>在Java8以前，ConcurrentHashMap 对整个数组进行了分段(Segment),</li>
+<li>每一把锁只锁数组中一部分数据，多线程访问数组里不同数据段的数据，就不会存在锁竞争，提高并发访问率</li>
+<li>Java8以后已经放弃了段的概念，直接用数组+链表+红黑树的数据结构来实现</li>
+<li>并发控制使用synchronized和CAS(比较交换)来操作</li>
+<li>Java8中虽然还能看到分段的数据结构，但属性都已经大大简化了，只是为了兼容旧版本<br><img src="https://img-blog.csdnimg.cn/1f692597e280492b97fe11f1658bb428.png" alt="在这里插入图片描述"></li>
+</ul>
+<h3 id="Hashtable实现线程安全的方式"><a href="#Hashtable实现线程安全的方式" class="headerlink" title="Hashtable实现线程安全的方式"></a>Hashtable实现线程安全的方式</h3><ul>
+<li>Hashtable(同一把锁) :使用synchronized 来保证线程安全，效率非常低下</li>
+<li>当一个线程访问同步方法时，其他线程也访问同步方法，可能会进入阻塞或轮询状态</li>
+<li>如使用put添加元素，另一个线程不能使用put添加元素，也不能使用get, 竞争会越来越激烈<br>效率越低。</li>
+</ul>
+<h3 id="JDK1-8与JDK1-7的性能对比"><a href="#JDK1-8与JDK1-7的性能对比" class="headerlink" title="JDK1.8与JDK1.7的性能对比"></a>JDK1.8与JDK1.7的性能对比</h3><ul>
+<li>HashMap中，如果key经过hash算法得出的数组索引位置全部不相同，即Hash算法非常好，那样的话，getKey方法的时间复杂度就是O(1)，</li>
+<li>如果Hash算法技术的结果碰撞非常多，假如Hash算极其差，所有的Hash算法结果得出的索引位置一样，那样所有的键值对都集中到一个数组中，或者在一个链表中，或者在一个红黑树中，时间复杂度分别为O(n)和O(lgn)</li>
+</ul>
+<h3 id="ConcurrentHashMap线程安全的具体实现方式-底层具体实现"><a href="#ConcurrentHashMap线程安全的具体实现方式-底层具体实现" class="headerlink" title="ConcurrentHashMap线程安全的具体实现方式/底层具体实现"></a>ConcurrentHashMap线程安全的具体实现方式/底层具体实现</h3><h4 id="JDK1-7"><a href="#JDK1-7" class="headerlink" title="JDK1.7"></a>JDK1.7</h4><ul>
+<li>首先将数据分为一段一段的存储，然后给每一段数据配一把锁，当个线程占用锁访问其中一个段数据<br>时，其他段的数据也能被其他线程访问。</li>
+<li>ConcurrentHashMap是由Segment 数组结构和HashEntry 数组结构组成。</li>
+<li>Segment实现了Reentr antLock ，所以Segment 是一种可重入锁，扮演锁的角色。HashEntry 用于存储<br>键值对数据。</li>
+<li>一个 ConcurrentHashMap 里包含一个Segment数组。Segment 的结构和HashMap类似，是一种数组和<br>链表结构，一个Segment 包含一个HashEntry 数组，每个HashEntry 是个链表结构的元素，每个Segment守护着一个HashEntry数组里的元素，当对HashEntry 数组的数据进行修改时，必须首先获得<br>对应的Segment的锁 。<h4 id="JDK1-8"><a href="#JDK1-8" class="headerlink" title="JDK1.8"></a>JDK1.8</h4></li>
+<li>ConcurrentHashMap取消了分段锁，采用CAS和synchronized来保证并发安全。</li>
+<li>数据结构跟HashMap1.8的结构类似，数组+链表/红黑二叉树。</li>
+<li>Java 8后在链表长度超过0时将链表转换为红黑树</li>
+<li>synchronized只锁定当前链表或红黑树的首节点，这样只要hash不冲突，就不会产生并发，提升效率</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -495,7 +550,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/HashMap/">
+                                    <span class="chip bg-color">HashMap</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -539,18 +598,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/60692.html">
+                <a href="/posts/23133.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Java集合之HashMap(三)">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="消息队列基础">
                         
-                        <span class="card-title">Java集合之HashMap(三)</span>
+                        <span class="card-title">消息队列基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,18 +618,29 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-27
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="post-category">
+                                    消息队列
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/RabbitMQ/">
+                        <span class="chip bg-color">RabbitMQ</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -582,13 +651,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/1513.html">
+                <a href="/posts/32182.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Spring Boot是如何实现自动装配的">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Java集合之HashMap(二)">
                         
-                        <span class="card-title">Spring Boot是如何实现自动装配的</span>
+                        <span class="card-title">Java集合之HashMap(二)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -599,14 +668,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-22
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%A1%86%E6%9E%B6/" class="post-category">
-                                    框架
+                            <a href="/categories/Java%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    Java基础
                                 </a>
                             
                             
@@ -616,12 +685,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring-Boot/">
-                        <span class="chip bg-color">Spring Boot</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
-                        <span class="chip bg-color">自动装配</span>
+                    <a href="/tags/HashMap/">
+                        <span class="chip bg-color">HashMap</span>
                     </a>
                     
                 </div>
