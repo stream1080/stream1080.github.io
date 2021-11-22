@@ -4,19 +4,6 @@
   
     
     <entry>
-      <title>Git之版本回退和分支合并</title>
-      <link href="/posts/39129.html"/>
-      <url>/posts/39129.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Spring Boot是如何实现自动装配的</title>
       <link href="/posts/1513.html"/>
       <url>/posts/1513.html</url>
@@ -1649,6 +1636,33 @@
             <tag> Redis </tag>
             
             <tag> 缓存高并发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Git之版本回退和分支合并</title>
+      <link href="/posts/39129.html"/>
+      <url>/posts/39129.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h1><ul><li>有时候开发一个功能，发现思路不对，需要回退到某个版本。</li><li>使用git进行版本控制，就可以随意回退到任意版本</li><li>这种操作叫 回滚<h2 id="git-log"><a href="#git-log" class="headerlink" title="git -log"></a>git -log</h2></li><li>该命令显示从最近到最远的提交日志。</li><li>每一次提交都有对应的 commit id 和 commit message。</li><li>使用  –pretty=oneline 参数，显示更清晰<br><img src="https://img-blog.csdnimg.cn/20210616101619746.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li></ul><h2 id="git-reset-–hard-id"><a href="#git-reset-–hard-id" class="headerlink" title="git reset –hard id"></a>git reset –hard id</h2><ul><li>根据 id 回退到指定的版本；<br><img src="https://img-blog.csdnimg.cn/20210616101840932.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h2 id="git-push-origin-HEAD-–force"><a href="#git-push-origin-HEAD-–force" class="headerlink" title="git push origin HEAD –force"></a>git push origin HEAD –force</h2></li><li>推送到远程仓库，让远程仓库和本地仓库保存版本一致<br><img src="https://img-blog.csdnimg.cn/20210616102154647.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210616102241485.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h2 id="git-reflog"><a href="#git-reflog" class="headerlink" title="git -reflog"></a>git -reflog</h2></li><li>查看操作命令历史<br><img src="https://img-blog.csdnimg.cn/20210616102406978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h2 id="撤销操作"><a href="#撤销操作" class="headerlink" title="撤销操作"></a>撤销操作</h2></li><li>如果突然不想回退了，可以找到需要回退的Id</li><li>按照上面的方法，使用git reset –hard id命令</li><li>就可以又回到之前的版本了</li></ul><p><img src="https://img-blog.csdnimg.cn/20210616102823374.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2021061610280945.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p><h1 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h1><h2 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h2><ul><li>列出你所有的分支、创建新分支、删除分支及重命名分支。<br><img src="https://img-blog.csdnimg.cn/20210616103444346.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li></ul><h2 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h2><ul><li>切换分支，或者检出内容到工作目录。</li></ul><p><img src="https://img-blog.csdnimg.cn/2021061610350565.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="切换到master主分支"></p><h2 id="git-pull-origin-master"><a href="#git-pull-origin-master" class="headerlink" title="git pull origin master"></a>git pull origin master</h2><ul><li>建议每次操作前，都将远程代码pull下来<br><img src="https://img-blog.csdnimg.cn/2021061610363877.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li></ul><h2 id="git-merge-dev"><a href="#git-merge-dev" class="headerlink" title="git merge dev"></a>git merge dev</h2><ul><li>合并一个或者多个分支到你已经检出的分支中。 然后它将当前分支指针移动到合并结果上。</li><li>把dev分支的代码合并到master上</li><li>我这里已经是一致了的<br><img src="https://img-blog.csdnimg.cn/202106161039128.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 版本控制 </tag>
+            
+            <tag> Git </tag>
             
         </tags>
       
