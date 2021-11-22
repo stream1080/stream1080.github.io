@@ -5,7 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Redis基础, 一江溪水">
-    <meta name="description" content="Redis基础 | 一江溪水">
+    <meta name="description" content="Redis介绍
+Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。
+Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。
+Redi">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +387,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Redis/">
+                                <span class="chip bg-color">Redis</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                缓存
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +414,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-22
+                    2021-03-22
                 </div>
                 
 
@@ -407,14 +423,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    2.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    10 Min
                 </div>
                 
 
@@ -432,7 +448,182 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="Redis介绍"><a href="#Redis介绍" class="headerlink" title="Redis介绍"></a>Redis介绍</h1><ul>
+<li>Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。</li>
+<li>Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。</li>
+<li>Redis支持数据的备份，即master-slave模式的数据备份。</li>
+</ul>
+<h1 id="Redis的数据结构"><a href="#Redis的数据结构" class="headerlink" title="Redis的数据结构"></a>Redis的数据结构</h1><h2 id="Redis有五种数据结构"><a href="#Redis有五种数据结构" class="headerlink" title="Redis有五种数据结构"></a>Redis有五种数据结构</h2><h4 id="字符串-String"><a href="#字符串-String" class="headerlink" title="字符串(String)"></a>字符串(String)</h4><ul>
+<li>字符串类型是非常常见的一种类型，Redis中的字符串类型和很多编程语言里的字符串类型差不多，但相对要灵活些。<h4 id="字符串列表-list"><a href="#字符串列表-list" class="headerlink" title="字符串列表(list)"></a>字符串列表(list)</h4></li>
+<li>列表可以看作是个双端队列，可以在列表两端推入和弹出元素。对列表的不同操作可以实现其他编程语言中的堆栈（同一端进出）和队列（一端进，另一端出）数据结构。</li>
+</ul>
+<h4 id="字符串集合-set"><a href="#字符串集合-set" class="headerlink" title="字符串集合(set)"></a>字符串集合(set)</h4><ul>
+<li>set：集合最显著的特点应该就是其中的元素互不相同。用户可以快速对集合进行插入，删除，检查某元素是否在集合中的操作。此外，多个集合间也能很方便的执行交、并、差集运算。</li>
+</ul>
+<h4 id="哈希-hash"><a href="#哈希-hash" class="headerlink" title="哈希(hash)"></a>哈希(hash)</h4><ul>
+<li>hash：Redis中的散列可以让用户将多个键值对存储到一个Redis键中，可以把这种数据聚集看作是关系数据库中的行，或者文档数据库中的文档。</li>
+</ul>
+<h4 id="有序字符串集合-sorted-set"><a href="#有序字符串集合-sorted-set" class="headerlink" title="有序字符串集合(sorted set)"></a>有序字符串集合(sorted set)</h4><ul>
+<li>zset：有序集合存储着成员与分值（权值，在Redis中以IEEE 754双精度浮点数的格式存储）之间的映射，并且提供了分值处理命令。适用于按照权值获取元素的情况。如热门帖子获取、基于投票数排序文章等。</li>
+</ul>
+<h1 id="Redis常用命令"><a href="#Redis常用命令" class="headerlink" title="Redis常用命令"></a>Redis常用命令</h1><h3 id="字符串-String-1"><a href="#字符串-String-1" class="headerlink" title="字符串(String)"></a>字符串(String)</h3><ul>
+<li>set key value             # 设置key对应的值为string类型的value</li>
+<li>get key                         # 获取指定key的value值</li>
+<li>del key                       # 删除指定key的值</li>
+<li>getset key  value         #先获取key的值，再设置key的值为value</li>
+<li>incr key                        #对key的值做自增操作，返回新的值</li>
+<li>decr key                    #对key的值做自减操作，返回新的值</li>
+<li>incrby key integer        #对key的value增加指定数值</li>
+<li>decrby key integer    #对key的value减指定数值</li>
+<li>append key value        #给指定key的字符串追加数值</li>
+</ul>
+<h3 id="哈希-hash-1"><a href="#哈希-hash-1" class="headerlink" title="哈希(hash)"></a>哈希(hash)</h3><p>String Key和String Value的map容器</p>
+<ul>
+<li>hset key field value    向散列key中添加一个键值对</li>
+<li>hget key field    获取散列key中的一个键的值</li>
+<li>hmset key field1 value1 [field2 value2 …]    向散列key中添加一个或多个键值对</li>
+<li>hmget key field1 [field2 … ]    获取散列key中的一个或多个键的值</li>
+<li>hdel key field1 [field2 … ]    删除散列中的一个或多个键值对，返回成功删除的键值对数量</li>
+<li>hlen key    返回散列包含的键值对数量</li>
+<li>hincrby key field integer    给散列中指定field的值加上integer</li>
+<li>hexists key field    测试指定field是否在散列中存在</li>
+<li>hkeys key    返回散列中所有field</li>
+<li>hvals key    返回散列中所有value</li>
+<li>hgetall key    返回散列中所有键值对</li>
+</ul>
+<h3 id="字符串列表-list-1"><a href="#字符串列表-list-1" class="headerlink" title="字符串列表(list)"></a>字符串列表(list)</h3><h4 id="类似数据结构中的链表，有以下三种存储方式"><a href="#类似数据结构中的链表，有以下三种存储方式" class="headerlink" title="类似数据结构中的链表，有以下三种存储方式"></a>类似数据结构中的链表，有以下三种存储方式</h4><ul>
+<li>ArrayList使用数组方式存储</li>
+<li>LinkedList使用双向链接方式</li>
+<li>双向链表中增加数据</li>
+<li>双向链表中删除数据</li>
+</ul>
+<h4 id="常用list命令"><a href="#常用list命令" class="headerlink" title="常用list命令"></a>常用list命令</h4><ul>
+<li>lpush key value1 [value2…]    在key对应的list的头部（左端）添加元素</li>
+<li>rpush key value1 [value2…]    在key对应的list的尾部（右端）添加元素</li>
+<li>lpop key    移除并返回key对应的list的头部（左端）元素</li>
+<li>rpop key    移除并返回key对应的list的尾部（右端）元素</li>
+<li>lindex key offset    返回列表中偏移量为offset的元素</li>
+<li>lrange key start end (0代表第一个元素，-1代表最后一个元素)    返回列表中从start偏移量到end偏移量中的元素，包含两个端点元素（只返回，原list不变）</li>
+<li>ltrim key start end    对列表进行修剪，只保留从start偏移量到end偏移量的元素，包含两个端点</li>
+<li>llen key    返回对应列表的长度</li>
+</ul>
+<h4 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h4><ul>
+<li>blpop key1 [key2…] timeout    从第一个非空列表中弹出位于头部（左端）的元素，或者在timeout秒内阻塞并等待可弹出元素的出现</li>
+<li>brpop key1 [key2…] timeout    从第一个非空列表中弹出位于尾部（右端）的元素，或者在timeout秒内阻塞并等待可弹出元素的出现</li>
+<li>rpoplpush source-key dest-key    从source-key列表中弹出位于最右端的元素，然后把这个元素插入dest-key列表的最左端，并向用户返回该元素</li>
+<li>brpoplpush source-key dest-key timeout    从source-key列表中弹出位于最右端的元素，然后把这个元素插入dest-key列表的最左端，并向用户返回该元素。如果source-key为空，则在timeout秒内阻塞并等待可弹出元素的出现</li>
+</ul>
+<h3 id="字符串集合-set-1"><a href="#字符串集合-set-1" class="headerlink" title="字符串集合(set)"></a>字符串集合(set)</h3><h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
+<li>sadd key value1 [value2…]    将一个或多个元素添加到集合中，并返回添加成功的元素的个数</li>
+<li>srem key value1 [value2…]    从集合中移除一个或多个元素，返回移除成功的元素的个数</li>
+<li>sismember key value    检查元素value是否在集合key中，存在返回1，不存在返回0</li>
+<li>scard key    返回集合包含的元素个数</li>
+<li>smembers key    返回集合包含的全部元素</li>
+<li>srandmember key [count]    随机返回集合中的一个或多个元素。当count为正数时，返回的元素不会重复；当count为负数时，返回的元素有可能会重复</li>
+<li>spop key    随机移除集合中的某个元素，被返回给用户</li>
+<li>smove source-key des-key value    如果集合source-key中包含元素value，则移除它，并添加到dest-key中；成功移除并添加则返回1，否则返回0</li>
+</ul>
+<h4 id="其他命令-1"><a href="#其他命令-1" class="headerlink" title="其他命令"></a>其他命令</h4><ul>
+<li>sdiff key1 [key2…]    返回所有集合的差集</li>
+<li>sdiffstore dest-key key1 [key2…]    将计算所得的差集中的元素添加到dest-key中</li>
+<li>sinter key1 [key2…]    返回所有集合的交集</li>
+<li>sinterstore dest-key key1 [key2…]    将计算所得的交集中的元素添加到dest-key中</li>
+<li>sunion key1 [key2…]    返回所有集合的并集</li>
+<li>sunionstore dest-key key1 [key2…]    将计算所得的并集中的元素添加到dest-key中</li>
+</ul>
+<h3 id="有序字符串集合-sorted-set-1"><a href="#有序字符串集合-sorted-set-1" class="headerlink" title="有序字符串集合(sorted set)"></a>有序字符串集合(sorted set)</h3><ul>
+<li>zadd key score1 member1 [score2 member2 … ]    将带有给定分值的成员你添加到有序集合中。注意分值在前，成员在后</li>
+<li>zrem key member1 [member2 … ]    从有序集合中删除指定成员，并返回成功删除的元素个数</li>
+<li>zcard key    返回有序集合包含的成员个数</li>
+<li>zincrby key increment member    给指定成员的分值加上increment</li>
+<li>zcount key min max    返回分值介于min和max之间的成员数量</li>
+<li>zrank key memeber    返回指定成员在有序集合中的排名，成员按照score从小到大排序</li>
+<li>zrevrank key memeber    返回指定成员在有序集合中的排名 ，成员按照score从大到小排序</li>
+<li>zscore key member    返回指定成员的分值</li>
+<li>zrange key start stop [WITHSCORES]    返回有序集合中排名介于start和stop之间的成员，如果给定了可选的 WITHSCORES选项，则连带成员分值一并返回</li>
+<li>zrevrange key start stop [WITHSCORES]    同上，结果按score逆序</li>
+<li>zrangebyscore key min max [WITHSCORES]    返回分值介于min和max之间的成员</li>
+<li>zremrangebyrank key start stop    删除集合中排名在start和stop之间的成员</li>
+<li>zremrangebyscore key min max    删除集合中分值在min和max之间的成员</li>
+</ul>
+<h3 id="key的相关命令"><a href="#key的相关命令" class="headerlink" title="key的相关命令"></a>key的相关命令</h3><h4 id="Key定义注意点"><a href="#Key定义注意点" class="headerlink" title="Key定义注意点"></a>Key定义注意点</h4><ul>
+<li>不要过长</li>
+<li>不要过短</li>
+<li>在项目中应该遵循统一的命名规范</li>
+</ul>
+<h4 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
+<li>exists key    测试指定key是否存在</li>
+<li>del key1 [key2 …]    删除给定key</li>
+<li>type key    返回给定key的类型</li>
+<li>keys pattern    以正则表达式的形式，返回匹配的所有key </li>
+<li>keys *(返回所有key)</li>
+<li>rename oldkey newkey    修改key的名字</li>
+<li>dbsize    查看数据库中key的数量（并不是所谓的大小）</li>
+<li>expire key seconds    为key指定过期时间，到期自动删除</li>
+<li>ttl key    查看key的剩余时间</li>
+<li>select index    选择数据库（默认16个数据库，index为0-15）</li>
+<li>move key index    将key移动到指定数据库</li>
+<li>flushdb    清空当前数据库key</li>
+<li>flushall    清空所有数据库key</li>
+</ul>
+<h1 id="Redis的事务"><a href="#Redis的事务" class="headerlink" title="Redis的事务"></a>Redis的事务</h1><h4 id="Redis-事务可以一次执行多个命令，-并且带有以下三个重要的保证："><a href="#Redis-事务可以一次执行多个命令，-并且带有以下三个重要的保证：" class="headerlink" title="Redis 事务可以一次执行多个命令， 并且带有以下三个重要的保证："></a>Redis 事务可以一次执行多个命令， 并且带有以下三个重要的保证：</h4><ul>
+<li>批量操作在发送 EXEC 命令前被放入队列缓存。</li>
+<li>收到 EXEC 命令后进入事务执行，事务中任意命令执行失败，其余的命令依然被执行。</li>
+<li>在事务执行过程，其他客户端提交的命令请求不会插入到事务执行命令序列中。</li>
+</ul>
+<h4 id="一个事务从开始到执行会经历以下三个阶段："><a href="#一个事务从开始到执行会经历以下三个阶段：" class="headerlink" title="一个事务从开始到执行会经历以下三个阶段："></a>一个事务从开始到执行会经历以下三个阶段：</h4><ul>
+<li>开始事务。</li>
+<li>命令入队。</li>
+<li>执行事务。</li>
+</ul>
+<h2 id="事务的常用命令"><a href="#事务的常用命令" class="headerlink" title="事务的常用命令"></a>事务的常用命令</h2><ul>
+<li>discard 取消事务，放弃执行事务块内的所有命令。</li>
+<li>exec 执行所有事务块内的命令。</li>
+<li>multi 标记一个事务块的开始。</li>
+<li>umwatch 取消 WATCH 命令对所有 key 的监视。</li>
+<li>watch key [key …]<br>监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。</li>
+</ul>
+<h1 id="Redis的持久化-数据从内存同步到硬盘"><a href="#Redis的持久化-数据从内存同步到硬盘" class="headerlink" title="Redis的持久化-数据从内存同步到硬盘"></a>Redis的持久化-数据从内存同步到硬盘</h1><h2 id="两种持久化方式："><a href="#两种持久化方式：" class="headerlink" title="两种持久化方式："></a>两种持久化方式：</h2><ul>
+<li>RDB方式</li>
+<li>AOF方式</li>
+</ul>
+<h2 id="持久化使用的方式："><a href="#持久化使用的方式：" class="headerlink" title="持久化使用的方式："></a>持久化使用的方式：</h2><ul>
+<li>RDB方式：<br>默认支持，在指定的时间间隔内，将内存中的数据集快照写入到磁盘</li>
+<li>AOF方式：<br>日志的形式记录服务器处理的每一个操作，服务器启动之初，读取文件，重新构建数据库</li>
+<li>无持久化：<br>通过配置继用Redis持久化功能，Redis缓存机制</li>
+<li>同时使用RDB和AOF</li>
+</ul>
+<h2 id="RDB方式的持久化"><a href="#RDB方式的持久化" class="headerlink" title="RDB方式的持久化"></a>RDB方式的持久化</h2><h4 id="优势："><a href="#优势：" class="headerlink" title="优势："></a>优势：</h4><ul>
+<li>数据库只包含一个文件，通过文件备份策略，定期配置，恢复系统灾难</li>
+<li>压缩文件转移到其他介质上</li>
+<li>性能最大化，redis开始持久化时，分叉出进程，由子进程完成持久化的工作<br>，避免服务器进程执行I/O操作，启动效率高</li>
+</ul>
+<h4 id="劣势："><a href="#劣势：" class="headerlink" title="劣势："></a>劣势：</h4><ul>
+<li>无法高可用：系统一定在定时持久化之前宕机，数据还没写入，数据已经丢失</li>
+<li>通过fock分叉子进程完成工作，数据集大的时候，服务器需要停止几百毫秒甚至1秒</li>
+</ul>
+<h4 id="默认配置配置：查看redis-conf配置文件"><a href="#默认配置配置：查看redis-conf配置文件" class="headerlink" title="默认配置配置：查看redis.conf配置文件"></a>默认配置配置：查看redis.conf配置文件</h4><ul>
+<li>save 900 1 #每900秒至少1个key变化，持久化一次，到内存一个快照</li>
+<li>save 300 10 #每300秒至少10个key变化，往硬盘写一次</li>
+<li>save 60 10000 #每60秒至少10000个key变化，写一次</li>
+<li>dbfilename dump.rdb #数据的文件名</li>
+<li>dir ./ #保存的路径，redis路径下</li>
+</ul>
+<h2 id="AOF持久化方式"><a href="#AOF持久化方式" class="headerlink" title="AOF持久化方式"></a>AOF持久化方式</h2><h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ul>
+<li>同步写入频率高</li>
+<li>不破坏写入日志数据</li>
+<li>当数据过大，可启动修改重写机制，保证修改数据的更新</li>
+<li>日志文件格式清晰，便于重建数据</li>
+</ul>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ul>
+<li>效率低</li>
+<li>文件偏大于rdb文件</li>
+</ul>
+<h4 id="配置过程："><a href="#配置过程：" class="headerlink" title="配置过程："></a>配置过程：</h4><ul>
+<li>编辑redis.conf配置文件</li>
+<li>找到 appendonly no 修改为 yes</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -495,7 +686,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/Redis/">
+                                    <span class="chip bg-color">Redis</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -539,18 +734,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/26216.html">
+                <a href="/posts/39129.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Redis基础">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Git之版本回退和分支合并">
                         
-                        <span class="card-title">Redis基础</span>
+                        <span class="card-title">Git之版本回退和分支合并</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,18 +754,33 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-22
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-16
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%B7%A5%E5%85%B7/" class="post-category">
+                                    工具
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/">
+                        <span class="chip bg-color">版本控制</span>
+                    </a>
+                    
+                    <a href="/tags/Git/">
+                        <span class="chip bg-color">Git</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -582,13 +791,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/1513.html">
+                <a href="/posts/28350.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Spring Boot是如何实现自动装配的">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="外教资源供需平台项目设计">
                         
-                        <span class="card-title">Spring Boot是如何实现自动装配的</span>
+                        <span class="card-title">外教资源供需平台项目设计</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -599,14 +808,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-03
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%A1%86%E6%9E%B6/" class="post-category">
-                                    框架
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    项目
                                 </a>
                             
                             
@@ -616,12 +825,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring-Boot/">
-                        <span class="chip bg-color">Spring Boot</span>
-                    </a>
-                    
-                    <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
-                        <span class="chip bg-color">自动装配</span>
+                    <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">
+                        <span class="chip bg-color">微信小程序</span>
                     </a>
                     
                 </div>
