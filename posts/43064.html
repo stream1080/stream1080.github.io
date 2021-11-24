@@ -5,7 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="SpringBoot+Mybatis+Swagger2整合(下), 一江溪水">
-    <meta name="description" content="SpringBoot+Mybatis+Swagger2整合(下) | 一江溪水">
+    <meta name="description" content="前言书接上回上一篇文章我们讲了 SpringBoot整合Mybatis，没看的小伙伴可以点击链接看一下
+
+SpringBoot+Mybatis+Swagger2整合(上)
+
+这一篇我们接着讲整合Swagger2实现自动化测试和API接口文档">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +388,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Spring-Boot/">
+                                <span class="chip bg-color">Spring Boot</span>
+                            </a>
+                        
+                            <a href="/tags/Mybatis/">
+                                <span class="chip bg-color">Mybatis</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                项目
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +419,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-24
+                    2021-02-02
                 </div>
                 
 
@@ -407,14 +428,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    6 Min
                 </div>
                 
 
@@ -432,7 +453,215 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h4 id="书接上回"><a href="#书接上回" class="headerlink" title="书接上回"></a>书接上回</h4><p>上一篇文章我们讲了 SpringBoot整合Mybatis，没看的小伙伴可以点击链接看一下</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/upstream480/article/details/113528828">SpringBoot+Mybatis+Swagger2整合(上)</a></li>
+</ul>
+<p>这一篇我们接着讲整合Swagger2实现自动化测试和API接口文档</p>
+<h4 id="Swagger2介绍"><a href="#Swagger2介绍" class="headerlink" title="Swagger2介绍"></a>Swagger2介绍</h4><ul>
+<li><p>我们做开发的时候，经常需要对一些功能进行测试，一个一个的测试非常麻烦。</p>
+</li>
+<li><p>Swagger2 可以识别控制器中的方法，然后自动生成可视化的测试界面。后端开-发人员编写完 Spring Boot 后端接口后，直接可视化测试就行了。不需要编写测试类和测试方法，也不需要与前端开发确认接口是否正常。</p>
+</li>
+<li><p>现在非常流行前后端分离开发，因此前后端开发人员的交流就成了问题，接口文档应运而生</p>
+</li>
+<li><p>如果给控制器方法添加注解，还能自动生成在线 API 文档，方便前端开发人员使用和交流。</p>
+<h2 id="代码配置"><a href="#代码配置" class="headerlink" title="代码配置"></a>代码配置</h2><h4 id="在pom-xml中引入Swagger2的依赖"><a href="#在pom-xml中引入Swagger2的依赖" class="headerlink" title="在pom.xml中引入Swagger2的依赖"></a>在pom.xml中引入Swagger2的依赖</h4></li>
+<li><p>springfox-swagger2 引入 swagger2相关的依赖包</p>
+</li>
+<li><p>springfox-swagger-ui 引入 swagger-ui相关的依赖包</p>
+</li>
+</ul>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token comment">&lt;!-- 引入swagger2相关依赖 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.springfox<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>springfox-swagger2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+
+<span class="token comment">&lt;!-- 引入添加swagger-ui相关依赖 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.springfox<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>springfox-swagger-ui<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.9.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="配置Swagger相关的功能"><a href="#配置Swagger相关的功能" class="headerlink" title="配置Swagger相关的功能"></a>配置Swagger相关的功能</h4><ul>
+<li>在项目目录下新建一个package，命名为config</li>
+<li>在config中新建一个命名为Swagger2Config的class文件</li>
+<li>添加注解@Configuration  告诉Spring容器，这个类是一个配置类</li>
+<li>添加@EnableSwagger2  启用Swagger2的各项功能</li>
+<li>通过 @Bean 标注的方法将对 Swagger2 功能的设置放入容器。<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>config</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Bean</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Configuration</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">springfox<span class="token punctuation">.</span>documentation<span class="token punctuation">.</span>builders<span class="token punctuation">.</span></span><span class="token class-name">ApiInfoBuilder</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">springfox<span class="token punctuation">.</span>documentation<span class="token punctuation">.</span>builders<span class="token punctuation">.</span></span><span class="token class-name">PathSelectors</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">springfox<span class="token punctuation">.</span>documentation<span class="token punctuation">.</span>builders<span class="token punctuation">.</span></span><span class="token class-name">RequestHandlerSelectors</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">springfox<span class="token punctuation">.</span>documentation<span class="token punctuation">.</span>service<span class="token punctuation">.</span></span><span class="token class-name">ApiInfo</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">springfox<span class="token punctuation">.</span>documentation<span class="token punctuation">.</span>spi<span class="token punctuation">.</span></span><span class="token class-name">DocumentationType</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">springfox<span class="token punctuation">.</span>documentation<span class="token punctuation">.</span>spring<span class="token punctuation">.</span>web<span class="token punctuation">.</span>plugins<span class="token punctuation">.</span></span><span class="token class-name">Docket</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">springfox<span class="token punctuation">.</span>documentation<span class="token punctuation">.</span>swagger2<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span></span><span class="token class-name">EnableSwagger2</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Configuration</span> <span class="token comment">// 告诉Spring容器，这个类是一个配置类</span>
+<span class="token annotation punctuation">@EnableSwagger2</span> <span class="token comment">// 启用Swagger2功能</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Swagger2Config</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">/**
+     * 配置Swagger2相关的bean
+     */</span>
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token keyword">public</span> <span class="token class-name">Docket</span> <span class="token function">createRestApi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Docket</span><span class="token punctuation">(</span><span class="token class-name">DocumentationType</span><span class="token punctuation">.</span>SWAGGER_2<span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">apiInfo</span><span class="token punctuation">(</span><span class="token function">apiInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">apis</span><span class="token punctuation">(</span><span class="token class-name">RequestHandlerSelectors</span><span class="token punctuation">.</span><span class="token function">basePackage</span><span class="token punctuation">(</span><span class="token string">"com"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment">// com包下所有API都交给Swagger2管理</span>
+                <span class="token punctuation">.</span><span class="token function">paths</span><span class="token punctuation">(</span><span class="token class-name">PathSelectors</span><span class="token punctuation">.</span><span class="token function">any</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">/**
+     * API文档地址：http://127.0.0.1:8080/swagger-ui.html#/
+     *
+     * 此处主要是API文档页面显示信息
+     */</span>
+    <span class="token keyword">private</span> <span class="token class-name">ApiInfo</span> <span class="token function">apiInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ApiInfoBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">title</span><span class="token punctuation">(</span><span class="token string">"项目API"</span><span class="token punctuation">)</span> <span class="token comment">// 标题</span>
+                <span class="token punctuation">.</span><span class="token function">description</span><span class="token punctuation">(</span><span class="token string">"整个项目的各个API"</span><span class="token punctuation">)</span> <span class="token comment">// 描述</span>
+                <span class="token punctuation">.</span><span class="token function">termsOfServiceUrl</span><span class="token punctuation">(</span><span class="token string">"http://www.baidu.com"</span><span class="token punctuation">)</span> <span class="token comment">// 服务网址，一般写公司地址</span>
+                <span class="token punctuation">.</span><span class="token function">version</span><span class="token punctuation">(</span><span class="token string">"1.0"</span><span class="token punctuation">)</span> <span class="token comment">// 版本</span>
+                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<h4 id="生成在线API文档"><a href="#生成在线API文档" class="headerlink" title="生成在线API文档"></a>生成在线API文档</h4><ul>
+<li>在各个controller中添加@Api注解</li>
+<li>@Api(tags = “用户管理API”) 类文档显示的接口名称</li>
+</ul>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@Api</span><span class="token punctuation">(</span>tags <span class="token operator">=</span> <span class="token string">"用户管理API"</span><span class="token punctuation">)</span> <span class="token comment">// 类文档显示内容</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/admin"</span><span class="token punctuation">)</span>   <span class="token comment">//地址映射的注解</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">UserService</span> userService<span class="token punctuation">;</span>
+
+    <span class="token comment">/**
+     * 获取用户列表
+     * @return
+     */</span>
+    <span class="token annotation punctuation">@ApiOperation</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"获取用户列表信息"</span><span class="token punctuation">)</span> <span class="token comment">// 接口文档显示内容</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"listuser"</span><span class="token punctuation">,</span>method <span class="token operator">=</span> <span class="token class-name">RequestMethod</span><span class="token punctuation">.</span>GET<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">listUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> modelMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">Object</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getUserList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        modelMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"userList"</span><span class="token punctuation">,</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> modelMap<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">/**
+     * 通过用户Id获取用户信息
+     *
+     * @return
+     */</span>
+    <span class="token annotation punctuation">@ApiOperation</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"通过用户Id获取用户信息"</span><span class="token punctuation">)</span> <span class="token comment">// 接口文档显示内容</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/getuserbyid"</span><span class="token punctuation">,</span> method <span class="token operator">=</span> <span class="token class-name">RequestMethod</span><span class="token punctuation">.</span>GET<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">getUserById</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> userId<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> modelMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 获取用户信息</span>
+        <span class="token class-name">User</span> user <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getUserById</span><span class="token punctuation">(</span>userId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        modelMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">,</span> user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> modelMap<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+
+    <span class="token comment">/**
+     * 添加用户信息
+     *
+     * @param userStr
+     * @param request
+     * @return
+     * @throws IOException
+     * @throws JsonMappingException
+     * @throws JsonParseException
+     */</span>
+    <span class="token annotation punctuation">@ApiOperation</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"添加用户信息"</span><span class="token punctuation">)</span> <span class="token comment">// 接口文档显示内容</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/adduser"</span><span class="token punctuation">,</span> method <span class="token operator">=</span> <span class="token class-name">RequestMethod</span><span class="token punctuation">.</span>POST<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">addUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> <span class="token class-name">User</span> user<span class="token punctuation">)</span>
+            <span class="token keyword">throws</span> <span class="token class-name">JsonParseException</span><span class="token punctuation">,</span> <span class="token class-name">JsonMappingException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> modelMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        modelMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"success"</span><span class="token punctuation">,</span> userService<span class="token punctuation">.</span><span class="token function">addUser</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> modelMap<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+
+    <span class="token comment">/**
+     * 修改用户信息
+     *
+     * @param userStr
+     * @param request
+     * @return
+     * @throws IOException
+     * @throws JsonMappingException
+     * @throws JsonParseException
+     */</span>
+    <span class="token annotation punctuation">@ApiOperation</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"修改用户信息"</span><span class="token punctuation">)</span> <span class="token comment">// 接口文档显示内容</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/modifyuser"</span><span class="token punctuation">,</span> method <span class="token operator">=</span> <span class="token class-name">RequestMethod</span><span class="token punctuation">.</span>POST<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">modifyUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> <span class="token class-name">User</span> user<span class="token punctuation">)</span>
+            <span class="token keyword">throws</span> <span class="token class-name">JsonParseException</span><span class="token punctuation">,</span> <span class="token class-name">JsonMappingException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> modelMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        modelMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"success"</span><span class="token punctuation">,</span> userService<span class="token punctuation">.</span><span class="token function">modifyUser</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> modelMap<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+
+    <span class="token comment">/**
+     * 删除用户信息
+     * @param userId
+     * @return
+     */</span>
+    <span class="token annotation punctuation">@ApiOperation</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"删除用户信息"</span><span class="token punctuation">)</span> <span class="token comment">// 接口文档显示内容</span>
+    <span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/removeuser"</span><span class="token punctuation">,</span> method <span class="token operator">=</span> <span class="token class-name">RequestMethod</span><span class="token punctuation">.</span>GET<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">removeUser</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> userId<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> modelMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        modelMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"success"</span><span class="token punctuation">,</span> userService<span class="token punctuation">.</span><span class="token function">deleteUser</span><span class="token punctuation">(</span>userId<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> modelMap<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="启动项目，测试swagger2的相关功能"><a href="#启动项目，测试swagger2的相关功能" class="headerlink" title="启动项目，测试swagger2的相关功能"></a>启动项目，测试swagger2的相关功能</h4><ul>
+<li><p>启动项目</p>
+</li>
+<li><p>在浏览器上访问  <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/swagger-ui.html#/">http://127.0.0.1:8080/swagger-ui.html#/</a><br><img src="https://img-blog.csdnimg.cn/20210202224223153.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>API中使用的参数模型<br><img src="https://img-blog.csdnimg.cn/20210202224343716.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>至此，我们的在线API文档就完成了，前端开发人员就可以根据这个文档使用各个API接口进行开发了，接下来我们进入测试环节</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h4 id="测试添加用户API"><a href="#测试添加用户API" class="headerlink" title="测试添加用户API"></a>测试添加用户API</h4></li>
+<li><p>点击第一个添加用户API<br><img src="https://img-blog.csdnimg.cn/20210202224703156.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>点击Try it out进行测试</p>
+</li>
+<li><p>输入测试参数，点击Execute执行测试方法<br><img src="https://img-blog.csdnimg.cn/20210202224851388.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>返回结果，success：true 说明添加用户成功<br><img src="https://img-blog.csdnimg.cn/20210202225022490.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="测试根据Id查询用户信息API"><a href="#测试根据Id查询用户信息API" class="headerlink" title="测试根据Id查询用户信息API"></a>测试根据Id查询用户信息API</h4></li>
+<li><p>点击第二个方法，根据用户Id获取用户信息</p>
+</li>
+<li><p>输入用户Id，也就是刚刚我们添加的哪一个，点击Execute执行<br><img src="https://img-blog.csdnimg.cn/20210202225219789.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>返回结果为刚刚我们添加的测试用户的信息，测试成功<br><img src="https://img-blog.csdnimg.cn/20210202225450138.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>依次测试其他的各个API</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2></li>
+<li><p>我们用两篇文章讲解了SpringBoot+Mybatis+Swagger2整合，实现springboot与数据库的连接和自动生成API文档，并且进行了测试各个API的功能。</p>
+</li>
+<li><p>这个项目可以作为一个模板，以后进行其他的项目的时候，就可以直接用这个模板进行修改或者扩充，省去配置mybatis和swagger2的时间。大家下载下来直接在这个基础上进行修改就可以了，我还在上面添加了Junit的测试模块，方便大家使用。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/stream1080/springboot-mybatis-swagger2">Github项目源码</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://gitee.com/stream1080/springboot-mybatis-swagger2">Gitee项目源码</a></p>
+</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -495,7 +724,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/Spring-Boot/">
+                                    <span class="chip bg-color">Spring Boot</span>
+                                </a>
+                            
+                                <a href="/tags/Mybatis/">
+                                    <span class="chip bg-color">Mybatis</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -539,18 +776,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/43064.html">
+                <a href="/posts/53908.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="SpringBoot+Mybatis+Swagger2整合(下)">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="外教供需平台微信小程序">
                         
-                        <span class="card-title">SpringBoot+Mybatis+Swagger2整合(下)</span>
+                        <span class="card-title">外教供需平台微信小程序</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,18 +796,29 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-24
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-02-03
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    项目
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">
+                        <span class="chip bg-color">微信小程序</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -582,13 +829,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/1513.html">
+                <a href="/posts/14393.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Spring Boot是如何实现自动装配的">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="SpringBoot+Mybatis+Swagger2整合(上)">
                         
-                        <span class="card-title">Spring Boot是如何实现自动装配的</span>
+                        <span class="card-title">SpringBoot+Mybatis+Swagger2整合(上)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -599,14 +846,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-01
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%A1%86%E6%9E%B6/" class="post-category">
-                                    框架
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    项目
                                 </a>
                             
                             
@@ -620,8 +867,8 @@
                         <span class="chip bg-color">Spring Boot</span>
                     </a>
                     
-                    <a href="/tags/%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">
-                        <span class="chip bg-color">自动装配</span>
+                    <a href="/tags/MyBatis/">
+                        <span class="chip bg-color">MyBatis</span>
                     </a>
                     
                 </div>
