@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="猴子选大王和纸牌游戏, 一江溪水">
-    <meta name="description" content="猴子选大王和纸牌游戏 | 一江溪水">
+    <meta name="description" content="1.猴子选大王一堆猴子都有编号，编号是1，2，3 …m ,这群猴子（m个）按照1-m的顺序围坐一圈，从第1开始数，每数到第N个，该猴子就要离开此圈，这样依次下来，直到圈中只剩下最后一只猴子，则该猴子为大王。
+要求输入数据：输入m,n m,n">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +385,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C/">
+                                <span class="chip bg-color">C++</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-category">
+                                数据结构
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +412,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-24
+                    2021-07-05
                 </div>
                 
 
@@ -407,14 +421,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    1.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    5 Min
                 </div>
                 
 
@@ -432,7 +446,154 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="1-猴子选大王"><a href="#1-猴子选大王" class="headerlink" title="1.猴子选大王"></a>1.猴子选大王</h1><p>一堆猴子都有编号，编号是1，2，3 …m ,这群猴子（m个）按照1-m的顺序围坐一圈，从第1开始数，每数到第N个，该猴子就要离开此圈，这样依次下来，直到圈中只剩下最后一只猴子，则该猴子为大王。</p>
+<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><p>输入数据：输入m,n m,n 为整数，n&lt;m<br>输出形式：中文提示按照m个猴子，数n 个数的方法，输出为大王的猴子是几号 ，建立一个函数来实现此功能 </p>
+<h2 id="数据结构设计"><a href="#数据结构设计" class="headerlink" title="数据结构设计"></a>数据结构设计</h2><p>设计一个循环的单链表，使其可以一直循环数数，每数到N个即删除节点，最后留下了的即为大王</p>
+<pre class="line-numbers language-none"><code class="language-none">typedef struct LNode   
+&#123;
+ 	int data;
+ 	struct LNode *next;
+&#125;LinkNode;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="流程设计"><a href="#流程设计" class="headerlink" title="流程设计"></a>流程设计</h2><p><img src="https://img-blog.csdnimg.cn/20200704215455320.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ol>
+<li>输入猴子个数m和间隔数n</li>
+<li>判断m，n是否合法，非法则重新输入，合法进入下一步</li>
+<li>建立一个带头节点的循环单链表，代表m个猴子围坐一圈</li>
+<li>遍历循环单链表，数到n的猴子退出，删除节点。重新计数</li>
+<li>当循环单链表中只剩下一只猴子是，即为大王。</li>
+<li>若输入的n为1，猴子依次退出，最后一个为大王</li>
+</ol>
+<h2 id="主要代码"><a href="#主要代码" class="headerlink" title="主要代码"></a>主要代码</h2><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">//设计一个循环单链表模拟猴子围坐在一圈</span>
+<span class="token comment">//数到的猴子退出，删除节点</span>
+<span class="token comment">//只剩下一个猴子时，即为大王 </span>
+<span class="token keyword">int</span> <span class="token function">SelectKing</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">int</span> m<span class="token punctuation">,</span>n<span class="token punctuation">,</span>i<span class="token punctuation">;</span><span class="token comment">//i为当前数到的数 </span>
+ 
+ <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> 
+ <span class="token punctuation">&#123;</span> 
+  <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"cls"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">"请输入猴子个数m(m为正整数)："</span><span class="token punctuation">;</span>
+  cin<span class="token operator">>></span>m<span class="token punctuation">;</span>
+  cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">"输入间隔数n(n为正整数且m>n): "</span><span class="token punctuation">;</span>
+  cin<span class="token operator">>></span>n<span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>m<span class="token operator">></span><span class="token number">0</span> <span class="token operator">&amp;&amp;</span> n<span class="token operator">></span><span class="token number">0</span> <span class="token operator">&amp;&amp;</span> m<span class="token operator">></span>n<span class="token punctuation">)</span> 
+   <span class="token keyword">break</span><span class="token punctuation">;</span> 
+  <span class="token keyword">else</span>          <span class="token comment">//异常处理</span>
+   cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">"输入错误，请重新输入"</span><span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+   <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"pause"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   
+ <span class="token punctuation">&#125;</span>
+ 
+ LinkNode <span class="token operator">*</span>s<span class="token punctuation">,</span><span class="token operator">*</span>r<span class="token punctuation">,</span><span class="token operator">*</span>p<span class="token punctuation">,</span><span class="token operator">*</span>L<span class="token punctuation">;</span>
+ LNode <span class="token operator">*</span>q<span class="token punctuation">;</span>
+ L <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span>LinkNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ r <span class="token operator">=</span> L<span class="token punctuation">;</span>
+ <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>i<span class="token operator">&lt;=</span>m<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span>
+ <span class="token punctuation">&#123;</span>
+  s <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span>LinkNode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  s<span class="token operator">-></span>data <span class="token operator">=</span> i<span class="token punctuation">;</span>
+  r<span class="token operator">-></span>next <span class="token operator">=</span> s<span class="token punctuation">;</span>
+  r <span class="token operator">=</span> s<span class="token punctuation">;</span>
+ <span class="token punctuation">&#125;</span>
+ 
+ r<span class="token operator">-></span>next <span class="token operator">=</span> L<span class="token operator">-></span>next<span class="token punctuation">;</span> <span class="token comment">//创建循环单链表 </span>
+ 
+ p <span class="token operator">=</span> L<span class="token operator">-></span>next<span class="token punctuation">;</span>
+ i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+ <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+ <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">==</span> n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token comment">//数到n的猴子退出 </span>
+  <span class="token punctuation">&#123;</span>
+   q <span class="token operator">=</span> p<span class="token operator">-></span>next<span class="token punctuation">;</span>
+   p<span class="token operator">-></span>next <span class="token operator">=</span> q<span class="token operator">-></span>next<span class="token punctuation">;</span>
+   cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">"   第"</span><span class="token operator">&lt;&lt;</span>q<span class="token operator">-></span>data<span class="token operator">&lt;&lt;</span><span class="token string">"个猴子退出,还剩"</span><span class="token operator">&lt;&lt;</span>m<span class="token operator">-</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token string">"个猴子"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span> 
+   <span class="token keyword">delete</span> q<span class="token punctuation">;</span>    <span class="token comment">//猴子退出，删除节点 </span>
+   i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+   m<span class="token operator">--</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment">//间隔数为1时，猴子依次退出，最后一个即为大王 </span>
+  <span class="token punctuation">&#123;</span>
+   cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">"   第"</span><span class="token operator">&lt;&lt;</span>p<span class="token operator">-></span>data<span class="token operator">&lt;&lt;</span><span class="token string">"个猴子退出,还剩"</span><span class="token operator">&lt;&lt;</span>m<span class="token operator">-</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token string">"个猴子"</span><span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span> 
+   <span class="token keyword">delete</span> q<span class="token punctuation">;</span>     <span class="token comment">//猴子退出，删除节点 </span>
+   i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+   m<span class="token operator">--</span><span class="token punctuation">;</span>  
+  <span class="token punctuation">&#125;</span> 
+  i<span class="token operator">++</span><span class="token punctuation">;</span>
+  p <span class="token operator">=</span> p<span class="token operator">-></span>next<span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>m<span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token comment">//链表中只剩下一个猴子即为大王 </span>
+  <span class="token punctuation">&#123;</span>
+   cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">" 选出第"</span><span class="token operator">&lt;&lt;</span>p<span class="token operator">-></span>data<span class="token operator">&lt;&lt;</span><span class="token string">"个猴子为大王"</span><span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+   <span class="token keyword">break</span><span class="token punctuation">;</span>     <span class="token comment">//选出大王，退出循环 </span>
+  <span class="token punctuation">&#125;</span>
+ <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p><img src="https://img-blog.csdnimg.cn/20200704220158545.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="2-纸牌游戏"><a href="#2-纸牌游戏" class="headerlink" title="2.纸牌游戏"></a>2.纸牌游戏</h1><p>编号为1-52张牌，正面向上，从第2张开始，以2为基数，是2的倍数的牌翻一次，直到最后一张牌；然后，从第3张开始，以3为基数，是3的倍数的牌翻一次，直到最后一张牌；然后…从第4张开始，以4为基数，是4的倍数的牌翻一次， 直到最后一张牌；…再依次5的倍数的牌翻一次，6的，7的 直到 以52为基数的 翻过，输出：这时正面向上的牌有哪些？</p>
+<h2 id="数据结构设计-1"><a href="#数据结构设计-1" class="headerlink" title="数据结构设计"></a>数据结构设计</h2><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">//设计一个长度为53的线性表，丢弃0节点</span>
+<span class="token comment">//1表示正面向上，0表示正面向下 </span>
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span>
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">int</span> data<span class="token punctuation">[</span><span class="token number">53</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+ <span class="token keyword">int</span> lenght<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>Sqlist<span class="token punctuation">;</span>
+
+<span class="token comment">//把牌翻一次 </span>
+<span class="token keyword">int</span> <span class="token function">swap</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> 
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+  <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+ <span class="token keyword">else</span>
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="流程设计-1"><a href="#流程设计-1" class="headerlink" title="流程设计"></a>流程设计</h2><p><img src="https://img-blog.csdnimg.cn/20200704221856217.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ol>
+<li>创建一个长度为53的线性表，丢弃0节点，其他的节点赋值为1，代表正面向上</li>
+<li>编写一个翻转纸牌的函数，若纸牌为1则返回0。若纸牌为0则返回1</li>
+<li>编写两个循环嵌套，从第二张牌开始便利，以2的倍数翻转纸牌，直到最后一张牌。从3开始遍历，以3的倍数翻转纸牌，直到一52开始，翻转到最后一张</li>
+<li>输出正面向上的纸牌</li>
+</ol>
+<h2 id="程序代码"><a href="#程序代码" class="headerlink" title="程序代码"></a>程序代码</h2><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">
+
+<span class="token keyword">void</span> <span class="token function">game</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span> 
+ <span class="token keyword">int</span> i<span class="token punctuation">,</span>j<span class="token punctuation">;</span>
+ Sqlist <span class="token operator">*</span>L<span class="token punctuation">;</span>
+ L <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span>Sqlist<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ L<span class="token operator">-></span>lenght <span class="token operator">=</span> <span class="token number">53</span><span class="token punctuation">;</span>
+ 
+ <span class="token keyword">for</span><span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>L<span class="token operator">-></span>lenght<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span>
+ <span class="token punctuation">&#123;</span> 
+  L<span class="token operator">-></span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">//所有的牌赋为1表示正面向上 </span>
+ <span class="token punctuation">&#125;</span>
+ 
+ <span class="token keyword">for</span><span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>L<span class="token operator">-></span>lenght<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span>
+ <span class="token punctuation">&#123;</span>
+  <span class="token keyword">for</span><span class="token punctuation">(</span>j<span class="token operator">=</span>i<span class="token punctuation">;</span>j<span class="token operator">&lt;</span>L<span class="token operator">-></span>lenght<span class="token punctuation">;</span>j<span class="token operator">++</span><span class="token punctuation">)</span> 
+  <span class="token punctuation">&#123;</span>
+   <span class="token keyword">if</span><span class="token punctuation">(</span>j<span class="token operator">%</span>i <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+   <span class="token punctuation">&#123;</span>
+    L<span class="token operator">-></span>data<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">swap</span><span class="token punctuation">(</span>L<span class="token operator">-></span>data<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//把牌翻一次 </span>
+   <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+ <span class="token punctuation">&#125;</span>
+ j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> 
+ 
+ cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">" 正面向上的牌有："</span><span class="token punctuation">;</span>
+ <span class="token keyword">for</span><span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>L<span class="token operator">-></span>lenght<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token comment">//输出正面向上的牌 </span>
+ <span class="token punctuation">&#123;</span> 
+  <span class="token keyword">if</span><span class="token punctuation">(</span>L<span class="token operator">-></span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#123;</span> 
+   cout<span class="token operator">&lt;&lt;</span>i<span class="token operator">&lt;&lt;</span><span class="token string">" "</span><span class="token punctuation">;</span>
+   j <span class="token operator">++</span><span class="token punctuation">;</span> 
+  <span class="token punctuation">&#125;</span>
+ <span class="token punctuation">&#125;</span>
+ cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">"     一共有 "</span><span class="token operator">&lt;&lt;</span>j<span class="token operator">&lt;&lt;</span><span class="token string">" 张正面向上的牌"</span><span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="测试结果-1"><a href="#测试结果-1" class="headerlink" title="测试结果"></a>测试结果</h2><p><img src="https://img-blog.csdnimg.cn/20200704222415802.png" alt="在这里插入图片描述"></p>
+
                 
             </div>
             <hr/>
@@ -495,7 +656,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/C/">
+                                    <span class="chip bg-color">C++</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -543,13 +708,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/23140.html">
+                <a href="/posts/52642.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="酒店管理系统程序设计">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="线程与进程">
                         
-                        <span class="card-title">酒店管理系统程序设计</span>
+                        <span class="card-title">线程与进程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,15 +725,31 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-24
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-17
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" class="post-category">
+                                    计算机基础
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%BA%BF%E7%A8%8B/">
+                        <span class="chip bg-color">线程</span>
+                    </a>
+                    
+                    <a href="/tags/%E8%BF%9B%E7%A8%8B/">
+                        <span class="chip bg-color">进程</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -580,13 +761,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/51280.html">
+                <a href="/posts/36907.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="直接插入排序和冒泡排序改进算法">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="如何解决缓存穿透，缓存击穿，缓存雪崩">
                         
-                        <span class="card-title">直接插入排序和冒泡排序改进算法</span>
+                        <span class="card-title">如何解决缓存穿透，缓存击穿，缓存雪崩</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -597,15 +778,31 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-20
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
+                                    缓存
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%BC%93%E5%AD%98%E9%AB%98%E5%B9%B6%E5%8F%91/">
+                        <span class="chip bg-color">缓存高并发</span>
+                    </a>
+                    
                 </div>
                 
             </div>
