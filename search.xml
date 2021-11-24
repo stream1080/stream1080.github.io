@@ -4,6 +4,58 @@
   
     
     <entry>
+      <title>Git安装配置</title>
+      <link href="/posts/304.html"/>
+      <url>/posts/304.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SpringBoot+Mybatis+Swagger2整合(下)</title>
+      <link href="/posts/43064.html"/>
+      <url>/posts/43064.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SpringBoot+Mybatis+Swagger2整合(上)</title>
+      <link href="/posts/14393.html"/>
+      <url>/posts/14393.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>外教供需平台微信小程序</title>
+      <link href="/posts/53908.html"/>
+      <url>/posts/53908.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Spring Boot是如何实现自动装配的</title>
       <link href="/posts/1513.html"/>
       <url>/posts/1513.html</url>
@@ -1713,6 +1765,33 @@
         <tags>
             
             <tag> 微信小程序 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>微信小程序授权登录</title>
+      <link href="/posts/33717.html"/>
+      <url>/posts/33717.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="微信小程序授权登录"><a href="#微信小程序授权登录" class="headerlink" title="微信小程序授权登录"></a>微信小程序授权登录</h1><h2 id="先看微信官方文档如何描述微信小程序的登录"><a href="#先看微信官方文档如何描述微信小程序的登录" class="headerlink" title="先看微信官方文档如何描述微信小程序的登录"></a>先看微信官方文档如何描述微信小程序的登录</h2><p><img src="https://img-blog.csdnimg.cn/20210129222448216.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p><h4 id="基本步骤如下"><a href="#基本步骤如下" class="headerlink" title="基本步骤如下"></a>基本步骤如下</h4><ol><li><p>小程序调用wx.login接口获取临时登录凭证code，这个code只存在5分钟</p></li><li><p>通过wx.request接口，将临时登录凭证传送到后台服务器code</p></li><li><p>后台服务器接收到前端传送过来的code，整合小程序AppID，AppSecret(小程序密钥)和 “grant_type=authorization_code”。携带这些数据请求auth.code2Session 接口，换取 用户唯一标识 OpenID 和 会话密钥 session_key。请求地址为：<a href="https://api.weixin.qq.com/sns/jscode2session?appid=APPID&amp;secret=SECRET&amp;js_code=JSCODE&amp;grant_type=authorization_code%E3%80%82%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%E4%B8%BAGET%E3%80%82!%5B%E5%9C%A8%E8%BF%99%E9%87%8C%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%8F%8F%E8%BF%B0%5D(https://img-blog.csdnimg.cn/20210129223439718.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70#pic_center)">https://api.weixin.qq.com/sns/jscode2session?appid=APPID&amp;secret=SECRET&amp;js_code=JSCODE&amp;grant_type=authorization_code。请求方式为GET。![在这里插入图片描述](https://img-blog.csdnimg.cn/20210129223439718.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70#pic_center)</a></p></li><li><p>微信服务器接收后端服务器发送的appid、appsecret、code进行校验。校验通过后向开发者服务器发送session_key、openid。</p></li><li><p>后端服务器接收到微信服务器传送过来的session_key、openid后，自定义用户登录的状态，并反馈到前端。</p></li></ol><h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h4 id="方法一：仅在前端实现（不推荐，因为不安全）"><a href="#方法一：仅在前端实现（不推荐，因为不安全）" class="headerlink" title="方法一：仅在前端实现（不推荐，因为不安全）"></a>方法一：仅在前端实现（不推荐，因为不安全）</h4><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function-variable function">dologin</span><span class="token operator">:</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>    wx<span class="token punctuation">.</span><span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>      <span class="token function">success</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>      <span class="token comment">//保存用户信息</span>app<span class="token punctuation">.</span>globalData<span class="token punctuation">.</span>userInfo <span class="token operator">=</span> res<span class="token punctuation">.</span>detail<span class="token punctuation">.</span>userInfo        <span class="token keyword">if</span> <span class="token punctuation">(</span>res<span class="token punctuation">.</span>code<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>                  <span class="token comment">//发起网络请求</span>          wx<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>            url<span class="token operator">:</span> <span class="token string">'https://api.weixin.qq.com/sns/jscode2session'</span><span class="token punctuation">,</span>            method<span class="token operator">:</span> <span class="token string">"GET"</span><span class="token punctuation">,</span>            data<span class="token operator">:</span> <span class="token punctuation">&#123;</span>              appid<span class="token operator">:</span><span class="token string">'wxxxxxxxxx'</span><span class="token punctuation">,</span>              secret<span class="token operator">:</span><span class="token string">'xxxxxxxxxxxxxxxxxxxxx'</span><span class="token punctuation">,</span>              js_code<span class="token operator">:</span> res<span class="token punctuation">.</span>code<span class="token punctuation">,</span>              grant_type<span class="token operator">:</span> <span class="token string">'authorization_code'</span>            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>            <span class="token function-variable function">success</span><span class="token operator">:</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">result</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>              console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span>              <span class="token comment">//返回的openID和session_key</span>            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>          <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>          wx<span class="token punctuation">.</span><span class="token function">switchTab</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>            url<span class="token operator">:</span> <span class="token string">'../person/person'</span><span class="token punctuation">,</span>          <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>          console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'登录失败！'</span> <span class="token operator">+</span> res<span class="token punctuation">.</span>errMsg<span class="token punctuation">)</span>        <span class="token punctuation">&#125;</span>      <span class="token punctuation">&#125;</span>    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="方法二：后端SprinBoot实现"><a href="#方法二：后端SprinBoot实现" class="headerlink" title="方法二：后端SprinBoot实现"></a>方法二：后端SprinBoot实现</h4><p>。。。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 项目 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 微信小程序 </tag>
+            
+            <tag> 登录 </tag>
             
         </tags>
       
