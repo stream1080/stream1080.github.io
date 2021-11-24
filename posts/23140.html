@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="酒店管理系统程序设计, 一江溪水">
-    <meta name="description" content="酒店管理系统程序设计 | 一江溪水">
+    <meta name="description" content="酒店管理系统程序设计   随着计算机技术的飞速发展，信息时代的到来，信息改变了我们这个社会。各类行业在日常经营管理各个方面也在悄悄地走向规范化和网络化。市场经济的发展，消费者消费意识的提高，酒店行业的竞争越来越激烈。为了提高办事效率，增加、">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +384,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/C/">
+                                <span class="chip bg-color">C++</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-category">
+                                数据结构
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +411,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-24
+                    2020-07-04
                 </div>
                 
 
@@ -407,14 +420,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    5 Min
                 </div>
                 
 
@@ -432,7 +445,120 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="酒店管理系统程序设计"><a href="#酒店管理系统程序设计" class="headerlink" title="酒店管理系统程序设计"></a>酒店管理系统程序设计</h1><p>   随着计算机技术的飞速发展，信息时代的到来，信息改变了我们这个社会。各类行业在日常经营管理各个方面也在悄悄地走向规范化和网络化。市场经济的发展，消费者消费意识的提高，酒店行业的竞争越来越激烈。为了提高办事效率，增加、保证酒店的销售额，树立酒店的良好形象，运用科学的管理方法非常必要。客房管理的信息化程度体现在将计算机及网络与信息技术应用于经营与管理，以现代化工具代替传统手工作业。无疑，使用网络信息化管理使客房管理更先进、更高效、更科学，信息交流更迅速。</p>
+<p>   我力求开发一个界面友好，功能强大，使用简单的酒店客房管理系统。它可以完全适用于小型酒店宾馆的客房管理服务。希望通过使用酒店客房管理系统得到所需信息，达到提高客房管理水平的目的。</p>
+<h2 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h2><ol>
+<li>有关客房信息的制定，房间号，所在楼层，价格，以及客房状态。是否有电话，电视，空调，网络和独立卫生间，以及所提供的服务等级。</li>
+<li>客户信息的录入和存储，包括客户的基本信息和是否为贵宾等信息等。</li>
+<li>客房的预定登记，主要是登记房客的信息，对房客的信息进行维护。入住实际，和预定的离店时间以及已付的押金，将客房的状态标注为预定状态。</li>
+<li>客房的入住登记，对已预定的客房进行入住操作，更新客户的实际入住时间，将客房标注为已入住的状态。</li>
+<li>客房的退房结算，更新客户的实际离店时间，对房客的实际住店的时间进行计算，输出实际产生的消费，与预订时所付的押金进行结算，多还少补。</li>
+<li>客房状态查询，分为四个模块，1查询当前已预定的客房，输出所有已经预定的客房和预定的客户信息，包括预定的入住和离店时间已经预交的押金；2查询当前已入住的客房，输出所有已经入住的客房和客户的信息，包括客户实际入住的时间；3查询当前空置的客房，分类显示所有空置的房间；4排序显示所有非空置的房间，输出这些客户的信息和房间信息。</li>
+<li>系统退出时，以二进制文件将当前系统的状态和所有的用户信息，客房信息存储到本地。在启动程序时，读取存储的二进制文件，将上一次的系统状态恢复。若第一次启动，则创建二进制文件。 </li>
+<li>系统的异常处理，对错误的输入进行处理，防止系统出现异常</li>
+</ol>
+<h2 id="系统功能结构"><a href="#系统功能结构" class="headerlink" title="系统功能结构"></a>系统功能结构</h2><p><img src="https://img-blog.csdnimg.cn/20200704124042764.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="简要的流程图"><a href="#简要的流程图" class="headerlink" title="简要的流程图"></a>简要的流程图</h2><p><img src="https://img-blog.csdnimg.cn/20200704125733855.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="类的定义和设计"><a href="#类的定义和设计" class="headerlink" title="类的定义和设计"></a>类的定义和设计</h2><ol>
+<li>定义一个存储房间信息和客户信息的基类，包扩这个房间的预定，入住，结算和显示信息的方法。<br>其中预定，和显示的方法定义为虚函数，用于实现多态性。</li>
+</ol>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Room</span>
+<span class="token punctuation">&#123;</span> 
+ <span class="token keyword">public</span><span class="token operator">:</span>
+  <span class="token function">Room</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token operator">~</span><span class="token function">Room</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  
+  <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">booking</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> 	<span class="token comment">//预定登记 </span>
+  <span class="token keyword">void</span> <span class="token function">checkin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    		<span class="token comment">//入住登记 </span>
+  <span class="token keyword">void</span> <span class="token function">checkout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   		<span class="token comment">//退房结算 </span>
+  <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">display</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>  	<span class="token comment">//状态查询 </span>
+  <span class="token keyword">int</span> room_num<span class="token punctuation">;</span>     		<span class="token comment">//房间编号</span>
+  <span class="token keyword">int</span> status<span class="token punctuation">;</span>         		<span class="token comment">//房间状态：0.空房 1.预定 2.入住  </span>
+  
+ <span class="token keyword">protected</span><span class="token operator">:</span> 
+  <span class="token keyword">char</span> name<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  		<span class="token comment">//房客姓名 </span>
+  <span class="token keyword">char</span> contact<span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">;</span>   		<span class="token comment">//联系方式</span>
+  <span class="token keyword">int</span> start<span class="token punctuation">;</span>   			<span class="token comment">//入住时间</span>
+  <span class="token keyword">int</span> dead<span class="token punctuation">;</span>   			<span class="token comment">//离店时间 </span>
+  <span class="token keyword">int</span> deposit<span class="token punctuation">;</span>  		<span class="token comment">//押    金 </span>
+  <span class="token keyword">int</span> price<span class="token punctuation">;</span>          		<span class="token comment">//价    格  </span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>用房间的基类派生出一个标准间的派生类，加上安装电话，和安装空调两个属性，并且重载预定登记和状态查询两个方法。</li>
+</ol>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">
+<span class="token keyword">class</span> <span class="token class-name">TwinRoom</span> <span class="token operator">:</span> <span class="token base-clause"><span class="token keyword">public</span> <span class="token class-name">Room</span>    <span class="token comment">//标准间</span></span> 
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">public</span><span class="token operator">:</span>
+  <span class="token function">TwinRoom</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  <span class="token operator">~</span><span class="token function">TwinRoom</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  
+  <span class="token keyword">void</span> <span class="token function">booking</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  	<span class="token comment">//预定登记</span>
+  <span class="token keyword">void</span> <span class="token function">display</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  	<span class="token comment">//状态查询 </span>
+  
+ <span class="token keyword">private</span><span class="token operator">:</span> 
+  <span class="token keyword">int</span>  tel<span class="token punctuation">;</span> 		<span class="token comment">// 安装电话 </span>
+  <span class="token keyword">char</span> air<span class="token punctuation">;</span> 		<span class="token comment">// 安装空调</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>用房间的基类派生出一个高级标准间的派生类，加上VIP编号，安装电话，和安装空调，电视，和无线网络属性，并且重载预定登记和状态查询两个方法。</li>
+</ol>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">//#################################################</span>
+<span class="token keyword">class</span> <span class="token class-name">HTwinRoom</span> <span class="token operator">:</span> <span class="token base-clause"><span class="token keyword">public</span> <span class="token class-name">Room</span> <span class="token comment">//高级标间</span></span> 
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">public</span><span class="token operator">:</span>
+  <span class="token function">HTwinRoom</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token operator">~</span><span class="token function">HTwinRoom</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  
+  <span class="token keyword">void</span> <span class="token function">booking</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//预定登记 </span>
+  <span class="token keyword">void</span> <span class="token function">display</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//状态查询</span>
+  
+ <span class="token keyword">private</span><span class="token operator">:</span>
+  <span class="token keyword">int</span> VIPnum<span class="token punctuation">;</span> <span class="token comment">// VIP编号 </span>
+  <span class="token keyword">int</span>  tel<span class="token punctuation">;</span> <span class="token comment">// 安装电话 </span>
+  <span class="token keyword">char</span> air<span class="token punctuation">;</span> <span class="token comment">// 安装空调 </span>
+  <span class="token keyword">int</span>  TV<span class="token punctuation">;</span>  <span class="token comment">// 安装电视 </span>
+  <span class="token keyword">int</span> wifi<span class="token punctuation">;</span>  <span class="token comment">// 无线网络 </span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="4">
+<li>用房间的基类派生出一个豪华套间的派生类，加上SVIP编号，安装电话，和安装空调，电视，无线网络和独立卫生间属性，并且重载预定登记和状态查询两个方法。</li>
+</ol>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">//##############################</span>
+<span class="token keyword">class</span> <span class="token class-name">SuiteRoom</span> <span class="token operator">:</span> <span class="token base-clause"><span class="token keyword">public</span> <span class="token class-name">Room</span>   <span class="token comment">//豪华套间</span></span> 
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">public</span><span class="token operator">:</span>
+  <span class="token function">SuiteRoom</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  <span class="token operator">~</span><span class="token function">SuiteRoom</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  
+  <span class="token keyword">void</span> <span class="token function">booking</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//预定登记</span>
+  <span class="token keyword">void</span> <span class="token function">display</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//状态查询 </span>
+  
+ <span class="token keyword">private</span><span class="token operator">:</span>
+  <span class="token keyword">int</span> SVIPnum<span class="token punctuation">;</span><span class="token comment">// SVIP编号 </span>
+  <span class="token keyword">int</span>  tel<span class="token punctuation">;</span> <span class="token comment">// 安装电话 </span>
+  <span class="token keyword">char</span> air<span class="token punctuation">;</span> <span class="token comment">// 安装空调 </span>
+  <span class="token keyword">char</span> TV<span class="token punctuation">;</span>  <span class="token comment">// 安装电视 </span>
+  <span class="token keyword">char</span> wifi<span class="token punctuation">;</span>  <span class="token comment">// 无线网络</span>
+  <span class="token keyword">char</span> bath<span class="token punctuation">;</span> <span class="token comment">// 独立卫生间 </span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="其他模块设计"><a href="#其他模块设计" class="headerlink" title="其他模块设计"></a>其他模块设计</h2><ol>
+<li><p>查询预定客房信息：用一个函数，遍历所有的的对象，把房间状态为预定的用对象的display（）方法显示出来。<br><img src="https://img-blog.csdnimg.cn/20200704131451434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>查询入住客房信息：用一个函数，遍历所有类型的的对象，把房间状态为入住的用对象的display（）方法显示出来。<br><img src="https://img-blog.csdnimg.cn/20200704131431262.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>查询空置的房间：用一个函数，遍历所有类型的的对象，把房间状态为空置的，另一个函数分类显示各种类型的房间的编号。<br><img src="https://img-blog.csdnimg.cn/20200704131531290.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+<li><p>排序显示客房信息：用冒泡排序，以房间的编号为关键字，按递增输出所有不少空置的房间。 </p>
+</li>
+</ol>
+<p>  <img src="https://img-blog.csdnimg.cn/202007041311228.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>文件存储模块中，用三个二进制的文件分别存储三种类型的客房信息，读取文件时，把文件的指针指到文件的末尾，计算出需要读取的对象的个数，用一个循环将文件中的数据读取到内存中。 存储文件时，用函数确定对象数组中的对象个数，用一个for循环将对象以二进制的方法保存到文件中。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200704131142117.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>存储文件时，用函数确定对象数组中的对象个数，用一个for循环将对象以二进制的方法保存到文件中。</p>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p><img src="https://img-blog.csdnimg.cn/20200704131243335.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
                 
             </div>
             <hr/>
@@ -495,7 +621,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/C/">
+                                    <span class="chip bg-color">C++</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -539,18 +669,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/23140.html">
+                <a href="/posts/61103.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="酒店管理系统程序设计">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="猴子选大王和纸牌游戏">
                         
-                        <span class="card-title">酒店管理系统程序设计</span>
+                        <span class="card-title">猴子选大王和纸牌游戏</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,18 +689,29 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-24
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-05
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-category">
+                                    数据结构
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C/">
+                        <span class="chip bg-color">C++</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -582,13 +722,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/51280.html">
+                <a href="/posts/9821.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="直接插入排序和冒泡排序改进算法">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="城市公交站点及换乘方案设计">
                         
-                        <span class="card-title">直接插入排序和冒泡排序改进算法</span>
+                        <span class="card-title">城市公交站点及换乘方案设计</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -599,15 +739,31 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-03
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    项目
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">数据结构与算法</span>
+                    </a>
+                    
+                    <a href="/tags/C/">
+                        <span class="chip bg-color">C++</span>
+                    </a>
+                    
                 </div>
                 
             </div>
