@@ -5,7 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="城市公交站点及换乘方案设计, 一江溪水">
-    <meta name="description" content="城市公交站点及换乘方案设计 | 一江溪水">
+    <meta name="description" content="城市公交站点及换乘方案设计设计要求   城市公共交通站点，站点之间的道路，及道路长度实际构成数学意义上的无向加权图。现请设计实现一个算法，求任意两站点间最短路径距离且输出该最短路径上的每个站点，然后给一个乘车换乘方案。
+站点要求
+数据结构设">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -384,12 +386,29 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">
+                                <span class="chip bg-color">数据结构与算法</span>
+                            </a>
+                        
+                            <a href="/tags/C/">
+                                <span class="chip bg-color">C++</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                项目
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -398,7 +417,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-11-24
+                    2020-07-03
                 </div>
                 
 
@@ -407,14 +426,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    0
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    1 Min
+                    8 Min
                 </div>
                 
 
@@ -432,7 +451,238 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="城市公交站点及换乘方案设计"><a href="#城市公交站点及换乘方案设计" class="headerlink" title="城市公交站点及换乘方案设计"></a>城市公交站点及换乘方案设计</h1><h2 id="设计要求"><a href="#设计要求" class="headerlink" title="设计要求"></a>设计要求</h2><p>   城市公共交通站点，站点之间的道路，及道路长度实际构成数学意义上的无向加权图。现请设计实现一个算法，求任意两站点间最短路径距离且输出该最短路径上的每个站点，然后给一个乘车换乘方案。</p>
+<h2 id="站点要求"><a href="#站点要求" class="headerlink" title="站点要求"></a>站点要求</h2><p><img src="https://img-blog.csdnimg.cn/20200703221859635.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Vwc3RyZWFtNDgw,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="数据结构设计"><a href="#数据结构设计" class="headerlink" title="数据结构设计"></a>数据结构设计</h2><p>使用五个数组存放每条路线途径的站点</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> L1<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>  	<span class="token comment">// 公交1路：9个站 </span>
+<span class="token keyword">int</span> L2<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">17</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>  		<span class="token comment">// 公交2路：7个站</span>
+<span class="token keyword">int</span> L3<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">19</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>  	<span class="token comment">// 公交3路：6个站</span>
+<span class="token keyword">int</span> L4<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">18</span><span class="token punctuation">,</span><span class="token number">19</span><span class="token punctuation">,</span><span class="token number">23</span><span class="token punctuation">,</span><span class="token number">24</span><span class="token punctuation">,</span><span class="token number">25</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>  		<span class="token comment">// 公交4路：5个站</span>
+<span class="token keyword">int</span> L5<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">21</span><span class="token punctuation">,</span><span class="token number">25</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>  		<span class="token comment">// 公交5路：5个站</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>设计两个二维数组，用于后面的Floyd算法。<br>P存放各个站点之间的最短路径，D存放各个站点之间的最短路径的权值</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">//P[][]存放各个站点之间的最短路径，D[][]存放各个站点之间的最短路径的权值 </span>
+<span class="token keyword">int</span> P<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">,</span>D<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>图的数据结构设计，顶点设计一个数组，用于存放此顶点途径的路线。<br>如果该顶点途径路线1和路线三，则再数组下标1和3上赋值1，3，不途径的赋值为零，如下图。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200703223952538.png" alt="在这里插入图片描述"></p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">struct</span>
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">int</span> name<span class="token punctuation">;</span>  	<span class="token comment">//站点名称 </span>
+ <span class="token keyword">int</span> lines<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">;</span> 	<span class="token comment">//途径路线 </span>
+<span class="token punctuation">&#125;</span>Vertex<span class="token punctuation">;</span> 
+
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span>
+<span class="token punctuation">&#123;</span>
+    Vertex vexs<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">;</span>  	<span class="token comment">//站点 </span>
+    <span class="token keyword">int</span> arc<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">;</span> 	<span class="token comment">//邻接矩阵 </span>
+    <span class="token keyword">int</span> numVertexes<span class="token punctuation">,</span> numEdges<span class="token punctuation">;</span> 	<span class="token comment">//顶点数和边数 </span>
+<span class="token punctuation">&#125;</span>MGraph<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="图的创建和初始化"><a href="#图的创建和初始化" class="headerlink" title="图的创建和初始化"></a>图的创建和初始化</h2><p>创建图，把带权的邻接矩阵赋值进去，把每个顶点路径的路线也存放在顶点的lines数组中</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">/* 构造图 */</span>
+<span class="token keyword">void</span> <span class="token function">CreateMGraph</span><span class="token punctuation">(</span>MGraph <span class="token operator">*</span>G<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">,</span> j<span class="token punctuation">;</span>
+    
+    <span class="token comment">//请输入边数和顶点数</span>
+    G<span class="token operator">-></span>numEdges<span class="token operator">=</span><span class="token number">52</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>numVertexes<span class="token operator">=</span><span class="token number">26</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> G<span class="token operator">-></span>numVertexes<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token comment">/* 初始化图的顶点编号 */</span>
+    <span class="token punctuation">&#123;</span>
+        G<span class="token operator">-></span>vexs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>name<span class="token operator">=</span>i<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">for</span><span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span><span class="token number">26</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token comment">//初始化每个站点通过路线的数组，设为零 </span>
+    <span class="token punctuation">&#123;</span>
+     <span class="token keyword">for</span><span class="token punctuation">(</span>j<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>j<span class="token operator">&lt;</span><span class="token number">6</span><span class="token punctuation">;</span>j<span class="token operator">++</span><span class="token punctuation">)</span>
+     <span class="token punctuation">&#123;</span>
+      G<span class="token operator">-></span>vexs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+     <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span> G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span> G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span> G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">14</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">18</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span> G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">22</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">;</span>
+    G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">;</span> G<span class="token operator">-></span>vexs<span class="token punctuation">[</span><span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">;</span>
+   
+	<span class="token keyword">int</span> t<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span> <span class="token comment">//构造无向带权图的邻接矩阵 </span>
+	 t<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span> 
+	 t<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> 
+	 t<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">;</span>  
+	 t<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> 
+	 t<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>  
+	 t<span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">12</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">;</span>  
+	 t<span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">14</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">14</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">12</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">8</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>  
+	 t<span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">18</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">18</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">22</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">22</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span> 
+	 t<span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> 
+	 t<span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">25</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+	 t<span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> 
+	 t<span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">25</span><span class="token punctuation">]</span>  <span class="token operator">=</span>  t<span class="token punctuation">[</span><span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">]</span> <span class="token operator">=</span> 
+  
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> G<span class="token operator">-></span>numVertexes<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token comment">//* 初始化图 </span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> G<span class="token operator">-></span>numVertexes<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>i<span class="token operator">==</span>j<span class="token punctuation">)</span>
+                G<span class="token operator">-></span>arc<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">else</span>
+                G<span class="token operator">-></span>arc<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> G<span class="token operator">-></span>arc<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> INFINITY<span class="token punctuation">;</span>     
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> G<span class="token operator">-></span>numVertexes<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token comment">//* 复制邻接矩阵 </span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> G<span class="token operator">-></span>numVertexes<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#123;</span>
+             G<span class="token operator">-></span>arc<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> t<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>   
+        <span class="token punctuation">&#125;</span>
+     <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="Floyd算法求多源最短路径"><a href="#Floyd算法求多源最短路径" class="headerlink" title="Floyd算法求多源最短路径"></a>Floyd算法求多源最短路径</h2><p>Floyd算法又称为插点法，是一种利用动态规划的思想寻找给定的加权图中多源点之间最短路径的算法，算法讲多源最短路径存放再P数组，最短路径的权值存放在D数组</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token operator">/</span> Floyd算法，求网图G中各顶点v到其余顶点w的最短路径P<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span>及带权长度D<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span>。  
+<span class="token keyword">void</span> <span class="token function">Floyd</span><span class="token punctuation">(</span>MGraph G<span class="token punctuation">,</span> <span class="token keyword">int</span> P<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token keyword">int</span> D<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span> 
+    <span class="token keyword">int</span> v<span class="token punctuation">,</span>w<span class="token punctuation">,</span>k<span class="token punctuation">;</span> 
+    
+    <span class="token keyword">for</span><span class="token punctuation">(</span>v<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> v<span class="token operator">&lt;</span>G<span class="token punctuation">.</span>numVertexes<span class="token punctuation">;</span> <span class="token operator">++</span>v<span class="token punctuation">)</span>   <span class="token comment">/* 初始化D与P */</span> 
+    <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">for</span><span class="token punctuation">(</span>w<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> w<span class="token operator">&lt;</span>G<span class="token punctuation">.</span>numVertexes<span class="token punctuation">;</span> <span class="token operator">++</span>w<span class="token punctuation">)</span> 
+        <span class="token punctuation">&#123;</span>
+            D<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token operator">=</span>G<span class="token punctuation">.</span>arc<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token punctuation">;</span>     <span class="token comment">/* D[v][w]值即为对应点间的权值 */</span>
+            P<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token operator">=</span>w<span class="token punctuation">;</span>                 <span class="token comment">/* 初始化P */</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">for</span><span class="token punctuation">(</span>k<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> k<span class="token operator">&lt;</span>G<span class="token punctuation">.</span>numVertexes<span class="token punctuation">;</span> <span class="token operator">++</span>k<span class="token punctuation">)</span> 
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>v<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> v<span class="token operator">&lt;</span>G<span class="token punctuation">.</span>numVertexes<span class="token punctuation">;</span> <span class="token operator">++</span>v<span class="token punctuation">)</span> 
+        <span class="token punctuation">&#123;</span> 
+            <span class="token keyword">for</span><span class="token punctuation">(</span>w<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> w<span class="token operator">&lt;</span>G<span class="token punctuation">.</span>numVertexes<span class="token punctuation">;</span> <span class="token operator">++</span>w<span class="token punctuation">)</span> 
+            <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>D<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token operator">></span>D<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token operator">+</span>D<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token comment">/* 如果经过下标为k顶点路径比原两点间路径更短 */</span>
+                <span class="token punctuation">&#123;</span>
+                    D<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token operator">=</span>D<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token operator">+</span>D<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">/* 将当前两点间权值设为更小的一个 */</span>
+                    
+                    P<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token operator">=</span>P<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">/* 路径设置为经过下标为k的顶点 */</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="规划最短路径中的换乘方案，并输出"><a href="#规划最短路径中的换乘方案，并输出" class="headerlink" title="规划最短路径中的换乘方案，并输出"></a>规划最短路径中的换乘方案，并输出</h2><p>把两站的最短路径途径站站点，以及需要乘坐的公交路线规划出来，并输出。</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">Transfer</span><span class="token punctuation">(</span>MGraph <span class="token operator">*</span>G<span class="token punctuation">,</span><span class="token keyword">int</span> L<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>j<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>k<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+ 
+ <span class="token keyword">for</span><span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span><span class="token number">25</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span>
+ <span class="token punctuation">&#123;</span>
+  <span class="token keyword">for</span><span class="token punctuation">(</span>j<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>j<span class="token operator">&lt;</span><span class="token number">6</span><span class="token punctuation">;</span>j<span class="token operator">++</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#123;</span>
+   <span class="token keyword">if</span><span class="token punctuation">(</span>G<span class="token operator">-></span>vexs<span class="token punctuation">[</span>L<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">==</span> G<span class="token operator">-></span>vexs<span class="token punctuation">[</span>L<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+   <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>G<span class="token operator">-></span>vexs<span class="token punctuation">[</span>L<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+     cout<span class="token operator">&lt;&lt;</span><span class="token string">" 站点"</span><span class="token operator">&lt;&lt;</span>L<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token operator">&lt;&lt;</span><span class="token string">" --(公交"</span><span class="token operator">&lt;&lt;</span>G<span class="token operator">-></span>vexs<span class="token punctuation">[</span>L<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lines<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">&lt;&lt;</span><span class="token string">"路)->"</span><span class="token punctuation">;</span>
+     k<span class="token operator">++</span><span class="token punctuation">;</span>
+     <span class="token keyword">break</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>      
+   <span class="token punctuation">&#125;</span>   
+  <span class="token punctuation">&#125;</span>
+ <span class="token punctuation">&#125;</span>
+ cout<span class="token operator">&lt;&lt;</span><span class="token string">" 站点"</span><span class="token operator">&lt;&lt;</span>L<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">;</span>
+ cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="输出最短路径"><a href="#输出最短路径" class="headerlink" title="输出最短路径"></a>输出最短路径</h2><p>从P数组中输出两点的最短路径和距离，以及途径的站点的情况和数量。</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">Dispath</span><span class="token punctuation">(</span>MGraph <span class="token operator">*</span>G<span class="token punctuation">,</span><span class="token keyword">int</span> P<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token keyword">int</span> D<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span><span class="token punctuation">)</span> 
+<span class="token punctuation">&#123;</span>
+ <span class="token keyword">int</span> v<span class="token punctuation">,</span>w<span class="token punctuation">,</span>k<span class="token punctuation">;</span>
+ <span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+ <span class="token keyword">int</span> L<span class="token punctuation">[</span>MAXVEX<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>    <span class="token comment">//存放两站之间的最短路径 </span>
+ 
+ cout<span class="token operator">&lt;&lt;</span><span class="token string">" 输入出发站：站点"</span><span class="token punctuation">;</span>
+ cin<span class="token operator">>></span>v<span class="token punctuation">;</span>
+ cout<span class="token operator">&lt;&lt;</span><span class="token string">" 输入终点站：站点"</span><span class="token punctuation">;</span>
+ cin<span class="token operator">>></span>w<span class="token punctuation">;</span> 
+ 
+ cout<span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span><span class="token string">" 站点"</span><span class="token operator">&lt;&lt;</span>v<span class="token operator">&lt;&lt;</span><span class="token string">" --> 站点"</span><span class="token operator">&lt;&lt;</span>w<span class="token operator">&lt;&lt;</span><span class="token string">" 距离："</span><span class="token operator">&lt;&lt;</span>D<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token operator">&lt;&lt;</span><span class="token string">"千米"</span><span class="token punctuation">;</span> 
+    k<span class="token operator">=</span>P<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token punctuation">;</span>      <span class="token comment">/* 获得第一个路径顶点下标 */</span>
+    cout<span class="token operator">&lt;&lt;</span><span class="token string">" 路线: "</span><span class="token operator">&lt;&lt;</span>v<span class="token punctuation">;</span>   <span class="token comment">/* 打印源点 */</span>
+    L<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> v<span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>k<span class="token operator">!=</span>w<span class="token punctuation">)</span>                <span class="token comment">/* 如果路径顶点下标不是终点 */</span>
+    <span class="token punctuation">&#123;</span>
+     cout<span class="token operator">&lt;&lt;</span><span class="token string">" -> "</span><span class="token operator">&lt;&lt;</span>k<span class="token punctuation">;</span>    <span class="token comment">/* 打印路径顶点 */</span>
+        i<span class="token operator">++</span><span class="token punctuation">;</span> 
+        L<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> k<span class="token punctuation">;</span>
+        k<span class="token operator">=</span>P<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">[</span>w<span class="token punctuation">]</span><span class="token punctuation">;</span>            <span class="token comment">/* 获得下一个路径顶点下标 */</span>
+    <span class="token punctuation">&#125;</span>
+    L<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span>w<span class="token punctuation">;</span>
+    cout<span class="token operator">&lt;&lt;</span><span class="token string">" -> "</span><span class="token operator">&lt;&lt;</span>w<span class="token operator">&lt;&lt;</span><span class="token string">"  共 "</span><span class="token operator">&lt;&lt;</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token operator">&lt;&lt;</span><span class="token string">" 站"</span><span class="token operator">&lt;&lt;</span>endl<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span> 
+    
+   <span class="token function">Transfer</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span>L<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+<h2 id="主函数"><a href="#主函数" class="headerlink" title="主函数"></a>主函数</h2><p>创建图，调用Floyd算法最短路径，输出最短路径和换乘的路线</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    MGraph G<span class="token punctuation">;</span> 
+    
+    <span class="token function">CreateMGraph</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>G<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token function">Floyd</span><span class="token punctuation">(</span>G<span class="token punctuation">,</span>P<span class="token punctuation">,</span>D<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token function">Dispath</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>G<span class="token punctuation">,</span>P<span class="token punctuation">,</span>D<span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果<img src="https://img-blog.csdnimg.cn/20200703230528148.png" alt="在这里插入图片描述"></h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1.数据结构设计不够完美，路线的数据结构用链表可能会更好<br>2.功能不够丰富，没有规划最少换乘的路线，途径站点最少的路线</p>
+
                 
             </div>
             <hr/>
@@ -495,7 +745,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">
+                                    <span class="chip bg-color">数据结构与算法</span>
+                                </a>
+                            
+                                <a href="/tags/C/">
+                                    <span class="chip bg-color">C++</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -539,18 +797,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/posts/9821.html">
+                <a href="/posts/33717.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="城市公交站点及换乘方案设计">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="微信小程序授权登录">
                         
-                        <span class="card-title">城市公交站点及换乘方案设计</span>
+                        <span class="card-title">微信小程序授权登录</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -560,18 +817,33 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-24
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-29
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    项目
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">
+                        <span class="chip bg-color">微信小程序</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%99%BB%E5%BD%95/">
+                        <span class="chip bg-color">登录</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -582,13 +854,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/23140.html">
+                <a href="/posts/18151.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="酒店管理系统程序设计">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="用正则表达式提取信息">
                         
-                        <span class="card-title">酒店管理系统程序设计</span>
+                        <span class="card-title">用正则表达式提取信息</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -599,15 +871,27 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2017-09-14
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            stream
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Python/" class="post-category">
+                                    Python
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+                        <span class="chip bg-color">正则表达式</span>
+                    </a>
+                    
                 </div>
                 
             </div>
