@@ -109,7 +109,7 @@ theme: hexo-theme-matery
 deploy:
   type: git
   repository: https://github.com/stream1080/stream1080.github.io
-  branch: main
+  branch: master
  
 # 搜索插件
 search:
