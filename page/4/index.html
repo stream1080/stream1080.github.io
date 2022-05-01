@@ -325,6 +325,58 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/posts/64859.html">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="JDK的锁优化策略">
+                            
+                            <span class="card-title">JDK的锁优化策略</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                锁的优化策略
+JDK6对synchronized做了很多优化，引入了自适应自旋、锁消除、锁粗化、偏向锁和轻量级锁等优化策略，提高锁的效率；
+锁一共有4个状态，级别从低到高依次是:无锁、偏向锁、轻量级锁和重量级锁，状态会随竞争情况升级。
+锁可
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-19
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E9%94%81/">
+                            <span class="chip bg-color">锁</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/posts/27249.html">
                         <div class="card-image">
                             
@@ -921,61 +973,6 @@ MyISAM
             </div>
               <!-- 隐藏某个文章 -->
             
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/posts/26947.html">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Redis缓存过期与内存淘汰">
-                            
-                            <span class="card-title">Redis缓存过期与内存淘汰</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Redis缓存过期与内存淘汰
-Redis中有个设置时间过期的功能，即对存储在redis 数据库中的值可以设置一个过期时间，到了过期时间，key会被删除
-如果内存空间满了，再往Redis里面插入数据，就会触发缓存淘汰机制 缓存过期策略作为一个
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-20
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E7%BC%93%E5%AD%98/" class="post-category">
-                                    缓存
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E7%BC%93%E5%AD%98%E8%BF%87%E6%9C%9F/">
-                            <span class="chip bg-color">缓存过期</span>
-                        </a>
-                        
-                        <a href="/tags/%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0/">
-                            <span class="chip bg-color">内存淘汰</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
         </div>
     </article>
 
@@ -1071,7 +1068,7 @@ Redis中有个设置时间过期的功能，即对存储在redis 数据库中的
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2017-2021</span>
+                <span id="year">2017-2022</span>
             
             <a href="/about" target="_blank">stream</a>
             <!-- |&nbsp;Powered by&nbsp;<a href="" target="_blank">Hexo</a>
